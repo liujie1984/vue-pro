@@ -1,5 +1,21 @@
-import app from './components/app';
+var App = Vue.extend({});
+var router = new VueRouter();
+var Foo = Vue.extend({
+    template: '<p>This is foo!</p>'
+})
 
-Vue.config.debug = true;
+var Bar = Vue.extend({
+    template: '<p>This is bar!</p>'
+})
+router.map({
+    '/foo': {
+        component: Foo
+    },
+    '/bar': {
+        component: Bar
+    }
+});
 
-new Vue(app);
+// start app
+
+router.start(App, '#app');
