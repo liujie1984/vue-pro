@@ -1,22 +1,40 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Vue.js-Cnodejs社区</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
-    <meta content="yes" name="apple-mobile-web-app-capable">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta content="black" name="apple-mobile-web-app-status-bar-style">
-    <link rel="stylesheet" href="/dist/style.css">
+    <meta charset="UTF-8">
+    <title>Vue Chat</title>
+    <style>
+        *, *:before, *:after {
+            box-sizing: border-box;
+        }
+        body, html {
+            height: 100%;
+            overflow: hidden;
+        }
+        body, ul {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            color: #4d4d4d;
+            font: 14px/1.4em 'Helvetica Neue', Helvetica, 'Microsoft Yahei', Arial, sans-serif;
+            background: #f5f5f5 url('build/images/bg.jpg') no-repeat center;
+            background-size: cover;
+            font-smoothing: antialiased;
+        }
+        ul {
+            list-style: none;
+        }
+        #chat {
+            margin: 20px auto;
+            width: 800px;
+        	height: 600px;
+        }
+    </style>
 </head>
-
 <body>
-    <div id="app">	
-        <router-view ></router-view>
-    </div>
-    <script src="/dist/common.js"></script>
-    <script src="/dist/build.js"></script>
+    <div id="chat"></div>
+    <script src="build/vue.js"></script>
+    <script src="build/main.js"></script>
 </body>
-
 </html>
