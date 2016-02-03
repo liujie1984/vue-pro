@@ -7,7 +7,7 @@
 </style>
 <template>
 <div id="banner">
-    <img id="banner-image" v-touch:swipe="onSwipe" v-touch-options:swipeleft="{threshold: 200}" v-bind:src="bannerList[0].image">
+    <img id="banner-image" v-touch:swipe="onSwipe" v-touch-options:swipeleft="{threshold: 200}" v-bind:src="bannerList[bannerNum].image">
     <ul id="banner-choose">
         <li v-for="bannerList in bannerList" id="{{bannerList.item_id}}"></li>
     </ul>   
@@ -16,13 +16,24 @@
 <script>
     export default {
         props: ['bannerList'],
+        data: function(){
+            return {
+                bannerNum:0
+            }
+        },
         methods:{
             bannerChange:function(){
 
             },
             onSwipe: function (e) {
+                var bannerLength = this.bannerList.length;
+                if(this.bannerNum<bannerLength-1){
+                    this.bannerNum++;
+                }else{
+                    this.bannerNum=0;
+                }
+                console.dir(this.bannerList);
                 console.dir(e.deltaX);
-                // this.event = e.type;
             }
         }
     };
