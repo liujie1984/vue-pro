@@ -4,12 +4,13 @@
     #banner-choose{margin-top:-25px;height:10px;text-align:center;}
     #banner-choose li{display: inline-block;width: 5px;height: 5px;border-radius: 5px;
         background-color: white;margin:0 3px 0 3px;}
+    .banner-choose-color{background-color:yellow !important;}
 </style>
 <template>
 <div id="banner">
     <img id="banner-image" v-touch:swipe="onSwipe" v-touch-options:swipeleft="{threshold: 200}" v-bind:src="bannerList[bannerNum].image">
     <ul id="banner-choose">
-        <li v-for="bannerList in bannerList" id="{{bannerList.item_id}}"></li>
+        <li v-for="bannerList in bannerList" id="{{$index}}" v-bind:class="{'banner-choose-color': $index==bannerNum}"></li>
     </ul>   
 </div>
 </template>
@@ -18,13 +19,21 @@
         props: ['bannerList'],
         data: function(){
             return {
-                bannerNum:0
+                bannerNum:0,
+                bannerLi: [{isShow:true}]
             }
         },
+        ready: function(){
+            setInterval(function(){
+                var bannerLength = this.bannerList.length;
+                if(this.bannerNum<bannerLength-1){
+                    this.bannerNum++;
+                }else{
+                    this.bannerNum=0;
+                }
+            },2000);
+        },
         methods:{
-            bannerChange:function(){
-
-            },
             onSwipe: function (e) {
                 var bannerLength = this.bannerList.length;
                 if(this.bannerNum<bannerLength-1){
