@@ -15,8 +15,8 @@
       		this.$http({url: 'mock/recommend.json', method: 'GET'}).then(function (response) {
       			this.bannerList = response.data.data.banner_list;
       			this.worksList = response.data.data.list;
-      			console.dir(this.bannerList);
-      			console.dir(response);
+      			// console.dir(this.bannerList);
+      			// console.dir(response);
       		}, function (response) {
           
       		});

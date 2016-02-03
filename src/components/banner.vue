@@ -20,18 +20,21 @@
         data: function(){
             return {
                 bannerNum:0,
-                bannerLi: [{isShow:true}]
             }
         },
-        ready: function(){
-            setInterval(function(){
+        watch: {
+            'bannerList':function(){
                 var bannerLength = this.bannerList.length;
-                if(this.bannerNum<bannerLength-1){
-                    this.bannerNum++;
-                }else{
-                    this.bannerNum=0;
-                }
-            },2000);
+                console.dir(bannerLength);
+                setInterval(function(){
+                    // console.dir(this.bannerNum);
+                    if(this.bannerNum<bannerLength-1){
+                        this.bannerNum++;
+                    }else{
+                        this.bannerNum=0;
+                    }
+                },2000);
+            }
         },
         methods:{
             onSwipe: function (e) {
@@ -41,7 +44,7 @@
                 }else{
                     this.bannerNum=0;
                 }
-                console.dir(this.bannerList);
+                console.dir(this.bannerNum);
                 console.dir(e.deltaX);
             }
         }
