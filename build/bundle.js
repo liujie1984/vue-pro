@@ -91,23 +91,23 @@
 	    },
 	    '/image': { //图片
 	        name: 'image',
-	        component: __webpack_require__(42)
+	        component: __webpack_require__(47)
 	    },
 	    '/video': { //视频
 	        name: 'video',
-	        component: __webpack_require__(47)
+	        component: __webpack_require__(52)
 	    },
 	    '/focus': { //视频
 	        name: 'focus',
-	        component: __webpack_require__(52)
+	        component: __webpack_require__(57)
 	    },
 	    '/tutorial': { //视频
 	        name: 'tutorial',
-	        component: __webpack_require__(57)
+	        component: __webpack_require__(62)
 	    },
 	    '/review': { //视频
 	        name: 'review',
-	        component: __webpack_require__(62)
+	        component: __webpack_require__(67)
 	    }
 	
 	    //'/topic/:id':{               //专题
@@ -16846,7 +16846,7 @@
 	var __vue_script__, __vue_template__
 	__webpack_require__(31)
 	__vue_script__ = __webpack_require__(35)
-	__vue_template__ = __webpack_require__(41)
+	__vue_template__ = __webpack_require__(46)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
@@ -17190,17 +17190,33 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	// <template>
 	//     <!-- 全局header -->
 	//     <nav-top type="recommend"></nav-top>
+	//     <banner v-bind:banner-list="bannerList"></banner>	
 	// </template>
 	// <script>
 	exports.default = {
-	    components: {
-	        'nav-top': __webpack_require__(36)
-	    }
+	  data: function data() {
+	    return {
+	      bannerList: '',
+	      worksList: ''
+	    };
+	  },
+	  ready: function ready() {
+	    this.$http({ url: 'http://alpha.52hangpai.cn/apiv2/recommend_list_v21', method: 'GET' }).then(function (response) {
+	      this.bannerList = response.data.data.banner_list;
+	      this.worksList = response.data.data.list;
+	      console.dir(this.bannerList);
+	      console.dir(response);
+	    }, function (response) {});
+	  },
+	  components: {
+	    'nav-top': __webpack_require__(36),
+	    'banner': __webpack_require__(41)
+	  }
 	};
 	// </script>
 	// <style lang="less">
@@ -17316,18 +17332,125 @@
 
 /***/ },
 /* 41 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"recommend\"></nav-top>\n";
+	var __vue_script__, __vue_template__
+	__webpack_require__(42)
+	__vue_script__ = __webpack_require__(44)
+	__vue_template__ = __webpack_require__(45)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "G:\\github\\vue-pro\\src\\components\\banner.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
 
 /***/ },
 /* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(43);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(34)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6542ab56&file=banner.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./banner.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6542ab56&file=banner.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./banner.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(33)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "#banner {\n  width: 100%;\n  height: 140px;\n  overflow: hidden;\n}\n#banner-image {\n  height: 140px;\n  width: 100%;\n}\n#banner-choose {\n  margin-top: -25px;\n  height: 10px;\n  text-align: center;\n}\n#banner-choose li {\n  display: inline-block;\n  width: 5px;\n  height: 5px;\n  border-radius: 5px;\n  background-color: white;\n  margin: 0 3px 0 3px;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-6542ab56&file=banner.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/banner.vue.style"],"names":[],"mappings":"AAAA;EACE,YAAY;EACZ,cAAc;EACd,iBAAiB;CAClB;AACD;EACE,cAAc;EACd,YAAY;CACb;AACD;EACE,kBAAkB;EAClB,aAAa;EACb,mBAAmB;CACpB;AACD;EACE,sBAAsB;EACtB,WAAW;EACX,YAAY;EACZ,mBAAmB;EACnB,wBAAwB;EACxB,oBAAoB;CACrB","file":"banner.vue","sourcesContent":["#banner {\n  width: 100%;\n  height: 140px;\n  overflow: hidden;\n}\n#banner-image {\n  height: 140px;\n  width: 100%;\n}\n#banner-choose {\n  margin-top: -25px;\n  height: 10px;\n  text-align: center;\n}\n#banner-choose li {\n  display: inline-block;\n  width: 5px;\n  height: 5px;\n  border-radius: 5px;\n  background-color: white;\n  margin: 0 3px 0 3px;\n}\n"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 44 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	// <style lang="less">
+	//     #banner{width:100%;height:140px;overflow:hidden;}
+	//     #banner-image{height:140px;width:100%;}
+	//     #banner-choose{margin-top:-25px;height:10px;text-align:center;}
+	//     #banner-choose li{display: inline-block;width: 5px;height: 5px;border-radius: 5px;
+	//         background-color: white;margin:0 3px 0 3px;}
+	// </style>
+	// <template>
+	// <div id="banner">
+	//     <img id="banner-image" v-touch:swipeleft="onSwipe" v-touch-options:swipeleft="{threshold: 200}" v-bind:src="bannerList[0].image">
+	//     <ul id="banner-choose">
+	//         <li v-for="bannerList in bannerList" id="{{bannerList.item_id}}"></li>
+	//     </ul>  
+	// </div>
+	// </template>
+	// <script>
+	exports.default = {
+	    props: ['bannerList'],
+	    methods: {
+	        bannerChange: function bannerChange() {},
+	        onSwipe: function onSwipe() {
+	            console.dir('ad');
+	            // this.event = e.type;
+	        }
+	    }
+	};
+	// </script>
+	/* generated by vue-loader */
+
+/***/ },
+/* 45 */
+/***/ function(module, exports) {
+
+	module.exports = "\n<div id=\"banner\">\n    <img id=\"banner-image\" v-touch:swipeleft=\"onSwipe\" v-touch-options:swipeleft=\"{threshold: 200}\" v-bind:src=\"bannerList[0].image\">\n    <ul id=\"banner-choose\">\n        <li v-for=\"bannerList in bannerList\" id=\"{{bannerList.item_id}}\"></li>\n    </ul>   \n</div>\n";
+
+/***/ },
+/* 46 */
+/***/ function(module, exports) {
+
+	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"recommend\"></nav-top>\n    <banner v-bind:banner-list=\"bannerList\"></banner>\t\n";
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var __vue_script__, __vue_template__
-	__webpack_require__(43)
-	__vue_script__ = __webpack_require__(45)
-	__vue_template__ = __webpack_require__(46)
+	__webpack_require__(48)
+	__vue_script__ = __webpack_require__(50)
+	__vue_template__ = __webpack_require__(51)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
@@ -17344,13 +17467,13 @@
 	})()}
 
 /***/ },
-/* 43 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(44);
+	var content = __webpack_require__(49);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(34)(content, {});
@@ -17370,7 +17493,7 @@
 	}
 
 /***/ },
-/* 44 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(33)();
@@ -17384,7 +17507,7 @@
 
 
 /***/ },
-/* 45 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17411,19 +17534,19 @@
 	/* generated by vue-loader */
 
 /***/ },
-/* 46 */
+/* 51 */
 /***/ function(module, exports) {
 
 	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"image\"></nav-top>\n";
 
 /***/ },
-/* 47 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(48)
-	__vue_script__ = __webpack_require__(50)
-	__vue_template__ = __webpack_require__(51)
+	__webpack_require__(53)
+	__vue_script__ = __webpack_require__(55)
+	__vue_template__ = __webpack_require__(56)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
@@ -17440,13 +17563,13 @@
 	})()}
 
 /***/ },
-/* 48 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(49);
+	var content = __webpack_require__(54);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(34)(content, {});
@@ -17466,7 +17589,7 @@
 	}
 
 /***/ },
-/* 49 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(33)();
@@ -17480,7 +17603,7 @@
 
 
 /***/ },
-/* 50 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17507,19 +17630,19 @@
 	/* generated by vue-loader */
 
 /***/ },
-/* 51 */
+/* 56 */
 /***/ function(module, exports) {
 
 	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"video\"></nav-top>\n";
 
 /***/ },
-/* 52 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(53)
-	__vue_script__ = __webpack_require__(55)
-	__vue_template__ = __webpack_require__(56)
+	__webpack_require__(58)
+	__vue_script__ = __webpack_require__(60)
+	__vue_template__ = __webpack_require__(61)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
@@ -17536,13 +17659,13 @@
 	})()}
 
 /***/ },
-/* 53 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(54);
+	var content = __webpack_require__(59);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(34)(content, {});
@@ -17562,7 +17685,7 @@
 	}
 
 /***/ },
-/* 54 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(33)();
@@ -17576,7 +17699,7 @@
 
 
 /***/ },
-/* 55 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17603,19 +17726,19 @@
 	/* generated by vue-loader */
 
 /***/ },
-/* 56 */
+/* 61 */
 /***/ function(module, exports) {
 
 	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"focus\"></nav-top>\n";
 
 /***/ },
-/* 57 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(58)
-	__vue_script__ = __webpack_require__(60)
-	__vue_template__ = __webpack_require__(61)
+	__webpack_require__(63)
+	__vue_script__ = __webpack_require__(65)
+	__vue_template__ = __webpack_require__(66)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
@@ -17632,13 +17755,13 @@
 	})()}
 
 /***/ },
-/* 58 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(59);
+	var content = __webpack_require__(64);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(34)(content, {});
@@ -17658,7 +17781,7 @@
 	}
 
 /***/ },
-/* 59 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(33)();
@@ -17672,7 +17795,7 @@
 
 
 /***/ },
-/* 60 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17699,19 +17822,19 @@
 	/* generated by vue-loader */
 
 /***/ },
-/* 61 */
+/* 66 */
 /***/ function(module, exports) {
 
 	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"tutorial\"></nav-top>\n";
 
 /***/ },
-/* 62 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(63)
-	__vue_script__ = __webpack_require__(65)
-	__vue_template__ = __webpack_require__(66)
+	__webpack_require__(68)
+	__vue_script__ = __webpack_require__(70)
+	__vue_template__ = __webpack_require__(71)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
@@ -17728,13 +17851,13 @@
 	})()}
 
 /***/ },
-/* 63 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(64);
+	var content = __webpack_require__(69);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(34)(content, {});
@@ -17754,7 +17877,7 @@
 	}
 
 /***/ },
-/* 64 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(33)();
@@ -17768,7 +17891,7 @@
 
 
 /***/ },
-/* 65 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17795,7 +17918,7 @@
 	/* generated by vue-loader */
 
 /***/ },
-/* 66 */
+/* 71 */
 /***/ function(module, exports) {
 
 	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"review\"></nav-top>\n";

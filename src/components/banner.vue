@@ -7,7 +7,7 @@
 </style>
 <template>
 <div id="banner">
-    <img id="banner-image" src="{{bannerList[0].image}}">
+    <img id="banner-image" v-touch:swipe="onSwipe" v-touch-options:swipeleft="{threshold: 200}" v-bind:src="bannerList[0].image">
     <ul id="banner-choose">
         <li v-for="bannerList in bannerList" id="{{bannerList.item_id}}"></li>
     </ul>   
@@ -19,6 +19,10 @@
         methods:{
             bannerChange:function(){
 
+            },
+            onSwipe: function (e) {
+                console.dir(e.deltaX);
+                // this.event = e.type;
             }
         }
     };
