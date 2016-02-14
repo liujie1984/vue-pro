@@ -6,7 +6,7 @@ module.exports = {
     // 输出
     output: {
         path: path.join(__dirname, './build'),
-        filename: 'bundle.js',
+        filename: 'main.js',
         publicPath: '/build/'
     },
     module: {
@@ -16,7 +16,7 @@ module.exports = {
             { test: /\.js$/, loader: 'babel', exclude: /node_modules/ },
             { test: /\.css$/, loader: 'style!css!autoprefixer'},
             { test: /\.less/, loader: 'style!css!autoprefixer!less'},
-            { test: /\.(png|jpg|gif)$/, loader: 'url-loader'},
+            { test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192'},
             { test: /\.(html|tpl)$/, loader: 'html-loader' },
         ]
     },

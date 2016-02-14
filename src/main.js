@@ -6,6 +6,7 @@ import VueTouch from 'vue-touch'
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(VueTouch);
+Vue.config.debug = true;
 
 var App = Vue.extend({});
 var router = new VueRouter({

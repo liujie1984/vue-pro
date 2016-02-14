@@ -67,6 +67,7 @@
 	_vue2.default.use(_vueRouter2.default);
 	_vue2.default.use(_vueResource2.default);
 	_vue2.default.use(_vueTouch2.default);
+	_vue2.default.config.debug = true;
 	
 	var App = _vue2.default.extend({});
 	var router = new _vueRouter2.default({
@@ -16854,7 +16855,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\views\\recommend.vue"
+	  var id = "F:\\github\\vue-pro\\src\\views\\recommend.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -16878,8 +16879,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-24aa231c&file=recommend.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./recommend.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-24aa231c&file=recommend.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./recommend.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-610ac371&file=recommend.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./recommend.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-610ac371&file=recommend.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./recommend.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -16897,7 +16898,7 @@
 	
 	
 	// module
-	exports.push([module.id, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"recommend.vue","sourceRoot":"webpack://"}]);
+	exports.push([module.id, "#banner {\n  height: 140px;\n}\n#banner-image {\n  height: 140px;\n  width: 100%;\n}\n#banner-choose {\n  margin-top: -28px;\n  text-align: center;\n}\n#banner-choose li {\n  display: inline-block;\n  width: 5px;\n  height: 5px;\n  border-radius: 5px;\n  background-color: white;\n  margin: 0 3px 0 3px;\n}\n.banner-choose-color {\n  background-color: yellow !important;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-610ac371&file=recommend.vue!F:/github/vue-pro/node_modules/less-loader/index.js!F:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!F:/github/vue-pro/src/views/recommend.vue.style"],"names":[],"mappings":"AAAA;EACE,cAAc;CACf;AACD;EACE,cAAc;EACd,YAAY;CACb;AACD;EACE,kBAAkB;EAClB,mBAAmB;CACpB;AACD;EACE,sBAAsB;EACtB,WAAW;EACX,YAAY;EACZ,mBAAmB;EACnB,wBAAwB;EACxB,oBAAoB;CACrB;AACD;EACE,oCAAoC;CACrC","file":"recommend.vue","sourcesContent":["#banner {\n  height: 140px;\n}\n#banner-image {\n  height: 140px;\n  width: 100%;\n}\n#banner-choose {\n  margin-top: -28px;\n  text-align: center;\n}\n#banner-choose li {\n  display: inline-block;\n  width: 5px;\n  height: 5px;\n  border-radius: 5px;\n  background-color: white;\n  margin: 0 3px 0 3px;\n}\n.banner-choose-color {\n  background-color: yellow !important;\n}\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -17192,36 +17193,83 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	// <template>
-	//     <!-- 全局header -->
-	//     <nav-top type="recommend"></nav-top>
-	//     <banner v-bind:banner-list="bannerList"></banner>	
-	// </template>
-	// <script>
+	//   <style lang="less">
+	//       #banner{height: 140px;}
+	//       #banner-image{height:140px;width:100%;}
+	//       #banner-choose{margin-top:-28px;text-align:center;}
+	//       #banner-choose li{display: inline-block;width: 5px;height: 5px;border-radius: 5px;
+	//           background-color: white;margin:0 3px 0 3px;}
+	//       .banner-choose-color{background-color:yellow !important;}
+	//   </style>
+	//   <template>
+	//       <!-- 全局header -->
+	//       <nav-top type="recommend"></nav-top>
+	//       <!-- banner轮播begin -->
+	//       <div id="banner">
+	//         <img id="banner-image" v-touch:swipe="onSwipe" v-touch-options:swipeleft="{threshold: 200}"
+	//           v-bind:src="bannerImg">
+	//         <ul id="banner-choose">
+	//           <li v-for="banner in banner" v-bind:class="{'banner-choose-color': $index==bannerNum}"></li>
+	//         </ul>  
+	//       </div>	
+	//       <!-- 作品列表 -->
+	//       <div id="works-list">
+	//         <works-one v-for="works in works" :works="works"></works-one>
+	//       </div>
+	//   </template>
+	//   <script>
 	exports.default = {
 	  data: function data() {
 	    return {
-	      bannerList: '',
-	      worksList: ''
+	      bannerNum: 0,
+	      bannerImg: '',
+	      bannerLength: 0,
+	      banner: '',
+	      works: ''
 	    };
 	  },
-	  ready: function ready() {
-	    this.$http({ url: 'http://alpha.52hangpai.cn/apiv2/recommend_list_v21', method: 'GET' }).then(function (response) {
-	      this.bannerList = response.data.data.banner_list;
-	      this.worksList = response.data.data.list;
-	      console.dir(this.bannerList);
-	      console.dir(response);
+	  created: function created() {
+	    this.$http({ url: 'mock/recommend.json', method: 'GET' }).then(function (response) {
+	      this.banner = response.data.data.banner_list;
+	      this.works = response.data.data.list;
+	      this.bannerImg = this.banner[0].image;
+	      console.dir(this.banner);
+	      console.dir(this.works);
+	      this.bannerLength = this.banner.length;
+	      console.dir(this.bannerLength);
+	      console.dir(this.bannerNum);
+	      var self = this;
+	      setInterval(function () {
+	        self.bannerImg = self.banner[self.bannerNum].image;
+	        if (self.bannerNum < self.bannerLength - 1) {
+	          self.bannerNum++;
+	        } else {
+	          self.bannerNum = 0;
+	        }
+	      }, 4000);
 	    }, function (response) {});
 	  },
 	  components: {
 	    'nav-top': __webpack_require__(36),
-	    'banner': __webpack_require__(41)
+	    'works-one': __webpack_require__(41)
+	  },
+	  methods: {
+	    onSwipe: function onSwipe(e) {
+	      console.dir(this.banner);
+	      this.bannerImg = this.banner[this.bannerNum].image;
+	      var bannerLength = this.banner.length;
+	      if (this.bannerNum < bannerLength - 1) {
+	        this.bannerNum++;
+	      } else {
+	        this.bannerNum = 0;
+	      }
+	      console.dir(this.bannerNum);
+	      console.dir(e.deltaX);
+	    }
 	  }
 	};
 	// </script>
-	// <style lang="less">
 	//
-	// </style>
 	//
 	//
 	/* generated by vue-loader */
@@ -17241,7 +17289,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\components\\nav-top.vue"
+	  var id = "F:\\github\\vue-pro\\src\\components\\nav-top.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -17265,8 +17313,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-d0bb051e&file=nav-top.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./nav-top.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-d0bb051e&file=nav-top.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./nav-top.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-5693d7dc&file=nav-top.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./nav-top.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-5693d7dc&file=nav-top.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./nav-top.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -17284,7 +17332,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".list-ul {\n  height: 40px;\n  width: 100%;\n  padding-bottom: 2px;\n}\n.list-ul li {\n  display: inline-block;\n  width: 15.4%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 38px;\n  line-height: 36px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-d0bb051e&file=nav-top.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/nav-top.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,oBAAoB;CACrB;AACD;EACE,sBAAsB;EACtB,aAAa;EACb,mBAAmB;EACnB,eAAe;EACf,aAAa;EACb,kBAAkB;CACnB;AACD;EACE,iCAAiC;EACjC,0BAA0B;CAC3B","file":"nav-top.vue","sourcesContent":[".list-ul {\n  height: 40px;\n  width: 100%;\n  padding-bottom: 2px;\n}\n.list-ul li {\n  display: inline-block;\n  width: 15.4%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 38px;\n  line-height: 36px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".list-ul {\n  height: 40px;\n  width: 100%;\n  padding-bottom: 2px;\n}\n.list-ul li {\n  display: inline-block;\n  width: 15.4%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 38px;\n  line-height: 36px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-5693d7dc&file=nav-top.vue!F:/github/vue-pro/node_modules/less-loader/index.js!F:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!F:/github/vue-pro/src/components/nav-top.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,oBAAoB;CACrB;AACD;EACE,sBAAsB;EACtB,aAAa;EACb,mBAAmB;EACnB,eAAe;EACf,aAAa;EACb,kBAAkB;CACnB;AACD;EACE,iCAAiC;EACjC,0BAA0B;CAC3B","file":"nav-top.vue","sourcesContent":[".list-ul {\n  height: 40px;\n  width: 100%;\n  padding-bottom: 2px;\n}\n.list-ul li {\n  display: inline-block;\n  width: 15.4%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 38px;\n  line-height: 36px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -17305,14 +17353,14 @@
 	//     .custom-active-class{border-bottom: 2px solid #222222;color: #222222 !important;}
 	// </style>
 	// <template>
-	//         <ul class="list-ul">
-	//             <li v-link="{name:'recommend', activeClass: 'custom-active-class'}">推荐</li>
-	//             <li v-link="{name:'image', activeClass: 'custom-active-class'}">图片</li>
-	//             <li v-link="{name:'video', activeClass: 'custom-active-class'}">视频</li>
-	//             <li v-link="{name:'focus', activeClass: 'custom-active-class'}">关注</li>
-	//             <li v-link="{name:'tutorial', activeClass: 'custom-active-class'}">教程</li>
-	//             <li v-link="{name:'review', activeClass: 'custom-active-class'}">评测</li>
-	//         </ul>
+	//     <ul class="list-ul">
+	//         <li v-link="{name:'recommend', activeClass: 'custom-active-class'}">推荐</li>
+	//         <li v-link="{name:'image', activeClass: 'custom-active-class'}">图片</li>
+	//         <li v-link="{name:'video', activeClass: 'custom-active-class'}">视频</li>
+	//         <li v-link="{name:'focus', activeClass: 'custom-active-class'}">关注</li>
+	//         <li v-link="{name:'tutorial', activeClass: 'custom-active-class'}">教程</li>
+	//         <li v-link="{name:'review', activeClass: 'custom-active-class'}">评测</li>
+	//     </ul>
 	// </template>
 	// <script>
 	exports.default = {
@@ -17328,7 +17376,7 @@
 /* 40 */
 /***/ function(module, exports) {
 
-	module.exports = "\n        <ul class=\"list-ul\">\n            <li v-link=\"{name:'recommend', activeClass: 'custom-active-class'}\">推荐</li>\n            <li v-link=\"{name:'image', activeClass: 'custom-active-class'}\">图片</li>\n            <li v-link=\"{name:'video', activeClass: 'custom-active-class'}\">视频</li>\n            <li v-link=\"{name:'focus', activeClass: 'custom-active-class'}\">关注</li>\n            <li v-link=\"{name:'tutorial', activeClass: 'custom-active-class'}\">教程</li>\n            <li v-link=\"{name:'review', activeClass: 'custom-active-class'}\">评测</li>\n        </ul>\n";
+	module.exports = "\r\n    <ul class=\"list-ul\">\r\n        <li v-link=\"{name:'recommend', activeClass: 'custom-active-class'}\">推荐</li>\r\n        <li v-link=\"{name:'image', activeClass: 'custom-active-class'}\">图片</li>\r\n        <li v-link=\"{name:'video', activeClass: 'custom-active-class'}\">视频</li>\r\n        <li v-link=\"{name:'focus', activeClass: 'custom-active-class'}\">关注</li>\r\n        <li v-link=\"{name:'tutorial', activeClass: 'custom-active-class'}\">教程</li>\r\n        <li v-link=\"{name:'review', activeClass: 'custom-active-class'}\">评测</li>\r\n    </ul>\r\n";
 
 /***/ },
 /* 41 */
@@ -17345,7 +17393,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\components\\banner.vue"
+	  var id = "F:\\github\\vue-pro\\src\\components\\works-one.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -17369,8 +17417,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6542ab56&file=banner.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./banner.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6542ab56&file=banner.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./banner.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-020ec77c&file=works-one.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./works-one.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-020ec77c&file=works-one.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./works-one.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -17388,7 +17436,7 @@
 	
 	
 	// module
-	exports.push([module.id, "#banner {\n  width: 100%;\n  height: 140px;\n  overflow: hidden;\n}\n#banner-image {\n  height: 140px;\n  width: 100%;\n}\n#banner-choose {\n  margin-top: -25px;\n  height: 10px;\n  text-align: center;\n}\n#banner-choose li {\n  display: inline-block;\n  width: 5px;\n  height: 5px;\n  border-radius: 5px;\n  background-color: white;\n  margin: 0 3px 0 3px;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-6542ab56&file=banner.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/banner.vue.style"],"names":[],"mappings":"AAAA;EACE,YAAY;EACZ,cAAc;EACd,iBAAiB;CAClB;AACD;EACE,cAAc;EACd,YAAY;CACb;AACD;EACE,kBAAkB;EAClB,aAAa;EACb,mBAAmB;CACpB;AACD;EACE,sBAAsB;EACtB,WAAW;EACX,YAAY;EACZ,mBAAmB;EACnB,wBAAwB;EACxB,oBAAoB;CACrB","file":"banner.vue","sourcesContent":["#banner {\n  width: 100%;\n  height: 140px;\n  overflow: hidden;\n}\n#banner-image {\n  height: 140px;\n  width: 100%;\n}\n#banner-choose {\n  margin-top: -25px;\n  height: 10px;\n  text-align: center;\n}\n#banner-choose li {\n  display: inline-block;\n  width: 5px;\n  height: 5px;\n  border-radius: 5px;\n  background-color: white;\n  margin: 0 3px 0 3px;\n}\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".owner {\n  height: 36px;\n  width: 100%;\n  margin-top: 16px;\n}\n.avatar {\n  height: 36px;\n  width: 36px;\n  border-radius: 18px;\n  margin: 0 0 0 8px;\n}\n.nickname {\n  vertical-align: top;\n  font-size: 10px;\n  color: #4a4a4a;\n  margin: 13px 0 0 10px;\n  display: inline-block;\n}\n.title {\n  color: #222222;\n  font-size: 16px;\n  margin: 14px 0 0 0;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n.thumbnail {\n  margin-top: 14px;\n}\n.thumbnail-image-img {\n  width: 100%;\n}\n.thumbnail-text-content {\n  margin: 5px 0 5px 0;\n}\n.thumbnail-video-img {\n  width: 100%;\n  height: 200px;\n}\n.thumbnail-video-play {\n  width: 33px;\n  height: 33px;\n  display: inline-block;\n  position: relative;\n  z-index: 3;\n  top: -120px;\n  left: 50%;\n  margin-left: -16px;\n}\n.like-comment {\n  height: 44px;\n  margin-top: -4px;\n}\n.like-comment div {\n  display: inline-block;\n  width: 49%;\n  text-align: center;\n  height: 39px;\n}\n.content-like {\n  border-right: 1px solid #dcdcdc;\n}\n.icon-like {\n  width: 20px;\n  height: 20px;\n  margin-top: 12px;\n}\n.count-like {\n  font-size: 10px;\n  color: #dcdcdc;\n}\n.icon-comment {\n  width: 20px;\n  height: 20px;\n  margin-top: 12px;\n}\n.count-comment {\n  font-size: 10px;\n  color: #dcdcdc;\n}\n.blank {\n  height: 12px;\n  background-color: #f2f1ef;\n  margin-top: -5px;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-020ec77c&file=works-one.vue!F:/github/vue-pro/node_modules/less-loader/index.js!F:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!F:/github/vue-pro/src/components/works-one.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,iBAAiB;CAClB;AACD;EACE,aAAa;EACb,YAAY;EACZ,oBAAoB;EACpB,kBAAkB;CACnB;AACD;EACE,oBAAoB;EACpB,gBAAgB;EAChB,eAAe;EACf,sBAAsB;EACtB,sBAAsB;CACvB;AACD;EACE,eAAe;EACf,gBAAgB;EAChB,mBAAmB;EACnB,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;CAClB;AACD;EACE,iBAAiB;CAClB;AACD;EACE,YAAY;CACb;AACD;EACE,oBAAoB;CACrB;AACD;EACE,YAAY;EACZ,cAAc;CACf;AACD;EACE,YAAY;EACZ,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,WAAW;EACX,YAAY;EACZ,UAAU;EACV,mBAAmB;CACpB;AACD;EACE,aAAa;EACb,iBAAiB;CAClB;AACD;EACE,sBAAsB;EACtB,WAAW;EACX,mBAAmB;EACnB,aAAa;CACd;AACD;EACE,gCAAgC;CACjC;AACD;EACE,YAAY;EACZ,aAAa;EACb,iBAAiB;CAClB;AACD;EACE,gBAAgB;EAChB,eAAe;CAChB;AACD;EACE,YAAY;EACZ,aAAa;EACb,iBAAiB;CAClB;AACD;EACE,gBAAgB;EAChB,eAAe;CAChB;AACD;EACE,aAAa;EACb,0BAA0B;EAC1B,iBAAiB;CAClB","file":"works-one.vue","sourcesContent":[".owner {\n  height: 36px;\n  width: 100%;\n  margin-top: 16px;\n}\n.avatar {\n  height: 36px;\n  width: 36px;\n  border-radius: 18px;\n  margin: 0 0 0 8px;\n}\n.nickname {\n  vertical-align: top;\n  font-size: 10px;\n  color: #4a4a4a;\n  margin: 13px 0 0 10px;\n  display: inline-block;\n}\n.title {\n  color: #222222;\n  font-size: 16px;\n  margin: 14px 0 0 0;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n.thumbnail {\n  margin-top: 14px;\n}\n.thumbnail-image-img {\n  width: 100%;\n}\n.thumbnail-text-content {\n  margin: 5px 0 5px 0;\n}\n.thumbnail-video-img {\n  width: 100%;\n  height: 200px;\n}\n.thumbnail-video-play {\n  width: 33px;\n  height: 33px;\n  display: inline-block;\n  position: relative;\n  z-index: 3;\n  top: -120px;\n  left: 50%;\n  margin-left: -16px;\n}\n.like-comment {\n  height: 44px;\n  margin-top: -4px;\n}\n.like-comment div {\n  display: inline-block;\n  width: 49%;\n  text-align: center;\n  height: 39px;\n}\n.content-like {\n  border-right: 1px solid #dcdcdc;\n}\n.icon-like {\n  width: 20px;\n  height: 20px;\n  margin-top: 12px;\n}\n.count-like {\n  font-size: 10px;\n  color: #dcdcdc;\n}\n.icon-comment {\n  width: 20px;\n  height: 20px;\n  margin-top: 12px;\n}\n.count-comment {\n  font-size: 10px;\n  color: #dcdcdc;\n}\n.blank {\n  height: 12px;\n  background-color: #f2f1ef;\n  margin-top: -5px;\n}\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -17403,29 +17451,67 @@
 	    value: true
 	});
 	// <style lang="less">
-	//     #banner{width:100%;height:140px;overflow:hidden;}
-	//     #banner-image{height:140px;width:100%;}
-	//     #banner-choose{margin-top:-25px;height:10px;text-align:center;}
-	//     #banner-choose li{display: inline-block;width: 5px;height: 5px;border-radius: 5px;
-	//         background-color: white;margin:0 3px 0 3px;}
+	//     .owner{height: 36px;width: 100%;margin-top: 16px;}
+	//     .avatar{height: 36px;width: 36px;border-radius: 18px;margin: 0 0 0 8px;}
+	//     .nickname{vertical-align: top;font-size: 10px;color: #4a4a4a;margin: 13px 0 0 10px;
+	//         display: inline-block;}
+	//     .title{color: #222222;font-size: 16px;margin: 14px 0 0 0;white-space:nowrap;
+	//         text-overflow:ellipsis;overflow: hidden;}
+	//     .thumbnail{margin-top: 14px;}
+	//     .thumbnail-image-img{width: 100%;}
+	//     .thumbnail-text-content{margin: 5px 0 5px 0;}
+	//     .thumbnail-video-img{width: 100%;height: 200px;}
+	//     .thumbnail-video-play{width: 33px;height: 33px;display: inline-block;
+	//         position: relative;z-index: 3;top: -120px;left: 50%;margin-left: -16px;}
+	//     .like-comment{height: 44px;margin-top: -4px;}
+	//     .like-comment div{display: inline-block;width: 49%;text-align: center;height: 39px;}
+	//     .content-like{border-right: 1px solid #dcdcdc;}
+	//     .icon-like{width: 20px;height: 20px;margin-top: 12px;}
+	//     .count-like{font-size: 10px;color: #dcdcdc;}
+	//     .icon-comment{width: 20px;height: 20px;margin-top: 12px;}
+	//     .count-comment{font-size: 10px;color: #dcdcdc;}
+	//     .blank{height: 12px;background-color: #f2f1ef;margin-top: -5px;}
 	// </style>
 	// <template>
-	// <div id="banner">
-	//     <img id="banner-image" v-touch:swipeleft="onSwipe" v-touch-options:swipeleft="{threshold: 200}" v-bind:src="bannerList[0].image">
-	//     <ul id="banner-choose">
-	//         <li v-for="bannerList in bannerList" id="{{bannerList.item_id}}"></li>
-	//     </ul>  
+	// <div class="one">
+	//     <div class="owner">
+	//         <img class="avatar" v-bind:src="works.owner.avatar_url">
+	//         <span class="nickname">{{works.owner.nickname}}</span>
+	//     </div>
+	//     <div class="title">
+	//         {{works.title}}
+	//     </div>
+	//     <div class="thumbnail">
+	//         <div v-if="works.thumbnail.type=='image'" class="thumbnail-image">
+	//             <img class="thumbnail-image-img" v-bind:src="works.thumbnail.content.thumbnail_url">
+	//         </div>
+	//         <div v-if="works.thumbnail.type=='text'" class="thumbnail-text">
+	//             <p class="thumbnail-text-content">{{works.thumbnail.content.text}}</p>
+	//         </div>
+	//         <div v-if="works.thumbnail.type=='ihp_v'" class="thumbnail-video">
+	//             <img class="thumbnail-video-img" v-bind:src="works.thumbnail.content.thumbnail_url">
+	//             <img class="thumbnail-video-play"
+	//             src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png">
+	//         </div>
+	//     </div>
+	//     <div class="like-comment">
+	//         <div class="content-like">
+	//             <img class="icon-like" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png">
+	//             <span class="count-like">{{works.likes_count}}</span>
+	//         </div>
+	//         <div class="content-comment">
+	//             <img class="icon-comment" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png">
+	//             <span class="count-comment">{{works.comments_count}}</span>
+	//         </div>
+	//     </div>
+	//     <div class="blank"></div>
 	// </div>
 	// </template>
 	// <script>
 	exports.default = {
-	    props: ['bannerList'],
-	    methods: {
-	        bannerChange: function bannerChange() {},
-	        onSwipe: function onSwipe() {
-	            console.dir('ad');
-	            // this.event = e.type;
-	        }
+	    props: ['works'],
+	    ready: function ready() {
+	        console.dir(this.works);
 	    }
 	};
 	// </script>
@@ -17435,13 +17521,13 @@
 /* 45 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div id=\"banner\">\n    <img id=\"banner-image\" v-touch:swipeleft=\"onSwipe\" v-touch-options:swipeleft=\"{threshold: 200}\" v-bind:src=\"bannerList[0].image\">\n    <ul id=\"banner-choose\">\n        <li v-for=\"bannerList in bannerList\" id=\"{{bannerList.item_id}}\"></li>\n    </ul>   \n</div>\n";
+	module.exports = "\r\n<div class=\"one\">\r\n    <div class=\"owner\">\r\n        <img class=\"avatar\" v-bind:src=\"works.owner.avatar_url\">\r\n        <span class=\"nickname\">{{works.owner.nickname}}</span>\r\n    </div>\r\n    <div class=\"title\">\r\n        {{works.title}}\r\n    </div>\r\n    <div class=\"thumbnail\">\r\n        <div v-if=\"works.thumbnail.type=='image'\" class=\"thumbnail-image\">\r\n            <img class=\"thumbnail-image-img\" v-bind:src=\"works.thumbnail.content.thumbnail_url\">\r\n        </div>\r\n        <div v-if=\"works.thumbnail.type=='text'\" class=\"thumbnail-text\">\r\n            <p class=\"thumbnail-text-content\">{{works.thumbnail.content.text}}</p>\r\n        </div>\r\n        <div v-if=\"works.thumbnail.type=='ihp_v'\" class=\"thumbnail-video\">\r\n            <img class=\"thumbnail-video-img\" v-bind:src=\"works.thumbnail.content.thumbnail_url\">\r\n            <img class=\"thumbnail-video-play\" \r\n            src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png\">\r\n        </div>\r\n    </div>\r\n    <div class=\"like-comment\">\r\n        <div class=\"content-like\">\r\n            <img class=\"icon-like\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png\">\r\n            <span class=\"count-like\">{{works.likes_count}}</span>\r\n        </div>\r\n        <div class=\"content-comment\">\r\n            <img class=\"icon-comment\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png\">\r\n            <span class=\"count-comment\">{{works.comments_count}}</span>\r\n        </div>\r\n    </div>\r\n    <div class=\"blank\"></div>\r\n</div>\r\n";
 
 /***/ },
 /* 46 */
 /***/ function(module, exports) {
 
-	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"recommend\"></nav-top>\n    <banner v-bind:banner-list=\"bannerList\"></banner>\t\n";
+	module.exports = "\r\n      <!-- 全局header -->\r\n      <nav-top type=\"recommend\"></nav-top>\r\n      <!-- banner轮播begin -->\r\n      <div id=\"banner\">\r\n        <img id=\"banner-image\" v-touch:swipe=\"onSwipe\" v-touch-options:swipeleft=\"{threshold: 200}\"\r\n          v-bind:src=\"bannerImg\">\r\n        <ul id=\"banner-choose\">\r\n          <li v-for=\"banner in banner\" v-bind:class=\"{'banner-choose-color': $index==bannerNum}\"></li>\r\n        </ul>   \r\n      </div>\t\r\n      <!-- 作品列表 -->\r\n      <div id=\"works-list\">\r\n        <works-one v-for=\"works in works\" :works=\"works\"></works-one>\r\n      </div>\r\n  ";
 
 /***/ },
 /* 47 */
@@ -17458,7 +17544,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\views\\image.vue"
+	  var id = "F:\\github\\vue-pro\\src\\views\\image.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -17482,8 +17568,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-15115e91&file=image.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./image.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-15115e91&file=image.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./image.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-01698b10&file=image.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./image.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-01698b10&file=image.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./image.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -17537,7 +17623,7 @@
 /* 51 */
 /***/ function(module, exports) {
 
-	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"image\"></nav-top>\n";
+	module.exports = "\r\n    <!-- 全局header -->\r\n    <nav-top type=\"image\"></nav-top>\r\n";
 
 /***/ },
 /* 52 */
@@ -17554,7 +17640,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\views\\video.vue"
+	  var id = "F:\\github\\vue-pro\\src\\views\\video.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -17578,8 +17664,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-ce478c9e&file=video.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./video.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-ce478c9e&file=video.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./video.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-f59733a0&file=video.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./video.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-f59733a0&file=video.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./video.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -17633,7 +17719,7 @@
 /* 56 */
 /***/ function(module, exports) {
 
-	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"video\"></nav-top>\n";
+	module.exports = "\r\n    <!-- 全局header -->\r\n    <nav-top type=\"video\"></nav-top>\r\n";
 
 /***/ },
 /* 57 */
@@ -17650,7 +17736,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\views\\focus.vue"
+	  var id = "F:\\github\\vue-pro\\src\\views\\focus.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -17674,8 +17760,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-ab07f8e4&file=focus.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./focus.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-ab07f8e4&file=focus.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./focus.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-d2579fe6&file=focus.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./focus.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-d2579fe6&file=focus.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./focus.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -17729,7 +17815,7 @@
 /* 61 */
 /***/ function(module, exports) {
 
-	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"focus\"></nav-top>\n";
+	module.exports = "\r\n    <!-- 全局header -->\r\n    <nav-top type=\"focus\"></nav-top>\r\n";
 
 /***/ },
 /* 62 */
@@ -17746,7 +17832,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\views\\tutorial.vue"
+	  var id = "F:\\github\\vue-pro\\src\\views\\tutorial.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -17770,8 +17856,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-7a850bd0&file=tutorial.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./tutorial.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-7a850bd0&file=tutorial.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./tutorial.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6b9f8939&file=tutorial.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./tutorial.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-6b9f8939&file=tutorial.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./tutorial.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -17825,7 +17911,7 @@
 /* 66 */
 /***/ function(module, exports) {
 
-	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"tutorial\"></nav-top>\n";
+	module.exports = "\r\n    <!-- 全局header -->\r\n    <nav-top type=\"tutorial\"></nav-top>\r\n";
 
 /***/ },
 /* 67 */
@@ -17842,7 +17928,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\views\\review.vue"
+	  var id = "F:\\github\\vue-pro\\src\\views\\review.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -17866,8 +17952,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-74b51992&file=review.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./review.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-74b51992&file=review.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./review.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-13627cf3&file=review.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./review.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-13627cf3&file=review.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./review.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -17921,8 +18007,8 @@
 /* 71 */
 /***/ function(module, exports) {
 
-	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"review\"></nav-top>\n";
+	module.exports = "\r\n    <!-- 全局header -->\r\n    <nav-top type=\"review\"></nav-top>\r\n";
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle.js.map
+//# sourceMappingURL=main.js.map
