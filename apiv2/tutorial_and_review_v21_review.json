@@ -1,0 +1,95 @@
+{
+  "code": 0,
+  "msg": "OK",
+  "data": {
+    "list": [
+      {
+        "group_id": 0,
+        "group_type": "mix_list_gravity_left",
+        "title": "大疆评测",
+        "ref_url": "ihangpai://ihp.app/info_list?url=http%3A%2F%2Falpha.52hangpai.cn%2Fapiv2%2Finfolist_by_taglist%3Ftags%3D%7B%7B%E8%AF%84%E6%B5%8B%7D%7D--%7B%7B%E5%A4%A7%E7%96%86%E8%AF%84%E6%B5%8B%7D%7D%26comboLogic%3DAND&title=%E5%A4%A7%E7%96%86%E8%AF%84%E6%B5%8B",
+        "items": [
+          {
+            "item_id": 5828,
+            "title": "今天发表下OSMO两个星期左右的体验：\n刚到手的时候，感觉就是普通的手持➕4K镜头，而且第一两天对按键操作也不是很熟练，控制键单按、双按、三按都只会简单的",
+            "subtitle": "By 台州航拍机师-易晓",
+            "image": "http://ufiles.52hangpai.cn/repo//c9/66/c9aabd84042b1c25d571a81489bbc666-240.jpg",
+            "ref_url": "ihangpai://ihp.app/pub?pub_id=5828"
+          },
+          {
+            "item_id": 5786,
+            "title": "关于大疆新的X5平台的几点使用体验\n“悟”一直是我认为比较理想的无人机型，当然与图像有关的设备一直是追求最真实的还原事物本质，无论是拍摄还是后期的加工到展示平台",
+            "subtitle": "By twbbetter",
+            "image": "http://ufiles.52hangpai.cn/repo//de/1a/de732e96be31eed2f4b46b4f5411331a-240.jpeg",
+            "ref_url": "ihangpai://ihp.app/pub?pub_id=5786"
+          },
+          {
+            "item_id": 5976,
+            "title": "精灵3专业版开箱图评",
+            "subtitle": "这一代的精灵3加入了4K摄像、视觉和声呐定位系统以及高清图传遥控，而且保持了良心售价。",
+            "image": "http://admin.52hangpai.cn/uploads/1436945338110.jpg",
+            "ref_url": "ihangpai://ihp.app/web?url=http%3A%2F%2Falpha.52hangpai.cn%2Fwelcome%2Fshare%3Ftype%3Dnews%26id%3D16&title=%E7%B2%BE%E7%81%B53%E4%B8%93%E4%B8%9A%E7%89%88%E5%BC%80%E7%AE%B1%E5%9B%BE%E8%AF%84&desc=%E8%BF%99%E4%B8%80%E4%BB%A3%E7%9A%84%E7%B2%BE%E7%81%B53%E5%8A%A0%E5%85%A5%E4%BA%864K%E6%91%84%E5%83%8F%E3%80%81%E8%A7%86%E8%A7%89%E5%92%8C%E5%A3%B0%E5%91%90%E5%AE%9A%E4%BD%8D%E7%B3%BB%E7%BB%9F%E4%BB%A5%E5%8F%8A%E9%AB%98%E6%B8%85%E5%9B%BE%E4%BC%A0%E9%81%A5%E6%8E%A7%EF%BC%8C%E8%80%8C%E4%B8%94%E4%BF%9D%E6%8C%81%E4%BA%86%E8%89%AF%E5%BF%83%E5%94%AE%E4%BB%B7%E3%80%82&thumbnail=http%3A%2F%2Fadmin.52hangpai.cn%2Fuploads%2F1436945338110.jpg"
+          }
+        ]
+      },
+      {
+        "group_id": 1,
+        "group_type": "mix_list_gravity_left",
+        "title": "零度评测",
+        "ref_url": "ihangpai://ihp.app/info_list?url=http%3A%2F%2Falpha.52hangpai.cn%2Fapiv2%2Finfolist_by_taglist%3Ftags%3D%7B%7B%E8%AF%84%E6%B5%8B%7D%7D--%7B%7B%E9%9B%B6%E5%BA%A6%E8%AF%84%E6%B5%8B%7D%7D%26comboLogic%3DAND&title=%E9%9B%B6%E5%BA%A6%E8%AF%84%E6%B5%8B",
+        "items": [
+          {
+            "item_id": 5982,
+            "title": "零度XplorerV​开箱图评",
+            "subtitle": " 每个男人都有翱翔天空的梦想，我也不例外。买一个真正的飞机不知道这辈子还有木有希望",
+            "image": "http://admin.52hangpai.cn/uploads/1436965387194.jpg",
+            "ref_url": "ihangpai://ihp.app/web?url=http%3A%2F%2Falpha.52hangpai.cn%2Fwelcome%2Fshare%3Ftype%3Dnews%26id%3D24&title=%E9%9B%B6%E5%BA%A6XplorerV%E2%80%8B%E5%BC%80%E7%AE%B1%E5%9B%BE%E8%AF%84&desc=+%E6%AF%8F%E4%B8%AA%E7%94%B7%E4%BA%BA%E9%83%BD%E6%9C%89%E7%BF%B1%E7%BF%94%E5%A4%A9%E7%A9%BA%E7%9A%84%E6%A2%A6%E6%83%B3%EF%BC%8C%E6%88%91%E4%B9%9F%E4%B8%8D%E4%BE%8B%E5%A4%96%E3%80%82%E4%B9%B0%E4%B8%80%E4%B8%AA%E7%9C%9F%E6%AD%A3%E7%9A%84%E9%A3%9E%E6%9C%BA%E4%B8%8D%E7%9F%A5%E9%81%93%E8%BF%99%E8%BE%88%E5%AD%90%E8%BF%98%E6%9C%89%E6%9C%A8%E6%9C%89%E5%B8%8C%E6%9C%9B&thumbnail=http%3A%2F%2Fadmin.52hangpai.cn%2Fuploads%2F1436965387194.jpg"
+          },
+          {
+            "item_id": 5980,
+            "title": "Yuneec Q500 Typhoon 主机详细拆解",
+            "subtitle": "yuneec q500的简约外观和独特的造型结构我们已经略知一二，就等着去试飞了。 不过本着生命不息，折腾不止的航模精神，和知其然更要知其所以然的严谨评测精神，我们决定试飞之前先要熟悉一下这台q500的内部，拆解是在所难免了。",
+            "image": "http://admin.52hangpai.cn/uploads/1437010519811.jpg",
+            "ref_url": "ihangpai://ihp.app/web?url=http%3A%2F%2Falpha.52hangpai.cn%2Fwelcome%2Fshare%3Ftype%3Dnews%26id%3D20&title=Yuneec+Q500+Typhoo+...&desc=yuneec+q500%E7%9A%84%E7%AE%80%E7%BA%A6%E5%A4%96%E8%A7%82%E5%92%8C%E7%8B%AC%E7%89%B9%E7%9A%84%E9%80%A0%E5%9E%8B%E7%BB%93%E6%9E%84%E6%88%91%E4%BB%AC%E5%B7%B2%E7%BB%8F%E7%95%A5%E7%9F%A5%E4%B8%80%E4%BA%8C%EF%BC%8C%E5%B0%B1%E7%AD%89%E7%9D%80%E5%8E%BB%E8%AF%95%E9%A3%9E%E4%BA%86%E3%80%82+%E4%B8%8D%E8%BF%87%E6%9C%AC%E7%9D%80%E7%94%9F%E5%91%BD%E4%B8%8D%E6%81%AF%EF%BC%8C%E6%8A%98%E8%85%BE%E4%B8%8D%E6%AD%A2%E7%9A%84%E8%88%AA%E6%A8%A1%E7%B2%BE%E7%A5%9E%EF%BC%8C%E5%92%8C%E7%9F%A5%E5%85%B6%E7%84%B6%E6%9B%B4%E8%A6%81%E7%9F%A5%E5%85%B6%E6%89%80%E4%BB%A5%E7%84%B6%E7%9A%84%E4%B8%A5%E8%B0%A8%E8%AF%84%E6%B5%8B%E7%B2%BE%E7%A5%9E%EF%BC%8C%E6%88%91%E4%BB%AC%E5%86%B3%E5%AE%9A%E8%AF%95%E9%A3%9E%E4%B9%8B%E5%89%8D%E5%85%88%E8%A6%81%E7%86%9F%E6%82%89%E4%B8%80%E4%B8%8B%E8%BF%99%E5%8F%B0q500%E7%9A%84%E5%86%85%E9%83%A8%EF%BC%8C%E6%8B%86%E8%A7%A3%E6%98%AF%E5%9C%A8%E6%89%80%E9%9A%BE%E5%85%8D%E4%BA%86%E3%80%82&thumbnail=http%3A%2F%2Fadmin.52hangpai.cn%2Fuploads%2F1437010519811.jpg"
+          },
+          {
+            "item_id": 5981,
+            "title": "DJI 精灵3 VS 3DR Solo",
+            "subtitle": "这个月两家无人机的巨头公司的两款新品接踵而来，下面我们就来对比一下大疆Phantom 3和3DR Solo 两款产品。",
+            "image": "http://admin.52hangpai.cn/uploads/1436966909467.jpg",
+            "ref_url": "ihangpai://ihp.app/web?url=http%3A%2F%2Falpha.52hangpai.cn%2Fwelcome%2Fshare%3Ftype%3Dnews%26id%3D21&title=DJI+%E7%B2%BE%E7%81%B53+VS+3DR+Sol+...&desc=%E8%BF%99%E4%B8%AA%E6%9C%88%E4%B8%A4%E5%AE%B6%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%9A%84%E5%B7%A8%E5%A4%B4%E5%85%AC%E5%8F%B8%E7%9A%84%E4%B8%A4%E6%AC%BE%E6%96%B0%E5%93%81%E6%8E%A5%E8%B8%B5%E8%80%8C%E6%9D%A5%EF%BC%8C%E4%B8%8B%E9%9D%A2%E6%88%91%E4%BB%AC%E5%B0%B1%E6%9D%A5%E5%AF%B9%E6%AF%94%E4%B8%80%E4%B8%8B%E5%A4%A7%E7%96%86Phantom+3%E5%92%8C3DR+Solo+%E4%B8%A4%E6%AC%BE%E4%BA%A7%E5%93%81%E3%80%82&thumbnail=http%3A%2F%2Fadmin.52hangpai.cn%2Fuploads%2F1436966909467.jpg"
+          }
+        ]
+      },
+      {
+        "group_id": 2,
+        "group_type": "mix_list_gravity_left",
+        "title": "亿航评测",
+        "ref_url": "ihangpai://ihp.app/info_list?url=http%3A%2F%2Falpha.52hangpai.cn%2Fapiv2%2Finfolist_by_taglist%3Ftags%3D%7B%7B%E8%AF%84%E6%B5%8B%7D%7D--%7B%7B%E4%BA%BF%E8%88%AA%E8%AF%84%E6%B5%8B%7D%7D%26comboLogic%3DAND&title=%E4%BA%BF%E8%88%AA%E8%AF%84%E6%B5%8B",
+        "items": [
+          {
+            "item_id": 5985,
+            "title": "精灵3和悟该怎么选？",
+            "subtitle": "精灵3在航拍前期与后期的拍摄体验，以及大家可能都比较关心的精灵3与悟相比，我们到底该如何选择。",
+            "image": "http://admin.52hangpai.cn/uploads/1436961937473.png",
+            "ref_url": "ihangpai://ihp.app/web?url=http%3A%2F%2Falpha.52hangpai.cn%2Fwelcome%2Fshare%3Ftype%3Dnews%26id%3D27&title=%E7%B2%BE%E7%81%B53%E5%92%8C%E6%82%9F%E8%AF%A5%E6%80%8E%E4%B9%88%E9%80%89%EF%BC%9F&desc=%E7%B2%BE%E7%81%B53%E5%9C%A8%E8%88%AA%E6%8B%8D%E5%89%8D%E6%9C%9F%E4%B8%8E%E5%90%8E%E6%9C%9F%E7%9A%84%E6%8B%8D%E6%91%84%E4%BD%93%E9%AA%8C%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%A4%A7%E5%AE%B6%E5%8F%AF%E8%83%BD%E9%83%BD%E6%AF%94%E8%BE%83%E5%85%B3%E5%BF%83%E7%9A%84%E7%B2%BE%E7%81%B53%E4%B8%8E%E6%82%9F%E7%9B%B8%E6%AF%94%EF%BC%8C%E6%88%91%E4%BB%AC%E5%88%B0%E5%BA%95%E8%AF%A5%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E3%80%82&thumbnail=http%3A%2F%2Fadmin.52hangpai.cn%2Fuploads%2F1436961937473.png"
+          },
+          {
+            "item_id": 5984,
+            "title": "深度！精灵3专业版评测报告​",
+            "subtitle": "入手后你要做的只有三件事，在手机或平板上安装APP、充电上桨、拍摄。其它的复杂问题，都交给DJI的工程师吧。",
+            "image": "http://admin.52hangpai.cn/uploads/1436962157408.jpg",
+            "ref_url": "ihangpai://ihp.app/web?url=http%3A%2F%2Falpha.52hangpai.cn%2Fwelcome%2Fshare%3Ftype%3Dnews%26id%3D26&title=%E6%B7%B1%E5%BA%A6%EF%BC%81%E7%B2%BE%E7%81%B53%E4%B8%93%E4%B8%9A%E7%89%88%E8%AF%84%E6%B5%8B%E6%8A%A5%E5%91%8A%E2%80%8B&desc=%E5%85%A5%E6%89%8B%E5%90%8E%E4%BD%A0%E8%A6%81%E5%81%9A%E7%9A%84%E5%8F%AA%E6%9C%89%E4%B8%89%E4%BB%B6%E4%BA%8B%EF%BC%8C%E5%9C%A8%E6%89%8B%E6%9C%BA%E6%88%96%E5%B9%B3%E6%9D%BF%E4%B8%8A%E5%AE%89%E8%A3%85APP%E3%80%81%E5%85%85%E7%94%B5%E4%B8%8A%E6%A1%A8%E3%80%81%E6%8B%8D%E6%91%84%E3%80%82%E5%85%B6%E5%AE%83%E7%9A%84%E5%A4%8D%E6%9D%82%E9%97%AE%E9%A2%98%EF%BC%8C%E9%83%BD%E4%BA%A4%E7%BB%99DJI%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%B8%88%E5%90%A7%E3%80%82&thumbnail=http%3A%2F%2Fadmin.52hangpai.cn%2Fuploads%2F1436962157408.jpg"
+          },
+          {
+            "item_id": 6032,
+            "title": "精灵3对比精灵2和悟",
+            "subtitle": "精灵3在航拍前期与后期的拍摄体验，以及大家可能都比较关心的精灵3与悟相比，我们到底该如何选择。",
+            "image": "http://admin.52hangpai.cn/uploads/1439547240812.png",
+            "ref_url": "ihangpai://ihp.app/web?url=http%3A%2F%2Falpha.52hangpai.cn%2Fwelcome%2Fshare%3Ftype%3Dnews%26id%3D92&title=%E7%B2%BE%E7%81%B53%E5%AF%B9%E6%AF%94%E7%B2%BE%E7%81%B52%E5%92%8C%E6%82%9F&desc=%E7%B2%BE%E7%81%B53%E5%9C%A8%E8%88%AA%E6%8B%8D%E5%89%8D%E6%9C%9F%E4%B8%8E%E5%90%8E%E6%9C%9F%E7%9A%84%E6%8B%8D%E6%91%84%E4%BD%93%E9%AA%8C%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%A4%A7%E5%AE%B6%E5%8F%AF%E8%83%BD%E9%83%BD%E6%AF%94%E8%BE%83%E5%85%B3%E5%BF%83%E7%9A%84%E7%B2%BE%E7%81%B53%E4%B8%8E%E6%82%9F%E7%9B%B8%E6%AF%94%EF%BC%8C%E6%88%91%E4%BB%AC%E5%88%B0%E5%BA%95%E8%AF%A5%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E3%80%82&thumbnail=http%3A%2F%2Fadmin.52hangpai.cn%2Fuploads%2F1439547240812.png"
+          }
+        ]
+      }
+    ]
+  }
+}

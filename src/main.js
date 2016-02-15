@@ -8,7 +8,49 @@ Vue.use(VueResource);
 Vue.use(VueTouch);
 Vue.config.debug = true;
 
-var App = Vue.extend({});
+var App = Vue.extend({
+    data:function(){
+        return {
+            navNum:0,
+        }
+    },
+    created:function() {
+        console.dir(location);
+        if (location.href.indexOf('fabu') > 0){
+            localStorage.setItem('apphost','http://mapi.52hangpai.cn/');
+        }
+        if (location.href.indexOf('t-fabiao') > 0) {
+            localStorage.setItem('apphost','http://alpha.52hangpai.cn/');
+        }
+        if (location.href.indexOf('localhost') > 0) {
+            localStorage.setItem('apphost','http://localhost:8080/');
+        }
+    },
+    methods:{
+        onSwipe: function (e) {
+            var names = ['recommend','image','video','focus','mix/tutorial','mix/review'];
+            let namesLength = names.length;
+            if(e.deltaX>100){
+                this.navNum++;
+                if(this.navNum >= namesLength){
+                    this.navNum = 0;
+                }
+                let route = names[this.navNum].split("/");
+
+                router.go({ name: route[0],params: { type: route[1] }});
+            }else if(e.deltaX<-100){
+                this.navNum--;
+                if(this.navNum<0){
+                    this.navNum = namesLength-1;
+                }
+                let route = names[this.navNum].split("/");
+
+                router.replace({ name: route[0],params: { type: route[1] }});
+            }
+            console.dir(e.deltaX);
+        }
+    }
+});
 var router = new VueRouter({
     hashbang: true,
     history: false,
@@ -41,13 +83,17 @@ router.map({
         name:'focus',
         component:require('./views/focus.vue')
     },
-    '/tutorial':{               //视频
-        name:'tutorial',
-        component:require('./views/tutorial.vue')
+    '/mix/:type':{               //视频
+        name:'mix',
+        component:require('./views/mix.vue')
     },
-    '/review':{               //视频
-        name:'review',
-        component:require('./views/review.vue')
+    '/mix-more/:type':{               //视频
+        name:'mix-more',
+        component:require('./views/mix-more.vue')
+    },
+    '/works-detail/:id':{               //视频
+        name:'works-detail',
+        component:require('./views/works-detail.vue')
     }
 
     //'/topic/:id':{               //专题
