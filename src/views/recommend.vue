@@ -19,7 +19,7 @@
     </div>
     <!-- 作品列表 -->
     <div id="works-list">
-        <works-one v-for="works in works" :works="works"></works-one>
+        <works-one v-for="works in works" :works="works" type="recommend"></works-one>
     </div>
 </template>
 <script>

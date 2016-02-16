@@ -1,23 +1,40 @@
 <style lang="less">
-    .owner{height: 36px;width: 100%;margin-top: 16px;}
-    .avatar{height: 36px;width: 36px;border-radius: 18px;margin: 0 0 0 8px;}
-    .nickname{vertical-align: top;font-size: 10px;color: #4a4a4a;margin: 13px 0 0 10px;
+    .owner{height: 56px;}
+    .avatar{height: 36px;width: 36px;border-radius: 18px;margin: 10px 10px 0 10px;}
+    .nickname{vertical-align: top;font-size: 14px;color: #4a4a4a;height: 60px;line-height: 60px;
         display: inline-block;}
-    .title{color: #222222;font-size: 16px;margin: 14px 0 0 0;white-space:nowrap; 
-        text-overflow:ellipsis;overflow: hidden;}
-    .thumbnail{margin-top: 14px;}
+
+    .recommend-title{color: #222222;font-size: 16px;max-height: 36px;overflow:hidden;line-height: 18px;
+        -webkit-line-clamp:2;-webkit-box-orient: vertical;display: -webkit-box;margin: 0 10px 10px 10px;}
+    .normal-title{color: #222222;font-size: 16px;margin: 0 0 0 10px;white-space:nowrap; 
+        text-overflow:ellipsis;overflow: hidden;height: 42px;line-height: 42px;}
+
+    .thumbnail{}
+    .thumbnail-topleft-text{width: 56px;height: 40px;background-color: rgba(0,0,0,0.3);position: relative;color: #ffffff;}
+    .thumbnail-topleft-text p{height: 12px;font-size: 10px;line-height: 12px;text-align: center;}
+    .thumbnail-topleft-text-0{padding-top: 8px;}
+    .thumbnail-topleft-text-top{margin-top: -40px;}
+    .image-count{font-size: 10px;color: #ffffff;display: inline-block;width: 50px;height: 20px;line-height: 20px;position: relative;text-align: center;
+        float: right;background-color: rgba(0,0,0,0.5);}
+    .thumbnail-image-img-top{margin-top: -20px;}
     .thumbnail-image-img{width: 100%;}
     .thumbnail-text-content{margin: 5px 0 5px 0;}
+    .thumbnail-video{height: 200px;}
     .thumbnail-video-img{width: 100%;height: 200px;}
-    .thumbnail-video-play{width: 33px;height: 33px;display: inline-block;
-        position: relative;z-index: 3;top: -120px;left: 50%;margin-left: -16px;}
-    .like-comment{height: 44px;margin-top: -4px;}
-    .like-comment div{display: inline-block;width: 49%;text-align: center;height: 39px;}
-    .content-like{border-right: 1px solid #dcdcdc;}
-    .icon-like{width: 20px;height: 20px;margin-top: 12px;}
-    .count-like{font-size: 10px;color: #dcdcdc;vertical-align: top;margin-top: 14px;display: inline-block;}
-    .icon-comment{width: 20px;height: 20px;margin-top: 12px;}
-    .count-comment{font-size: 10px;color: #dcdcdc;vertical-align: top;margin-top: 14px;display: inline-block;}
+    .thumbnail-video-play{width: 33px;height: 33px;display: inline-block;position: relative;z-index: 3;top: -120px;
+        left: 50%;margin-left: -16px;}
+
+    .works-tags{margin: 0 0 10px 4px;}
+    .works-tags ul{height: 20px;overflow: hidden;}
+    .works-tags ul li{display: inline-block;height: 18px;padding: 0 6px 0 6px;border: 1px solid #dbdbdb;color: #9a9a9a;
+        font-size: 12px;margin: 0 6px 0 6px;}
+
+    .like-comment{height: 44px;border-top: 1px solid #dbdbdb;}
+    .like-comment span{display: inline-block;text-align: center;height: 40px;}
+    .content-like{border-right: 1px solid #dcdcdc;width: 49%;}
+    .content-comment{width: 49%;}
+    .icon{width: 20px;height: 20px;margin: 12px 6px 0 0;vertical-align: top;}
+    .count{font-size: 12px;color: #9a9a9a;vertical-align: top;display: inline-block;height: 40px;line-height: 40px;margin: 0 0 0 6px}
     .blank{height: 12px;background-color: #f2f1ef;margin-top: -5px;}
 </style>
 <template>
@@ -26,40 +43,76 @@
         <img class="avatar" v-bind:src="works.owner.avatar_url">
         <span class="nickname">{{works.owner.nickname}}</span>
     </div>
-    <div class="title">
+    <div v-if="type=='recommend'" class="recommend-title">
         {{works.title}}
     </div>
     <div class="thumbnail">
-        <div v-if="works.thumbnail.type=='image'" class="thumbnail-image">
-            <img class="thumbnail-image-img" v-bind:src="works.thumbnail.content.thumbnail_url">
+        <div v-if="works.common_flags.topleft_text!=null" class="thumbnail-topleft-text">
+            <p class="thumbnail-topleft-text-0">{{topleftText[0]}}</p>
+            <p>{{topleftText[1]}}</p>
         </div>
-        <div v-if="works.thumbnail.type=='text'" class="thumbnail-text">
-            <p class="thumbnail-text-content">{{works.thumbnail.content.text}}</p>
-        </div>
-        <div v-if="works.thumbnail.type=='ihp_v'" class="thumbnail-video">
-            <img class="thumbnail-video-img" v-bind:src="works.thumbnail.content.thumbnail_url">
-            <img class="thumbnail-video-play" 
-            src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png">
+        <div v-bind:class="{'thumbnail-topleft-text-top': works.common_flags.topleft_text!=null}">
+            <div v-if="works.thumbnail.type=='image'" class="thumbnail-image">
+                <span v-if="works.image_count>1" class="image-count">{{works.image_count}}图</span>
+                <img class="thumbnail-image-img" v-bind:class="{'thumbnail-image-img-top': works.image_count>1}" v-bind:src="works.thumbnail.content.thumbnail_url">
+            </div>
+            <div v-if="works.thumbnail.type=='text'" class="thumbnail-text">
+                <p class="thumbnail-text-content">{{works.thumbnail.content.text}}</p>
+            </div>
+            <div v-if="works.thumbnail.type=='ihp_v'||works.thumbnail.type=='youku_v'" class="thumbnail-video">
+                <img class="thumbnail-video-img" v-bind:src="works.thumbnail.content.thumbnail_url">
+                <img class="thumbnail-video-play" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png">
+            </div>
         </div>
     </div>
+    <div v-if="type=='normal'" class="normal-title">
+        {{works.title}}
+    </div>
+    <div v-if="works.tags!=null" class="works-tags">
+        <ul>
+            <li v-for="works.tags in works.tags">{{works.tags[$index].tag_name}}</li>
+        </ul>
+    </div>
     <div class="like-comment">
-        <div class="content-like">
-            <img class="icon-like" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png">
-            <span class="count-like">{{works.likes_count}}</span>
-        </div>
-        <div class="content-comment">
-            <img class="icon-comment" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png">
-            <span class="count-comment">{{works.comments_count}}</span>
-        </div>
+        <span class="content-like">
+            <img class="icon" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png">
+            <span class="count">{{works.likes_count}}</span>
+        </span>
+        <span class="content-comment">
+            <img class="icon" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png">
+            <span class="count">{{works.comments_count}}</span>
+        </span>
     </div>
     <div class="blank"></div>
 </div>
 </template>
 <script>
     export default {
-        props: ['works'],
-        ready: function(){
-            // console.dir(this.works);
-        }
+        props: ['works','type'],
+        data:function(){
+            return {
+                topleftText: [],
+            }
+        },
+        created: function(){
+            // console.dir(this.type);
+            // console.dir(this.works.common_flags.topleft_text);
+            if(this.works.common_flags.topleft_text!=null){
+                this.dealTopleftText();
+            }
+        },
+        methods:{
+            dealTopleftText: function(){
+                console.dir(this.works.common_flags.topleft_text);
+                this.topleftText = this.works.common_flags.topleft_text.split('\n');
+                console.dir(this.topleftText);
+            },
+        },
+        // watch:{
+        //     'topleftText': function (val, oldVal) {
+        //         console.log('new: %s, old: %s', val, oldVal);
+        //         this.dealTopleftText();
+        //     },
+        // },
     };
 </script>

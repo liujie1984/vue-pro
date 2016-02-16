@@ -10,24 +10,20 @@
     	data:function(){
       		return {
       			mix:'',
-                type:'',
                 tags:'',
                 nav_show:0
       		}
       	},
         route:{
             data (transition){
-                this.type = transition.to.params.type;
+                this.type = decodeURI(transition.to.params.type);
                 switch (this.type){
                     case 'news':
                         this.tags='行业动态';
                         this.nav_show=1;
                         break;
-                    case 'review':
-                        this.tags='行业动态';
-                        break;
-                    case 'review':
-                        this.tags='行业动态';
+                    default:
+                        this.tags=this.type;
                         break;
                 }
                 console.dir(transition.to.params.type);
@@ -48,7 +44,7 @@
             	if (localStorage.getItem('apphost')=='http://localhost:8080/'){
               		url = localStorage.getItem('apphost') + 'apiv2/infolist_by_taglist_'+this.tags+'.json';
             	}else{
-              		url = localStorage.getItem('apphost') + 'apiv2/tutorial_and_review_v21?info_type=tutorial';
+              		url = localStorage.getItem('apphost') + 'apiv2/tutorial_and_review_v21?info_type='+this.tags;
             	}
             	return url;
          	}

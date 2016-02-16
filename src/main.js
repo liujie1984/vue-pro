@@ -28,7 +28,7 @@ var App = Vue.extend({
     },
     methods:{
         onSwipe: function (e) {
-            var names = ['recommend','image','video','focus','mix/tutorial','mix/review'];
+            var names = ['recommend','works-more/image','works-more/video','focus','mix/tutorial','mix/review'];
             let namesLength = names.length;
             if(e.deltaX>100){
                 this.navNum++;
@@ -71,13 +71,9 @@ router.map({
     '*': {
         component: require('./views/recommend.vue')
     },
-    '/image':{               //图片
-        name:'image',
-        component:require('./views/image.vue')
-    },
-    '/video':{               //视频
-        name:'video',
-        component:require('./views/video.vue')
+    '/works-more/:type':{               //视频
+        name:'works-more',
+        component:require('./views/works-more.vue')
     },
     '/focus':{               //视频
         name:'focus',
