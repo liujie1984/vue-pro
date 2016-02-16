@@ -1,11 +1,12 @@
 <style lang="less">
     .owner{height: 64px;}
     .owner-avatar{width: 36px;height: 36px;border-radius: 18px;margin: 14px 14px 0 10px;float: left;}
-    .owner-middle{height: 64px;float: left;padding-top: 16px;}
+    .owner-middle{height: 48px;float: left;margin-top: 16px;}
     .owner-nickname{font-size: 14px;color: #4a4a4a;height: 18px;line-height: 18px;}
     .pub-date{font-size: 12px;color: #dcdcdc;height: 14px;line-height: 14px;}
 
-    .blank{height: 6px;background-color: #dddddd;}
+    .blank{height: 6px;background-color: #dddddd;clear: both;}
+    .title{font-size: 16px;color: #3b4554;margin: 10px;height: auto;line-height: 22px;}
 </style>
 <template>
     <div class="owner">
@@ -16,26 +17,39 @@
         </div>
     </div>
     <div class="blank"></div>
+    <p class="title">{{worksDetail.title}}</p>
+    <div class="detail-list">
+        <detail-one v-for="worksDetail.detail_list in worksDetail.detail_list" :detail="worksDetail.detail_list[$index]"></detail-one>
+    </div>
+    <div class="comments">
+        <comments-one v-for="comments.list in comments.list" :comment="comments.list[$index]"></comments-one>
+    </div>
 </template>
 <script>
     export default {
     	data:function(){
       		return {
       			id:'',
+                worksDetail:{
+                    pub_date:'',
+                    title:'',
+                    detail_list:[]
+                },
                 owner:{
                     avatar_url:'',
                     nickname:''
                 },
-                worksDetail:{
-                    pub_date:''
+                comments:{
+                    next_page_token:'',
+                    list:[]
                 }
       		}
       	},
         route:{
             data (transition){
                 this.id = decodeURI(transition.to.params.id);
-                console.dir(transition.to.params.id);
-                console.dir(this.id);
+                // console.dir(transition.to.params.id);
+                // console.dir(this.id);
             }
         },
     	created:function() {
@@ -50,6 +64,7 @@
                 this.worksDetail = response.data.data;
                 this.worksDetail.pub_date = this.timestampToStr(response.data.data.pub_date);
                 this.owner = response.data.data.owner;
+                this.comments = response.data.data.comments;
                 console.dir(this.worksDetail);
                 console.dir(this.worksDetail.owner.avatar_url);
             });
@@ -62,7 +77,11 @@
                 (d.getDate())+" "+(d.getHours()-8)+":"+(d.getMinutes());
                 return jstimestamp;
             }
-     	}
+     	},
+        components:{
+            'detail-one':require('../components/detail-one.vue'),
+            'comments-one':require('../components/comments-one.vue')
+        }
     }
 </script>
 

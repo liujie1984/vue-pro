@@ -108,11 +108,5 @@
                 console.dir(this.topleftText);
             },
         },
-        // watch:{
-        //     'topleftText': function (val, oldVal) {
-        //         console.log('new: %s, old: %s', val, oldVal);
-        //         this.dealTopleftText();
-        //     },
-        // },
     };
 </script>

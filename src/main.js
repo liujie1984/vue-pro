@@ -28,7 +28,7 @@ var App = Vue.extend({
     },
     methods:{
         onSwipe: function (e) {
-            var names = ['recommend','works-more/image','works-more/video','focus','mix/tutorial','mix/review'];
+            var names = ['recommend','works-more/image','works-more/video','focus','mix/tutorial','mix/review','mix-more/news'];
             let namesLength = names.length;
             if(e.deltaX>100){
                 this.navNum++;

@@ -11,7 +11,7 @@
     <nav-top type="recommend"></nav-top>
     <!-- banner轮播begin -->
     <div id="banner">
-        <img id="banner-image" v-touch:swipe="onSwipe" v-touch-options:swipeleft="{threshold: 200}"
+        <img id="banner-image" v-touch:swipe.stop="onSwipe" v-touch-options:swipe="{threshold: 100}"
             v-bind:src="bannerImg">
         <ul id="banner-choose">
             <li v-for="banner in banner" v-bind:class="{'banner-choose-color': $index==bannerNum}"></li>
