@@ -139,7 +139,7 @@
                     }
                 }else{
                     console.dir(this);
-                    // this.router.go({ name: 'login'});
+                    this.router.go({ name: 'login'});
                 }
             },
             dealTopleftText: function(){

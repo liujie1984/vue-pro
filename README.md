@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 # ihangpai single page application (vue,webpack)
+=======
+# vue webpack ihangpai single page application
+
+>>>>>>> 84bde4a97e8ac366ac664536258eb523379d5683
 
 ### Setup
 
