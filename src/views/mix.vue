@@ -28,27 +28,27 @@
         route:{
             data (transition){
                 this.type = transition.to.params.type;
-                console.dir(transition.to.params.type);
-                console.dir(this.type);
+                // console.dir(transition.to.params.type);
+                // console.dir(this.type);
             }
         },
         ready:function() {
-            console.dir(this.type);
+            // console.dir(this.type);
             let url = this.getmixUrl();
-            console.log(url);
-            this.$http({url: url, method: 'GET'}).then(function (response) {
+            // console.log(url);
+            this.$http({url: url, method: 'GET',xhr:{withCredentials:true}}).then(function (response) {
                 this.mix = response.data.data.list;
-                console.dir(this.mix);
+                // console.dir(this.mix);
             });
         },
         watch:{
             'type': function (val, oldVal) {
-                console.log('new: %s, old: %s', val, oldVal);
+                // console.log('new: %s, old: %s', val, oldVal);
                 let url = this.getmixUrl();
-                console.log(url);
-                this.$http({url: url, method: 'GET'}).then(function (response) {
+                // console.log(url);
+                this.$http({url: url, method: 'GET',xhr:{withCredentials:true}}).then(function (response) {
                     this.mix = response.data.data.list;
-                    console.dir(this.mix);
+                    // console.dir(this.mix);
                 });
             },
         },
@@ -58,7 +58,7 @@
                 if (localStorage.getItem('apphost')=='http://localhost:8080/'){
                     url = localStorage.getItem('apphost') + 'apiv2/tutorial_and_review_v21_'+this.type+'.json';
                 }else{
-                    url = localStorage.getItem('apphost') + 'apiv2/tutorial_and_mix_v21?info_type='+this.type;
+                    url = localStorage.getItem('apphost') + 'apiv2/tutorial_and_review_v21?info_type='+this.type;
                 }
                 return url;
             }

@@ -33,6 +33,26 @@
       "followers_count": 38,
       "mix_tags_count": 1
     },
+    "tags": [
+          {
+            "tag_id": 108,
+            "tag_name": "趣拍",
+            "thumbnail_url": "http://ufiles.52hangpai.cn/repo//5b/1a/5b5afbeac39260af49b9dc827bdff51a-240.jpg",
+            "referenced_count": 98
+          },
+          {
+            "tag_id": 72,
+            "tag_name": "大疆精灵",
+            "thumbnail_url": "http://ufiles.52hangpai.cn/repo//43/5a/432aff914fe097ed5d29c35a264edd5a-240.jpg",
+            "referenced_count": 120
+          },
+          {
+            "tag_id": 208,
+            "tag_name": "阳朔",
+            "thumbnail_url": "http://r3.ykimg.com/0541040856C1EF046A0A48045BC00582",
+            "referenced_count": 1
+          }
+        ],
     "detail_list": [
       {
         "type": "text",

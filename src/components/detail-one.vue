@@ -34,7 +34,6 @@
         ready: function(){
             this.iframeHeight = document.body.clientWidth*9/16;
             this.videoHeight = document.body.clientWidth*9/16;
-            console.dir(document.body.clientHeight);
         },
         methods: {
             videoPlay: function (event) {

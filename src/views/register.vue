@@ -1,6 +1,6 @@
 <template>
     <!-- 全局header -->
-    <nav-top type="image"></nav-top>
+    <nav-top type="focus"></nav-top>
 </template>
 <script>
     export default {

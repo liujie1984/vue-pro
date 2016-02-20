@@ -5,6 +5,7 @@
     <!-- 全局header -->
     <nav-top></nav-top>
     <works-one v-for="works in works" :works="works" type="normal"></works-one>
+    <back-top v-show="isBackTopShow==true"></back-top>
 </template>
 <script>
 	export default {
@@ -12,45 +13,42 @@
         	return {
            	 	works:'',
             	nextPageToken:'',
-            	type:''
+            	type:'',
+                isBackTopShow: false,
         	}
     	},
     	route:{
         	data (transition){
                 this.type = decodeURI(transition.to.params.type);
-                console.dir(transition.to.params.type);
-                console.dir(this.type);
+                // console.dir(transition.to.params.type);
+                // console.dir(this.type);
             }
         },
     	ready:function() {
-    		let url = this.getLatestPublistUrl();
-        	console.log(url);
-        	this.$http({url: url, method: 'GET'}).then(function (response) {
-            	this.works = response.data.data.list;
-            	this.nextPageToken = response.data.data.next_page_token;
-            	console.log(this.nextPageToken);
-        	});
         	let self = this;
         	window.onscroll = function(){
-            // console.dir(document.body.clientHeight);
-            // console.dir(document.body.scrollTop);
             	if(document.body.clientHeight-document.body.scrollTop<1000){
                 	if(self.nextPageToken!=''){
                     	self.getData();
                     	self.nextPageToken='';
                 	}
-                	console.dir(self);
             	}
+                if(document.body.scrollTop>1000) {
+                    self.isBackTopShow = true;
+                }else{
+                    self.isBackTopShow = false;
+                }
         	}
     	},
     	watch:{
         	'type': function (val, oldVal) {
-            	console.log('new: %s, old: %s', val, oldVal);
+            	// console.log('new: %s, old: %s', val, oldVal);
             	let url = this.getLatestPublistUrl();
-            	console.log(url);
-            	this.$http({url: url, method: 'GET'}).then(function (response) {
+            	// console.log(url);
+            	this.$http({url: url, method: 'GET',xhr:{withCredentials:true}}).then(function (response) {
                 	this.works = response.data.data.list;
-                	console.dir(this.works);
+                    this.nextPageToken = response.data.data.next_page_token;
+                	// console.dir(this.works);
             	});
         	},
     	},
@@ -66,17 +64,18 @@
         	},
         	getData: function(){
         	    let url = this.getLatestPublistUrl();
-            	this.$http({url: url, method: 'GET'}).then(function (response) {
+            	this.$http({url: url, method: 'GET',data:{page_token:this.nextPageToken},xhr:{withCredentials:true}}).then(function (response) {
                 	this.works = this.works.concat(response.data.data.list);
                 	this.nextPageToken = response.data.data.next_page_token;
-                	console.dir(this.works);
-                	console.dir(this.nextPageToken);
+                	// console.dir(this.works);
+                	// console.dir(this.nextPageToken);
             	});
         	}
     	},
     	components:{
         	'nav-top':require('../components/nav-top.vue'),
         	'works-one':require('../components/works-one.vue'),
+            'back-top':require('../components/back-top.vue'),
     	}
 	};
 </script>

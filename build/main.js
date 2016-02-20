@@ -68,9 +68,24 @@
 	_vue2.default.use(_vueResource2.default);
 	_vue2.default.use(_vueTouch2.default);
 	_vue2.default.config.debug = true;
-	
+	//request headers
+	_vue2.default.http.headers.common['App-Ver'] = '2.1';
+	_vue2.default.http.headers.common['Device-Id'] = '1';
+	_vue2.default.http.headers.common['Os'] = 'web';
+	_vue2.default.http.headers.common['Os-Ver'] = '2.1.1';
+	_vue2.default.http.headers.common['Screen'] = '320*480';
+	_vue2.default.http.headers.common['User-Token'] = '0';
+	_vue2.default.http.headers.common['Network'] = '0';
+	// Vue.http.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+	_vue2.default.http.options.emulateJSON = true;
+	console.dir(_vue2.default.http);
 	var App = _vue2.default.extend({
-	    created: function created() {
+	    data: function data() {
+	        return {
+	            navNum: 0
+	        };
+	    },
+	    ready: function ready() {
 	        console.dir(location);
 	        if (location.href.indexOf('fabu') > 0) {
 	            localStorage.setItem('apphost', 'http://mapi.52hangpai.cn/');
@@ -81,6 +96,52 @@
 	        if (location.href.indexOf('localhost') > 0) {
 	            localStorage.setItem('apphost', 'http://localhost:8080/');
 	        }
+	        console.dir(this.getCookie('user_info'));
+	        if (this.getCookie('user_info') != null && this.getCookie('user_info') != '' && this.getCookie('user_info') != undefined) {
+	            var userInfo = JSON.parse(decodeURIComponent(this.getCookie('user_info')));
+	            sessionStorage.setItem('userId', userInfo.data.user_id);
+	            sessionStorage.setItem('userData', decodeURIComponent(this.getCookie('user_info')));
+	            // this.clearCookie('userData');
+	        }
+	        // console.dir(JSON.parse(decodeURIComponent(this.getCookie('user_info'))));
+	    },
+	    methods: {
+	        getCookie: function getCookie(cname) {
+	            var name = cname + "=";
+	            var ca = document.cookie.split(';');
+	            for (var i = 0; i < ca.length; i++) {
+	                var c = ca[i];
+	                while (c.charAt(0) == ' ') {
+	                    c = c.substring(1);
+	                }if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+	            }
+	            return "";
+	        },
+	        clearCookie: function clearCookie(name) {
+	            this.setCookie(name, "", -1);
+	        }
+	        // onSwipe: function (e) {
+	        //     var names = ['recommend','works-more/image','works-more/video','focus','mix/tutorial','mix/review','mix-more/news'];
+	        //     let namesLength = names.length;
+	        //     if(e.deltaX>100){
+	        //         this.navNum++;
+	        //         if(this.navNum >= namesLength){
+	        //             this.navNum = 0;
+	        //         }
+	        //         let route = names[this.navNum].split("/");
+	
+	        //         router.go({ name: route[0],params: { type: route[1] }});
+	        //     }else if(e.deltaX<-100){
+	        //         this.navNum--;
+	        //         if(this.navNum<0){
+	        //             this.navNum = namesLength-1;
+	        //         }
+	        //         let route = names[this.navNum].split("/");
+	
+	        //         router.replace({ name: route[0],params: { type: route[1] }});
+	        //     }
+	        //     console.dir(e.deltaX);
+	        // }
 	    }
 	});
 	var router = new _vueRouter2.default({
@@ -90,68 +151,100 @@
 	    transitionOnLoad: true
 	});
 	
+	//登录中间验证，页面需要登录而没有登录的情况直接跳转登录
+	router.beforeEach(function (transition) {
+	    if (transition.to.auth) {
+	        if (sessionStorage.userId) {
+	            transition.next();
+	        } else {
+	            var redirect = encodeURIComponent(transition.to.path);
+	            transition.redirect('/login?redirect=' + redirect);
+	        }
+	    } else {
+	        transition.next();
+	    }
+	});
+	
 	router.map({
-	    '/': { //首页-推荐
-	        name: 'recommend',
-	        component: __webpack_require__(30)
-	    },
-	    '/recommend': { //首页-推荐
-	        name: 'recommend',
-	        component: __webpack_require__(30)
-	    },
 	    /* 404路由 */
 	    '*': {
 	        component: __webpack_require__(30)
 	    },
-	    '/image': { //图片
-	        name: 'image',
-	        component: __webpack_require__(47)
+	    '/': {
+	        name: 'recommend',
+	        component: __webpack_require__(30)
 	    },
-	    '/video': { //视频
-	        name: 'video',
+	    //广场square
+	    '/square': {
+	        name: 'recommend',
+	        component: __webpack_require__(30)
+	    },
+	    '/square/recommend': {
+	        name: 'recommend',
+	        component: __webpack_require__(30)
+	    },
+	    '/square/works-more/:type': {
+	        name: 'works-more',
 	        component: __webpack_require__(52)
 	    },
-	    '/focus': { //视频
+	    '/square/focus': {
 	        name: 'focus',
-	        component: __webpack_require__(57)
+	        component: __webpack_require__(57),
+	        auth: true
 	    },
-	    '/tutorial': { //视频
-	        name: 'tutorial',
+	    '/square/mix/:type': {
+	        name: 'mix',
 	        component: __webpack_require__(62)
 	    },
-	    '/review': { //视频
-	        name: 'review',
-	        component: __webpack_require__(67)
+	    '/square/mix-more/:type': {
+	        name: 'mix-more',
+	        component: __webpack_require__(72)
+	    },
+	    '/works-detail/:id': {
+	        name: 'works-detail',
+	        component: __webpack_require__(77)
+	    },
+	    '/login': {
+	        name: 'login',
+	        component: __webpack_require__(92)
 	    }
-	
-	    //'/topic/:id':{               //专题
-	    //    name:'topic',
-	    //    component:require('./views/topic.vue')
-	    //},
-	    //'/add':{               //首页
-	    //    name:'add',
-	    //    component:require('./views/new.vue'),
-	    //    auth: true
-	    //},
-	    //'/message':{               //消息
-	    //    name:'message',
-	    //    component:require('./views/message.vue'),
-	    //    auth: true
-	    //}
-	    //'/about':{               //关于
-	    //    name:'about',
-	    //    component:require('./views/about.vue')
-	    //},
-	    //'/login':{               //登录
-	    //    name:'login',
-	    //    component:require('./views/login.vue')
-	    //},
-	    //'/user/:loginname':{               //用户信息
-	    //    name:'user',
-	    //    component:require('./views/user.vue')
-	    //}
 	});
 	// start app
+	// '/register':{              
+	//     name:'register',
+	//     component:require('./views/register.vue')
+	// },
+	// '/reset-password':{              
+	//     name:'reset-password',
+	//     component:require('./views/reset-password.vue')
+	// }
+	
+	//'/topic/:id':{               //专题
+	//    name:'topic',
+	//    component:require('./views/topic.vue')
+	//},
+	//'/add':{               //首页
+	//    name:'add',
+	//    component:require('./views/new.vue'),
+	//    auth: true
+	//},
+	//'/message':{               //消息
+	//    name:'message',
+	//    component:require('./views/message.vue'),
+	//    auth: true
+	//}
+	//'/about':{               //关于
+	//    name:'about',
+	//    component:require('./views/about.vue')
+	//},
+	//'/login':{               //登录
+	//    name:'login',
+	//    component:require('./views/login.vue')
+	//},
+	//'/user/:loginname':{               //用户信息
+	//    name:'user',
+	//    component:require('./views/user.vue')
+	//}
 	router.start(App, '#app');
 
 /***/ },
@@ -16860,7 +16953,7 @@
 	var __vue_script__, __vue_template__
 	__webpack_require__(31)
 	__vue_script__ = __webpack_require__(35)
-	__vue_template__ = __webpack_require__(46)
+	__vue_template__ = __webpack_require__(51)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
@@ -17204,14 +17297,14 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	// <style lang="less">
 	//     #banner{height: 140px;}
 	//     #banner-image{height:140px;width:100%;}
 	//     #banner-choose{margin-top:-28px;text-align:center;}
 	//     #banner-choose li{display: inline-block;width: 5px;height: 5px;border-radius: 5px;
-	//           background-color: white;margin:0 3px 0 3px;}
+	//         background-color: white;margin:0 3px 0 3px;}
 	//     .banner-choose-color{background-color:yellow !important;}
 	// </style>
 	// <template>
@@ -17219,92 +17312,157 @@
 	//     <nav-top type="recommend"></nav-top>
 	//     <!-- banner轮播begin -->
 	//     <div id="banner">
-	//         <img id="banner-image" v-touch:swipe="onSwipe" v-touch-options:swipeleft="{threshold: 200}"
-	//           v-bind:src="bannerImg">
+	//         <a v-bind:href="bannerUrl">
+	//             <img id="banner-image" v-touch:swipe.stop="onSwipe" v-touch-options:swipe="{threshold: 100}"
+	//             v-bind:src="bannerImg">
+	//         </a>
+	//             <!-- {name:'works-detail',params: { id: 1}} -->
 	//         <ul id="banner-choose">
-	//           <li v-for="banner in banner" v-bind:class="{'banner-choose-color': $index==bannerNum}"></li>
-	//         </ul>  
-	//     </div>	
+	//             <li v-for="banner in banner" v-bind:class="{'banner-choose-color': $index==bannerNum}"></li>
+	//         </ul>
+	//     </div>
 	//     <!-- 作品列表 -->
 	//     <div id="works-list">
-	//         <works-one v-for="works in works" :works="works"></works-one>
+	//         <works-one v-for="works in works" :works="works" type="recommend"></works-one>
 	//     </div>
+	//     <back-top v-show="isBackTopShow==true"></back-top>
 	// </template>
 	// <script>
 	exports.default = {
-	  data: function data() {
-	    return {
-	      bannerNum: 0,
-	      bannerImg: '',
-	      bannerLength: 0,
-	      banner: '',
-	      works: ''
-	    };
-	  },
-	  created: function created() {
-	    var url = '';
-	    if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
-	      url = localStorage.getItem('apphost') + 'apiv2/recommend_list.json';
-	    } else {
-	      url = localStorage.getItem('apphost') + 'apiv2/recommend_list';
-	    }
-	    console.log(url);
-	    this.$http({ url: url, method: 'GET' }).then(function (response) {
-	      this.banner = response.data.data.banner_list;
-	      this.works = response.data.data.list;
-	      this.bannerImg = this.banner[0].image;
-	      console.dir(this.banner);
-	      console.dir(this.works);
-	      this.bannerLength = this.banner.length;
-	      console.dir(this.bannerLength);
-	      console.dir(this.bannerNum);
-	      var self = this;
-	      setInterval(function () {
-	        self.bannerImg = self.banner[self.bannerNum].image;
-	        if (self.bannerNum < self.bannerLength - 1) {
-	          self.bannerNum++;
-	        } else {
-	          self.bannerNum = 0;
-	        }
-	      }, 4000);
-	    });
-	  },
-	  ready: function ready() {
-	    var self = this;
-	    window.onscroll = function () {
-	      console.dir(document.body.clientHeight);
-	      console.dir(document.body.scrollTop);
-	      if (document.body.clientHeight - document.body.scrollTop < 1000) {
-	        self.getData();
-	        console.dir(self);
-	      }
-	    };
-	  },
-	  methods: {
-	    onSwipe: function onSwipe(e) {
-	      console.dir(this.banner);
-	      this.bannerImg = this.banner[this.bannerNum].image;
-	      var bannerLength = this.banner.length;
-	      if (this.bannerNum < bannerLength - 1) {
-	        this.bannerNum++;
-	      } else {
-	        this.bannerNum = 0;
-	      }
-	      console.dir(this.bannerNum);
-	      console.dir(e.deltaX);
+	    data: function data() {
+	        return {
+	            bannerNum: 0,
+	            bannerImg: '',
+	            bannerUrl: '',
+	            bannerLength: 0,
+	            banner: '',
+	            works: '',
+	            nextPageToken: '',
+	            isBackTopShow: false
+	        };
 	    },
-	    getData: function getData() {
+	    init: function init() {},
+	    created: function created() {
+	        var url = this.getRecommendListUrl();
+	        this.$http({ url: url, method: 'GET' }).then(function (response) {
+	            this.banner = response.data.data.banner_list;
+	            this.works = response.data.data.list;
+	            this.nextPageToken = response.data.data.next_page_token;
 	
-	      this.$http({ url: 'mock/recommend.json', method: 'GET' }).then(function (response) {
-	        this.works = this.works.concat(response.data.data.list);
-	        console.dir(this.works);
-	      });
+	            this.bannerImg = this.banner[0].image;
+	            this.bannerUrl = this.refurlDeal(this.banner[0].ref_url);
+	            this.bannerLength = this.banner.length;
+	            var self = this;
+	            setInterval(function () {
+	                self.bannerImg = self.banner[self.bannerNum].image;
+	                self.bannerUrl = self.refurlDeal(self.banner[self.bannerNum].ref_url);
+	                // console.dir(self.bannerImg);
+	                // console.dir(self.bannerUrl);
+	                if (self.bannerNum < self.bannerLength - 1) {
+	                    self.bannerNum++;
+	                } else {
+	                    self.bannerNum = 0;
+	                }
+	            }, 4000);
+	        });
+	    },
+	    ready: function ready() {
+	        var self = this;
+	        window.onscroll = function () {
+	            // console.dir(document.body.clientHeight);
+	            // console.dir(document.body.scrollTop);
+	            if (document.body.clientHeight - document.body.scrollTop < 1000) {
+	                if (self.nextPageToken != '') {
+	                    self.getData();
+	                    self.nextPageToken = '';
+	                }
+	                // console.dir(self);
+	            }
+	            if (document.body.scrollTop > 1000) {
+	                self.isBackTopShow = true;
+	            } else {
+	                self.isBackTopShow = false;
+	            }
+	        };
+	    },
+	    methods: {
+	        getRecommendListUrl: function getRecommendListUrl() {
+	            var url = '';
+	            if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                url = localStorage.getItem('apphost') + 'apiv2/recommend_list.json';
+	            } else {
+	                url = localStorage.getItem('apphost') + 'apiv2/recommend_list_v21';
+	            }
+	            return url;
+	        },
+	        onSwipe: function onSwipe(e) {
+	            // console.dir(this.banner);
+	            this.bannerImg = this.banner[this.bannerNum].image;
+	            this.bannerUrl = this.refurlDeal(this.banner[this.bannerNum].ref_url);
+	            var bannerLength = this.banner.length;
+	            if (this.bannerNum < bannerLength - 1) {
+	                this.bannerNum++;
+	            } else {
+	                this.bannerNum = 0;
+	            }
+	            // console.dir(this.bannerNum);
+	            // console.dir(e.deltaX);
+	        },
+	        getData: function getData() {
+	            var url = this.getRecommendListUrl();
+	            // page_token:xxx
+	            this.$http({ url: url, method: 'GET', data: { page_token: this.nextPageToken }, xhr: { withCredentials: true } }).then(function (response) {
+	                this.works = this.works.concat(response.data.data.list);
+	                this.nextPageToken = response.data.data.next_page_token;
+	                // console.dir(this.works);
+	                // console.dir(this.nextPageToken);
+	            });
+	        },
+	        refurlDeal: function refurlDeal(url) {
+	            console.dir(url);
+	            var urlSplit = url.split('?');
+	            var urlType = urlSplit[0].split('/')[3];
+	            var urlParams = urlSplit[1].split(/[=&]/);
+	            var returnUrl = '';
+	            // console.dir(urlSplit);
+	            console.dir(urlType);
+	            // console.dir(urlParams);
+	            switch (urlType) {
+	                case 'pub':
+	                    var pubId = this.forMatch('pub_id', urlParams);
+	                    returnUrl = '#!/works-detail/' + pubId;
+	                    break;
+	                case 'web':
+	                    // let pubWebId = this.forMatch('pubid',urlParams);
+	                    // console.dir(pubWebId);
+	                    // if(pubWebId==''){
+	                    //     console.dir('2');
+	                    returnUrl = this.forMatch('url', urlParams);
+	                    // }else{
+	                    //     returnUrl = '/#!/works-detail/'+pubWebId;
+	                    // }  
+	                    break;
+	            }
+	            return returnUrl;
+	        },
+	        forMatch: function forMatch(str, urlParams) {
+	            var urlParamsLength = urlParams.length;
+	            var returnStr = '';
+	            // console.dir(str);
+	            for (var i = 0; i < urlParamsLength; i = i + 2) {
+	                if (urlParams[i].match(str)) {
+	                    console.dir(urlParams[i + 1]);
+	                    returnStr = decodeURIComponent(urlParams[i + 1]);
+	                }
+	            }
+	            return returnStr;
+	        }
+	    },
+	    components: {
+	        'nav-top': __webpack_require__(36),
+	        'works-one': __webpack_require__(41),
+	        'back-top': __webpack_require__(46)
 	    }
-	  },
-	  components: {
-	    'nav-top': __webpack_require__(36),
-	    'works-one': __webpack_require__(41)
-	  }
 	};
 	// </script>
 	//
@@ -17370,7 +17528,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".list-ul {\n  height: 40px;\n  width: 100%;\n  padding-bottom: 2px;\n}\n.list-ul li {\n  display: inline-block;\n  width: 15.4%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 38px;\n  line-height: 36px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-d0bb051e&file=nav-top.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/nav-top.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,oBAAoB;CACrB;AACD;EACE,sBAAsB;EACtB,aAAa;EACb,mBAAmB;EACnB,eAAe;EACf,aAAa;EACb,kBAAkB;CACnB;AACD;EACE,iCAAiC;EACjC,0BAA0B;CAC3B","file":"nav-top.vue","sourcesContent":[".list-ul {\n  height: 40px;\n  width: 100%;\n  padding-bottom: 2px;\n}\n.list-ul li {\n  display: inline-block;\n  width: 15.4%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 38px;\n  line-height: 36px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".list-ul {\n  height: 40px;\n  width: 100%;\n  margin-bottom: 2px;\n}\n.list-ul li {\n  display: inline-block;\n  width: 14.2857%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 36px;\n  line-height: 36px;\n  font-size: 15px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-d0bb051e&file=nav-top.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/nav-top.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;CACpB;AACD;EACE,sBAAsB;EACtB,gBAAgB;EAChB,mBAAmB;EACnB,eAAe;EACf,aAAa;EACb,kBAAkB;EAClB,gBAAgB;CACjB;AACD;EACE,iCAAiC;EACjC,0BAA0B;CAC3B","file":"nav-top.vue","sourcesContent":[".list-ul {\n  height: 40px;\n  width: 100%;\n  margin-bottom: 2px;\n}\n.list-ul li {\n  display: inline-block;\n  width: 14.2857%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 36px;\n  line-height: 36px;\n  font-size: 15px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -17385,26 +17543,27 @@
 	    value: true
 	});
 	// <style lang="less">
-	//     .list-ul{height: 40px;width: 100%;padding-bottom: 2px;}
-	//     .list-ul li{display: inline-block;width: 15.4%;text-align: center;color: #9a9a9a;
-	//         height: 38px;line-height: 36px;}
+	//     .list-ul{height: 40px;width: 100%;margin-bottom: 2px;}
+	//     .list-ul li{display: inline-block;width: 14.2857%;text-align: center;color: #9a9a9a;
+	//         height: 36px;line-height: 36px;font-size: 15px;}
 	//     .custom-active-class{border-bottom: 2px solid #222222;color: #222222 !important;}
 	// </style>
 	// <template>
 	//     <ul class="list-ul">
 	//         <li v-link="{name:'recommend', activeClass: 'custom-active-class'}">推荐</li>
-	//         <li v-link="{name:'image', activeClass: 'custom-active-class'}">图片</li>
-	//         <li v-link="{name:'video', activeClass: 'custom-active-class'}">视频</li>
+	//         <li v-link="{name:'works-more',params: { type: 'image' }, activeClass: 'custom-active-class'}">图片</li>
+	//         <li v-link="{name:'works-more',params: { type: 'video' }, activeClass: 'custom-active-class'}">视频</li>
 	//         <li v-link="{name:'focus', activeClass: 'custom-active-class'}">关注</li>
-	//         <li v-link="{name:'tutorial', activeClass: 'custom-active-class'}">教程</li>
-	//         <li v-link="{name:'review', activeClass: 'custom-active-class'}">评测</li>
+	//         <li v-link="{name:'mix',params: { type: 'tutorial' }, activeClass: 'custom-active-class'}">教程</li>
+	//         <li v-link="{name:'mix',params: { type: 'review' }, activeClass: 'custom-active-class'}">评测</li>
+	//         <li v-link="{name:'mix-more',params: { type: 'news' }, activeClass: 'custom-active-class'}">资讯</li>
 	//     </ul>
 	// </template>
 	// <script>
 	exports.default = {
 	    props: ['type'],
 	    ready: function ready() {
-	        console.log(this.type);
+	        // console.log(this.type);
 	    }
 	};
 	// </script>
@@ -17414,7 +17573,7 @@
 /* 40 */
 /***/ function(module, exports) {
 
-	module.exports = "\r\n    <ul class=\"list-ul\">\r\n        <li v-link=\"{name:'recommend', activeClass: 'custom-active-class'}\">推荐</li>\r\n        <li v-link=\"{name:'image', activeClass: 'custom-active-class'}\">图片</li>\r\n        <li v-link=\"{name:'video', activeClass: 'custom-active-class'}\">视频</li>\r\n        <li v-link=\"{name:'focus', activeClass: 'custom-active-class'}\">关注</li>\r\n        <li v-link=\"{name:'tutorial', activeClass: 'custom-active-class'}\">教程</li>\r\n        <li v-link=\"{name:'review', activeClass: 'custom-active-class'}\">评测</li>\r\n    </ul>\r\n";
+	module.exports = "\r\n    <ul class=\"list-ul\">\r\n        <li v-link=\"{name:'recommend', activeClass: 'custom-active-class'}\">推荐</li>\r\n        <li v-link=\"{name:'works-more',params: { type: 'image' }, activeClass: 'custom-active-class'}\">图片</li>\r\n        <li v-link=\"{name:'works-more',params: { type: 'video' }, activeClass: 'custom-active-class'}\">视频</li>\r\n        <li v-link=\"{name:'focus', activeClass: 'custom-active-class'}\">关注</li>\r\n        <li v-link=\"{name:'mix',params: { type: 'tutorial' }, activeClass: 'custom-active-class'}\">教程</li>\r\n        <li v-link=\"{name:'mix',params: { type: 'review' }, activeClass: 'custom-active-class'}\">评测</li>\r\n        <li v-link=\"{name:'mix-more',params: { type: 'news' }, activeClass: 'custom-active-class'}\">资讯</li>\r\n    </ul>\r\n";
 
 /***/ },
 /* 41 */
@@ -17474,7 +17633,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".owner {\n  height: 36px;\n  width: 100%;\n  margin-top: 16px;\n}\n.avatar {\n  height: 36px;\n  width: 36px;\n  border-radius: 18px;\n  margin: 0 0 0 8px;\n}\n.nickname {\n  vertical-align: top;\n  font-size: 10px;\n  color: #4a4a4a;\n  margin: 13px 0 0 10px;\n  display: inline-block;\n}\n.title {\n  color: #222222;\n  font-size: 16px;\n  margin: 14px 0 0 0;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n.thumbnail {\n  margin-top: 14px;\n}\n.thumbnail-image-img {\n  width: 100%;\n}\n.thumbnail-text-content {\n  margin: 5px 0 5px 0;\n}\n.thumbnail-video-img {\n  width: 100%;\n  height: 200px;\n}\n.thumbnail-video-play {\n  width: 33px;\n  height: 33px;\n  display: inline-block;\n  position: relative;\n  z-index: 3;\n  top: -120px;\n  left: 50%;\n  margin-left: -16px;\n}\n.like-comment {\n  height: 44px;\n  margin-top: -4px;\n}\n.like-comment div {\n  display: inline-block;\n  width: 49%;\n  text-align: center;\n  height: 39px;\n}\n.content-like {\n  border-right: 1px solid #dcdcdc;\n}\n.icon-like {\n  width: 20px;\n  height: 20px;\n  margin-top: 12px;\n}\n.count-like {\n  font-size: 10px;\n  color: #dcdcdc;\n  vertical-align: top;\n  margin-top: 14px;\n  display: inline-block;\n}\n.icon-comment {\n  width: 20px;\n  height: 20px;\n  margin-top: 12px;\n}\n.count-comment {\n  font-size: 10px;\n  color: #dcdcdc;\n  vertical-align: top;\n  margin-top: 14px;\n  display: inline-block;\n}\n.blank {\n  height: 12px;\n  background-color: #f2f1ef;\n  margin-top: -5px;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-8f1fac3e&file=works-one.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/works-one.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,iBAAiB;CAClB;AACD;EACE,aAAa;EACb,YAAY;EACZ,oBAAoB;EACpB,kBAAkB;CACnB;AACD;EACE,oBAAoB;EACpB,gBAAgB;EAChB,eAAe;EACf,sBAAsB;EACtB,sBAAsB;CACvB;AACD;EACE,eAAe;EACf,gBAAgB;EAChB,mBAAmB;EACnB,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;CAClB;AACD;EACE,iBAAiB;CAClB;AACD;EACE,YAAY;CACb;AACD;EACE,oBAAoB;CACrB;AACD;EACE,YAAY;EACZ,cAAc;CACf;AACD;EACE,YAAY;EACZ,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,WAAW;EACX,YAAY;EACZ,UAAU;EACV,mBAAmB;CACpB;AACD;EACE,aAAa;EACb,iBAAiB;CAClB;AACD;EACE,sBAAsB;EACtB,WAAW;EACX,mBAAmB;EACnB,aAAa;CACd;AACD;EACE,gCAAgC;CACjC;AACD;EACE,YAAY;EACZ,aAAa;EACb,iBAAiB;CAClB;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,oBAAoB;EACpB,iBAAiB;EACjB,sBAAsB;CACvB;AACD;EACE,YAAY;EACZ,aAAa;EACb,iBAAiB;CAClB;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,oBAAoB;EACpB,iBAAiB;EACjB,sBAAsB;CACvB;AACD;EACE,aAAa;EACb,0BAA0B;EAC1B,iBAAiB;CAClB","file":"works-one.vue","sourcesContent":[".owner {\n  height: 36px;\n  width: 100%;\n  margin-top: 16px;\n}\n.avatar {\n  height: 36px;\n  width: 36px;\n  border-radius: 18px;\n  margin: 0 0 0 8px;\n}\n.nickname {\n  vertical-align: top;\n  font-size: 10px;\n  color: #4a4a4a;\n  margin: 13px 0 0 10px;\n  display: inline-block;\n}\n.title {\n  color: #222222;\n  font-size: 16px;\n  margin: 14px 0 0 0;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n.thumbnail {\n  margin-top: 14px;\n}\n.thumbnail-image-img {\n  width: 100%;\n}\n.thumbnail-text-content {\n  margin: 5px 0 5px 0;\n}\n.thumbnail-video-img {\n  width: 100%;\n  height: 200px;\n}\n.thumbnail-video-play {\n  width: 33px;\n  height: 33px;\n  display: inline-block;\n  position: relative;\n  z-index: 3;\n  top: -120px;\n  left: 50%;\n  margin-left: -16px;\n}\n.like-comment {\n  height: 44px;\n  margin-top: -4px;\n}\n.like-comment div {\n  display: inline-block;\n  width: 49%;\n  text-align: center;\n  height: 39px;\n}\n.content-like {\n  border-right: 1px solid #dcdcdc;\n}\n.icon-like {\n  width: 20px;\n  height: 20px;\n  margin-top: 12px;\n}\n.count-like {\n  font-size: 10px;\n  color: #dcdcdc;\n  vertical-align: top;\n  margin-top: 14px;\n  display: inline-block;\n}\n.icon-comment {\n  width: 20px;\n  height: 20px;\n  margin-top: 12px;\n}\n.count-comment {\n  font-size: 10px;\n  color: #dcdcdc;\n  vertical-align: top;\n  margin-top: 14px;\n  display: inline-block;\n}\n.blank {\n  height: 12px;\n  background-color: #f2f1ef;\n  margin-top: -5px;\n}\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".owner {\n  height: 56px;\n}\n.avatar {\n  height: 36px;\n  width: 36px;\n  border-radius: 18px;\n  margin: 10px 10px 0 10px;\n}\n.nickname {\n  vertical-align: top;\n  font-size: 14px;\n  color: #4a4a4a;\n  height: 60px;\n  line-height: 60px;\n  display: inline-block;\n}\n.recommend-title {\n  color: #222222;\n  font-size: 16px;\n  max-height: 36px;\n  overflow: hidden;\n  line-height: 18px;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  display: -webkit-box;\n  margin: 0 10px 10px 10px;\n}\n.normal-title {\n  color: #222222;\n  font-size: 16px;\n  margin: 0 0 0 10px;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  height: 42px;\n  line-height: 42px;\n}\n.thumbnail-topleft-text {\n  width: 56px;\n  height: 40px;\n  background-color: rgba(0, 0, 0, 0.3);\n  position: relative;\n  color: #ffffff;\n}\n.thumbnail-topleft-text p {\n  height: 12px;\n  font-size: 10px;\n  line-height: 12px;\n  text-align: center;\n}\n.thumbnail-topleft-text-0 {\n  padding-top: 8px;\n}\n.thumbnail-topleft-text-top {\n  margin-top: -40px;\n}\n.image-count {\n  font-size: 10px;\n  color: #ffffff;\n  display: inline-block;\n  width: 50px;\n  height: 20px;\n  line-height: 20px;\n  position: relative;\n  text-align: center;\n  float: right;\n  background-color: rgba(0, 0, 0, 0.5);\n}\n.thumbnail-image-img-top {\n  margin-top: -20px;\n}\n.thumbnail-image-img {\n  width: 100%;\n}\n.thumbnail-text-content {\n  margin: 5px 0 5px 0;\n}\n.thumbnail-video {\n  height: 200px;\n}\n.thumbnail-video-img {\n  width: 100%;\n  height: 200px;\n}\n.thumbnail-video-play {\n  width: 33px;\n  height: 33px;\n  display: inline-block;\n  position: relative;\n  z-index: 3;\n  top: -120px;\n  left: 50%;\n  margin-left: -16px;\n}\n.works-tags {\n  margin: 0 0 10px 4px;\n}\n.works-tags ul {\n  height: 20px;\n  overflow: hidden;\n}\n.works-tags ul li {\n  display: inline-block;\n  height: 18px;\n  padding: 0 6px 0 6px;\n  border: 1px solid #dbdbdb;\n  color: #9a9a9a;\n  font-size: 12px;\n  margin: 0 6px 0 6px;\n}\n.like-comment {\n  height: 44px;\n  border-top: 1px solid #dbdbdb;\n}\n.like-comment span {\n  display: inline-block;\n  text-align: center;\n  height: 40px;\n}\n.content-like {\n  border-right: 1px solid #dcdcdc;\n  width: 49%;\n}\n.content-comment {\n  width: 49%;\n}\n.icon {\n  width: 20px;\n  height: 20px;\n  margin: 12px 6px 0 0;\n  vertical-align: top;\n}\n.count {\n  font-size: 12px;\n  color: #9a9a9a;\n  vertical-align: top;\n  display: inline-block;\n  height: 40px;\n  line-height: 40px;\n  margin: 0 0 0 6px;\n}\n.blank {\n  height: 12px;\n  background-color: #f2f1ef;\n  margin-top: -5px;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-8f1fac3e&file=works-one.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/works-one.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;CACd;AACD;EACE,aAAa;EACb,YAAY;EACZ,oBAAoB;EACpB,yBAAyB;CAC1B;AACD;EACE,oBAAoB;EACpB,gBAAgB;EAChB,eAAe;EACf,aAAa;EACb,kBAAkB;EAClB,sBAAsB;CACvB;AACD;EACE,eAAe;EACf,gBAAgB;EAChB,iBAAiB;EACjB,iBAAiB;EACjB,kBAAkB;EAClB,sBAAsB;EACtB,6BAA6B;EAC7B,qBAAqB;EACrB,yBAAyB;CAC1B;AACD;EACE,eAAe;EACf,gBAAgB;EAChB,mBAAmB;EACnB,oBAAoB;EACpB,wBAAwB;EACxB,iBAAiB;EACjB,aAAa;EACb,kBAAkB;CACnB;AACD;EACE,YAAY;EACZ,aAAa;EACb,qCAAqC;EACrC,mBAAmB;EACnB,eAAe;CAChB;AACD;EACE,aAAa;EACb,gBAAgB;EAChB,kBAAkB;EAClB,mBAAmB;CACpB;AACD;EACE,iBAAiB;CAClB;AACD;EACE,kBAAkB;CACnB;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,sBAAsB;EACtB,YAAY;EACZ,aAAa;EACb,kBAAkB;EAClB,mBAAmB;EACnB,mBAAmB;EACnB,aAAa;EACb,qCAAqC;CACtC;AACD;EACE,kBAAkB;CACnB;AACD;EACE,YAAY;CACb;AACD;EACE,oBAAoB;CACrB;AACD;EACE,cAAc;CACf;AACD;EACE,YAAY;EACZ,cAAc;CACf;AACD;EACE,YAAY;EACZ,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,WAAW;EACX,YAAY;EACZ,UAAU;EACV,mBAAmB;CACpB;AACD;EACE,qBAAqB;CACtB;AACD;EACE,aAAa;EACb,iBAAiB;CAClB;AACD;EACE,sBAAsB;EACtB,aAAa;EACb,qBAAqB;EACrB,0BAA0B;EAC1B,eAAe;EACf,gBAAgB;EAChB,oBAAoB;CACrB;AACD;EACE,aAAa;EACb,8BAA8B;CAC/B;AACD;EACE,sBAAsB;EACtB,mBAAmB;EACnB,aAAa;CACd;AACD;EACE,gCAAgC;EAChC,WAAW;CACZ;AACD;EACE,WAAW;CACZ;AACD;EACE,YAAY;EACZ,aAAa;EACb,qBAAqB;EACrB,oBAAoB;CACrB;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,oBAAoB;EACpB,sBAAsB;EACtB,aAAa;EACb,kBAAkB;EAClB,kBAAkB;CACnB;AACD;EACE,aAAa;EACb,0BAA0B;EAC1B,iBAAiB;CAClB","file":"works-one.vue","sourcesContent":[".owner {\n  height: 56px;\n}\n.avatar {\n  height: 36px;\n  width: 36px;\n  border-radius: 18px;\n  margin: 10px 10px 0 10px;\n}\n.nickname {\n  vertical-align: top;\n  font-size: 14px;\n  color: #4a4a4a;\n  height: 60px;\n  line-height: 60px;\n  display: inline-block;\n}\n.recommend-title {\n  color: #222222;\n  font-size: 16px;\n  max-height: 36px;\n  overflow: hidden;\n  line-height: 18px;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  display: -webkit-box;\n  margin: 0 10px 10px 10px;\n}\n.normal-title {\n  color: #222222;\n  font-size: 16px;\n  margin: 0 0 0 10px;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  height: 42px;\n  line-height: 42px;\n}\n.thumbnail-topleft-text {\n  width: 56px;\n  height: 40px;\n  background-color: rgba(0, 0, 0, 0.3);\n  position: relative;\n  color: #ffffff;\n}\n.thumbnail-topleft-text p {\n  height: 12px;\n  font-size: 10px;\n  line-height: 12px;\n  text-align: center;\n}\n.thumbnail-topleft-text-0 {\n  padding-top: 8px;\n}\n.thumbnail-topleft-text-top {\n  margin-top: -40px;\n}\n.image-count {\n  font-size: 10px;\n  color: #ffffff;\n  display: inline-block;\n  width: 50px;\n  height: 20px;\n  line-height: 20px;\n  position: relative;\n  text-align: center;\n  float: right;\n  background-color: rgba(0, 0, 0, 0.5);\n}\n.thumbnail-image-img-top {\n  margin-top: -20px;\n}\n.thumbnail-image-img {\n  width: 100%;\n}\n.thumbnail-text-content {\n  margin: 5px 0 5px 0;\n}\n.thumbnail-video {\n  height: 200px;\n}\n.thumbnail-video-img {\n  width: 100%;\n  height: 200px;\n}\n.thumbnail-video-play {\n  width: 33px;\n  height: 33px;\n  display: inline-block;\n  position: relative;\n  z-index: 3;\n  top: -120px;\n  left: 50%;\n  margin-left: -16px;\n}\n.works-tags {\n  margin: 0 0 10px 4px;\n}\n.works-tags ul {\n  height: 20px;\n  overflow: hidden;\n}\n.works-tags ul li {\n  display: inline-block;\n  height: 18px;\n  padding: 0 6px 0 6px;\n  border: 1px solid #dbdbdb;\n  color: #9a9a9a;\n  font-size: 12px;\n  margin: 0 6px 0 6px;\n}\n.like-comment {\n  height: 44px;\n  border-top: 1px solid #dbdbdb;\n}\n.like-comment span {\n  display: inline-block;\n  text-align: center;\n  height: 40px;\n}\n.content-like {\n  border-right: 1px solid #dcdcdc;\n  width: 49%;\n}\n.content-comment {\n  width: 49%;\n}\n.icon {\n  width: 20px;\n  height: 20px;\n  margin: 12px 6px 0 0;\n  vertical-align: top;\n}\n.count {\n  font-size: 12px;\n  color: #9a9a9a;\n  vertical-align: top;\n  display: inline-block;\n  height: 40px;\n  line-height: 40px;\n  margin: 0 0 0 6px;\n}\n.blank {\n  height: 12px;\n  background-color: #f2f1ef;\n  margin-top: -5px;\n}\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -17489,25 +17648,42 @@
 	    value: true
 	});
 	// <style lang="less">
-	//     .owner{height: 36px;width: 100%;margin-top: 16px;}
-	//     .avatar{height: 36px;width: 36px;border-radius: 18px;margin: 0 0 0 8px;}
-	//     .nickname{vertical-align: top;font-size: 10px;color: #4a4a4a;margin: 13px 0 0 10px;
+	//     .owner{height: 56px;}
+	//     .avatar{height: 36px;width: 36px;border-radius: 18px;margin: 10px 10px 0 10px;}
+	//     .nickname{vertical-align: top;font-size: 14px;color: #4a4a4a;height: 60px;line-height: 60px;
 	//         display: inline-block;}
-	//     .title{color: #222222;font-size: 16px;margin: 14px 0 0 0;white-space:nowrap;
-	//         text-overflow:ellipsis;overflow: hidden;}
-	//     .thumbnail{margin-top: 14px;}
+	//
+	//     .recommend-title{color: #222222;font-size: 16px;max-height: 36px;overflow:hidden;line-height: 18px;
+	//         -webkit-line-clamp:2;-webkit-box-orient: vertical;display: -webkit-box;margin: 0 10px 10px 10px;}
+	//     .normal-title{color: #222222;font-size: 16px;margin: 0 0 0 10px;white-space:nowrap;
+	//         text-overflow:ellipsis;overflow: hidden;height: 42px;line-height: 42px;}
+	//
+	//     .thumbnail{}
+	//     .thumbnail-topleft-text{width: 56px;height: 40px;background-color: rgba(0,0,0,0.3);position: relative;color: #ffffff;}
+	//     .thumbnail-topleft-text p{height: 12px;font-size: 10px;line-height: 12px;text-align: center;}
+	//     .thumbnail-topleft-text-0{padding-top: 8px;}
+	//     .thumbnail-topleft-text-top{margin-top: -40px;}
+	//     .image-count{font-size: 10px;color: #ffffff;display: inline-block;width: 50px;height: 20px;line-height: 20px;position: relative;text-align: center;
+	//         float: right;background-color: rgba(0,0,0,0.5);}
+	//     .thumbnail-image-img-top{margin-top: -20px;}
 	//     .thumbnail-image-img{width: 100%;}
 	//     .thumbnail-text-content{margin: 5px 0 5px 0;}
+	//     .thumbnail-video{height: 200px;}
 	//     .thumbnail-video-img{width: 100%;height: 200px;}
-	//     .thumbnail-video-play{width: 33px;height: 33px;display: inline-block;
-	//         position: relative;z-index: 3;top: -120px;left: 50%;margin-left: -16px;}
-	//     .like-comment{height: 44px;margin-top: -4px;}
-	//     .like-comment div{display: inline-block;width: 49%;text-align: center;height: 39px;}
-	//     .content-like{border-right: 1px solid #dcdcdc;}
-	//     .icon-like{width: 20px;height: 20px;margin-top: 12px;}
-	//     .count-like{font-size: 10px;color: #dcdcdc;vertical-align: top;margin-top: 14px;display: inline-block;}
-	//     .icon-comment{width: 20px;height: 20px;margin-top: 12px;}
-	//     .count-comment{font-size: 10px;color: #dcdcdc;vertical-align: top;margin-top: 14px;display: inline-block;}
+	//     .thumbnail-video-play{width: 33px;height: 33px;display: inline-block;position: relative;z-index: 3;top: -120px;
+	//         left: 50%;margin-left: -16px;}
+	//
+	//     .works-tags{margin: 0 0 10px 4px;}
+	//     .works-tags ul{height: 20px;overflow: hidden;}
+	//     .works-tags ul li{display: inline-block;height: 18px;padding: 0 6px 0 6px;border: 1px solid #dbdbdb;color: #9a9a9a;
+	//         font-size: 12px;margin: 0 6px 0 6px;}
+	//
+	//     .like-comment{height: 44px;border-top: 1px solid #dbdbdb;}
+	//     .like-comment span{display: inline-block;text-align: center;height: 40px;}
+	//     .content-like{border-right: 1px solid #dcdcdc;width: 49%;}
+	//     .content-comment{width: 49%;}
+	//     .icon{width: 20px;height: 20px;margin: 12px 6px 0 0;vertical-align: top;}
+	//     .count{font-size: 12px;color: #9a9a9a;vertical-align: top;display: inline-block;height: 40px;line-height: 40px;margin: 0 0 0 6px}
 	//     .blank{height: 12px;background-color: #f2f1ef;margin-top: -5px;}
 	// </style>
 	// <template>
@@ -17516,40 +17692,121 @@
 	//         <img class="avatar" v-bind:src="works.owner.avatar_url">
 	//         <span class="nickname">{{works.owner.nickname}}</span>
 	//     </div>
-	//     <div class="title">
-	//         {{works.title}}
+	//     <div v-link="{name:'works-detail',params: { id: works.pub_id}}">
+	//         <div v-if="type=='recommend'" class="recommend-title">{{works.title}}</div>
+	//         <div class="thumbnail">
+	//             <div v-if="works.common_flags.topleft_text!=null" class="thumbnail-topleft-text">
+	//                 <p class="thumbnail-topleft-text-0">{{topleftText[0]}}</p>
+	//                 <p>{{topleftText[1]}}</p>
+	//             </div>
+	//             <div v-bind:class="{'thumbnail-topleft-text-top': works.common_flags.topleft_text!=null}">
+	//                 <div v-if="works.thumbnail.type=='image'" class="thumbnail-image">
+	//                     <span v-if="works.image_count>1" class="image-count">{{works.image_count}}图</span>
+	//                     <img class="thumbnail-image-img" v-bind:class="{'thumbnail-image-img-top': works.image_count>1}" v-bind:src="works.thumbnail.content.thumbnail_url">
+	//                 </div>
+	//                 <div v-if="works.thumbnail.type=='text'" class="thumbnail-text">
+	//                     <p class="thumbnail-text-content">{{works.thumbnail.content.text}}</p>
+	//                 </div>
+	//                 <div v-if="works.thumbnail.type=='ihp_v'||works.thumbnail.type=='youku_v'" class="thumbnail-video">
+	//                     <img class="thumbnail-video-img" v-bind:src="works.thumbnail.content.thumbnail_url">
+	//                     <img class="thumbnail-video-play" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png">
+	//                 </div>
+	//             </div>
+	//         </div>
+	//         <div v-if="type=='normal'" class="normal-title">{{works.title}}</div>
 	//     </div>
-	//     <div class="thumbnail">
-	//         <div v-if="works.thumbnail.type=='image'" class="thumbnail-image">
-	//             <img class="thumbnail-image-img" v-bind:src="works.thumbnail.content.thumbnail_url">
-	//         </div>
-	//         <div v-if="works.thumbnail.type=='text'" class="thumbnail-text">
-	//             <p class="thumbnail-text-content">{{works.thumbnail.content.text}}</p>
-	//         </div>
-	//         <div v-if="works.thumbnail.type=='ihp_v'" class="thumbnail-video">
-	//             <img class="thumbnail-video-img" v-bind:src="works.thumbnail.content.thumbnail_url">
-	//             <img class="thumbnail-video-play"
-	//             src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png">
-	//         </div>
+	//     <div v-if="works.tags!=null" class="works-tags">
+	//         <ul>
+	//             <li v-for="works.tags in works.tags">{{works.tags[$index].tag_name}}</li>
+	//         </ul>
 	//     </div>
 	//     <div class="like-comment">
-	//         <div class="content-like">
-	//             <img class="icon-like" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png">
-	//             <span class="count-like">{{works.likes_count}}</span>
-	//         </div>
-	//         <div class="content-comment">
-	//             <img class="icon-comment" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png">
-	//             <span class="count-comment">{{works.comments_count}}</span>
-	//         </div>
+	//         <span class="content-like" v-on:click="dealLike">
+	//             <img class="icon" v-bind:src="likedImgSrc">
+	//             <span class="count">{{works.likes_count}}</span>
+	//         </span>
+	//         <span class="content-comment" v-link="{name:'works-detail',params: { id: works.pub_id}}">
+	//             <img class="icon" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png">
+	//             <span class="count">{{works.comments_count}}</span>
+	//         </span>
 	//     </div>
 	//     <div class="blank"></div>
 	// </div>
 	// </template>
 	// <script>
 	exports.default = {
-	    props: ['works'],
-	    ready: function ready() {
-	        // console.dir(this.works);
+	    props: ['works', 'type'],
+	    data: function data() {
+	        return {
+	            topleftText: [],
+	            likedImgSrc: '',
+	            isLiked: ''
+	        };
+	    },
+	    created: function created() {
+	        // console.dir(this.type);
+	        // console.dir(this.works.pub_id);
+	        // console.dir(this.works.common_flags.topleft_text);
+	        if (this.works.common_flags.topleft_text != null) {
+	            this.dealTopleftText();
+	        }
+	        if (this.works.my_flags != null) {
+	            if (this.works.my_flags.is_liked == 1) {
+	                this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-choose.png';
+	                this.isLiked = 1;
+	            }
+	        } else {
+	            this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png';
+	            this.isLiked = 0;
+	        }
+	    },
+	    ready: function ready() {},
+	    methods: {
+	        dealLike: function dealLike() {
+	            if (this.isLiked == 1) {
+	                console.dir('1');
+	                var unlikeUrl = this.getUnlikeUrl();
+	                this.$http({ url: unlikeUrl, method: 'POST', data: { type: 'pub', id: this.works.pub_id }, xhr: { withCredentials: true } }).then(function (response) {
+	                    if (response.data.code == 0) {
+	                        this.isLiked = 0;
+	                        this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png';
+	                        this.works.likes_count--;
+	                    }
+	                });
+	            } else {
+	                console.dir(0);
+	                var likeUrl = this.getLikeUrl();
+	                this.$http({ url: likeUrl, method: 'POST', data: { type: 'pub', id: this.works.pub_id }, xhr: { withCredentials: true } }).then(function (response) {
+	                    if (response.data.code == 0) {
+	                        this.isLiked = 1;
+	                        this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-choose.png';
+	                        this.works.likes_count++;
+	                    }
+	                });
+	            }
+	        },
+	        dealTopleftText: function dealTopleftText() {
+	            // console.dir(this.works.common_flags.topleft_text);
+	            this.topleftText = this.works.common_flags.topleft_text.split('\n');
+	        },
+	        getLikeUrl: function getLikeUrl() {
+	            var url = '';
+	            if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                url = localStorage.getItem('apphost') + 'apiv2/login.json';
+	            } else {
+	                url = localStorage.getItem('apphost') + 'apiv2/like';
+	            }
+	            return url;
+	        },
+	        getUnlikeUrl: function getUnlikeUrl() {
+	            var url = '';
+	            if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                url = localStorage.getItem('apphost') + 'apiv2/like.json';
+	            } else {
+	                url = localStorage.getItem('apphost') + 'apiv2/unlike';
+	            }
+	            return url;
+	        }
 	    }
 	};
 	// </script>
@@ -17559,22 +17816,16 @@
 /* 45 */
 /***/ function(module, exports) {
 
-	module.exports = "\r\n<div class=\"one\">\r\n    <div class=\"owner\">\r\n        <img class=\"avatar\" v-bind:src=\"works.owner.avatar_url\">\r\n        <span class=\"nickname\">{{works.owner.nickname}}</span>\r\n    </div>\r\n    <div class=\"title\">\r\n        {{works.title}}\r\n    </div>\r\n    <div class=\"thumbnail\">\r\n        <div v-if=\"works.thumbnail.type=='image'\" class=\"thumbnail-image\">\r\n            <img class=\"thumbnail-image-img\" v-bind:src=\"works.thumbnail.content.thumbnail_url\">\r\n        </div>\r\n        <div v-if=\"works.thumbnail.type=='text'\" class=\"thumbnail-text\">\r\n            <p class=\"thumbnail-text-content\">{{works.thumbnail.content.text}}</p>\r\n        </div>\r\n        <div v-if=\"works.thumbnail.type=='ihp_v'\" class=\"thumbnail-video\">\r\n            <img class=\"thumbnail-video-img\" v-bind:src=\"works.thumbnail.content.thumbnail_url\">\r\n            <img class=\"thumbnail-video-play\" \r\n            src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png\">\r\n        </div>\r\n    </div>\r\n    <div class=\"like-comment\">\r\n        <div class=\"content-like\">\r\n            <img class=\"icon-like\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png\">\r\n            <span class=\"count-like\">{{works.likes_count}}</span>\r\n        </div>\r\n        <div class=\"content-comment\">\r\n            <img class=\"icon-comment\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png\">\r\n            <span class=\"count-comment\">{{works.comments_count}}</span>\r\n        </div>\r\n    </div>\r\n    <div class=\"blank\"></div>\r\n</div>\r\n";
+	module.exports = "\r\n<div class=\"one\">\r\n    <div class=\"owner\">\r\n        <img class=\"avatar\" v-bind:src=\"works.owner.avatar_url\">\r\n        <span class=\"nickname\">{{works.owner.nickname}}</span>\r\n    </div>\r\n    <div v-link=\"{name:'works-detail',params: { id: works.pub_id}}\">\r\n        <div v-if=\"type=='recommend'\" class=\"recommend-title\">{{works.title}}</div>\r\n        <div class=\"thumbnail\">\r\n            <div v-if=\"works.common_flags.topleft_text!=null\" class=\"thumbnail-topleft-text\">\r\n                <p class=\"thumbnail-topleft-text-0\">{{topleftText[0]}}</p>\r\n                <p>{{topleftText[1]}}</p>\r\n            </div>\r\n            <div v-bind:class=\"{'thumbnail-topleft-text-top': works.common_flags.topleft_text!=null}\">\r\n                <div v-if=\"works.thumbnail.type=='image'\" class=\"thumbnail-image\">\r\n                    <span v-if=\"works.image_count>1\" class=\"image-count\">{{works.image_count}}图</span>\r\n                    <img class=\"thumbnail-image-img\" v-bind:class=\"{'thumbnail-image-img-top': works.image_count>1}\" v-bind:src=\"works.thumbnail.content.thumbnail_url\">\r\n                </div>\r\n                <div v-if=\"works.thumbnail.type=='text'\" class=\"thumbnail-text\">\r\n                    <p class=\"thumbnail-text-content\">{{works.thumbnail.content.text}}</p>\r\n                </div>\r\n                <div v-if=\"works.thumbnail.type=='ihp_v'||works.thumbnail.type=='youku_v'\" class=\"thumbnail-video\">\r\n                    <img class=\"thumbnail-video-img\" v-bind:src=\"works.thumbnail.content.thumbnail_url\">\r\n                    <img class=\"thumbnail-video-play\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png\">\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div v-if=\"type=='normal'\" class=\"normal-title\">{{works.title}}</div>\r\n    </div>\r\n    <div v-if=\"works.tags!=null\" class=\"works-tags\">\r\n        <ul>\r\n            <li v-for=\"works.tags in works.tags\">{{works.tags[$index].tag_name}}</li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"like-comment\">\r\n        <span class=\"content-like\" v-on:click=\"dealLike\">\r\n            <img class=\"icon\" v-bind:src=\"likedImgSrc\">\r\n            <span class=\"count\">{{works.likes_count}}</span>\r\n        </span>\r\n        <span class=\"content-comment\" v-link=\"{name:'works-detail',params: { id: works.pub_id}}\">\r\n            <img class=\"icon\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png\">\r\n            <span class=\"count\">{{works.comments_count}}</span>\r\n        </span>\r\n    </div>\r\n    <div class=\"blank\"></div>\r\n</div>\r\n";
 
 /***/ },
 /* 46 */
-/***/ function(module, exports) {
-
-	module.exports = "\r\n    <!-- 全局header -->\r\n    <nav-top type=\"recommend\"></nav-top>\r\n    <!-- banner轮播begin -->\r\n    <div id=\"banner\">\r\n        <img id=\"banner-image\" v-touch:swipe=\"onSwipe\" v-touch-options:swipeleft=\"{threshold: 200}\"\r\n          v-bind:src=\"bannerImg\">\r\n        <ul id=\"banner-choose\">\r\n          <li v-for=\"banner in banner\" v-bind:class=\"{'banner-choose-color': $index==bannerNum}\"></li>\r\n        </ul>   \r\n    </div>\t\r\n    <!-- 作品列表 -->\r\n    <div id=\"works-list\">\r\n        <works-one v-for=\"works in works\" :works=\"works\"></works-one>\r\n    </div>\r\n";
-
-/***/ },
-/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(48)
-	__vue_script__ = __webpack_require__(50)
-	__vue_template__ = __webpack_require__(51)
+	__webpack_require__(47)
+	__vue_script__ = __webpack_require__(49)
+	__vue_template__ = __webpack_require__(50)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
@@ -17582,7 +17833,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\views\\image.vue"
+	  var id = "G:\\github\\vue-pro\\src\\components\\back-top.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -17591,13 +17842,13 @@
 	})()}
 
 /***/ },
-/* 48 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(49);
+	var content = __webpack_require__(48);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(34)(content, {});
@@ -17606,8 +17857,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-15115e91&file=image.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./image.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-15115e91&file=image.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./image.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-02512599&file=back-top.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./back-top.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-02512599&file=back-top.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./back-top.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -17617,7 +17868,7 @@
 	}
 
 /***/ },
-/* 49 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(33)();
@@ -17625,43 +17876,64 @@
 	
 	
 	// module
-	exports.push([module.id, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"image.vue","sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".back-top {\n  width: 50px;\n  height: 50px;\n  position: fixed;\n  bottom: 60px;\n  right: 10px;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-02512599&file=back-top.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/back-top.vue.style"],"names":[],"mappings":"AAAA;EACE,YAAY;EACZ,aAAa;EACb,gBAAgB;EAChB,aAAa;EACb,YAAY;CACb","file":"back-top.vue","sourcesContent":[".back-top {\n  width: 50px;\n  height: 50px;\n  position: fixed;\n  bottom: 60px;\n  right: 10px;\n}\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
+/* 49 */
+/***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	// <style lang="less">
+	//     .back-top{width: 50px;height: 50px;position: fixed;bottom: 60px;right: 10px;}
+	// </style>
 	// <template>
-	//     <!-- 全局header -->
-	//     <nav-top type="image"></nav-top>
+	//     <img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-backtop.png" class="back-top" v-on:click="backTop">
 	// </template>
 	// <script>
 	exports.default = {
-	    components: {
-	        'nav-top': __webpack_require__(36)
+	    data: function data() {
+	        return {
+	            isBackTopShow: false
+	        };
+	    },
+	    ready: function ready() {},
+	    methods: {
+	        backTop: function backTop(event) {
+	            // document.body.scrollTop = -10;
+	            this.scrollTopReduction();
+	        },
+	        scrollTopReduction: function scrollTopReduction() {
+	            for (var i = 0; document.body.scrollTop > 0; i++) {
+	                document.body.scrollTop = document.body.scrollTop - i / 100000;
+	                console.dir(document.body.scrollTop);
+	            }
+	        }
 	    }
 	};
 	// </script>
-	// <style lang="less">
 	//
-	// </style>
 	//
 	//
 	/* generated by vue-loader */
 
 /***/ },
+/* 50 */
+/***/ function(module, exports) {
+
+	module.exports = "\n    <img src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-backtop.png\" class=\"back-top\" v-on:click=\"backTop\">\n";
+
+/***/ },
 /* 51 */
 /***/ function(module, exports) {
 
-	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"image\"></nav-top>\n";
+	module.exports = "\r\n    <!-- 全局header -->\r\n    <nav-top type=\"recommend\"></nav-top>\r\n    <!-- banner轮播begin -->\r\n    <div id=\"banner\">\r\n        <a v-bind:href=\"bannerUrl\">\r\n            <img id=\"banner-image\" v-touch:swipe.stop=\"onSwipe\" v-touch-options:swipe=\"{threshold: 100}\"\r\n            v-bind:src=\"bannerImg\">\r\n        </a>\r\n            <!-- {name:'works-detail',params: { id: 1}} -->\r\n        <ul id=\"banner-choose\">\r\n            <li v-for=\"banner in banner\" v-bind:class=\"{'banner-choose-color': $index==bannerNum}\"></li>\r\n        </ul>\r\n    </div>\r\n    <!-- 作品列表 -->\r\n    <div id=\"works-list\">\r\n        <works-one v-for=\"works in works\" :works=\"works\" type=\"recommend\"></works-one>\r\n    </div>\r\n    <back-top v-show=\"isBackTopShow==true\"></back-top>\r\n";
 
 /***/ },
 /* 52 */
@@ -17678,7 +17950,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\views\\video.vue"
+	  var id = "G:\\github\\vue-pro\\src\\views\\works-more.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -17702,8 +17974,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-ce478c9e&file=video.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./video.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-ce478c9e&file=video.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./video.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4d5aa00c&file=works-more.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./works-more.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-4d5aa00c&file=works-more.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./works-more.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -17721,7 +17993,7 @@
 	
 	
 	// module
-	exports.push([module.id, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"video.vue","sourceRoot":"webpack://"}]);
+	exports.push([module.id, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"works-more.vue","sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -17735,20 +18007,87 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	// <template>
-	//     <!-- 全局header -->
-	//     <nav-top type="video"></nav-top>
-	// </template>
-	// <script>
-	exports.default = {
-	    components: {
-	        'nav-top': __webpack_require__(36)
-	    }
-	};
-	// </script>
 	// <style lang="less">
 	//
 	// </style>
+	// <template>
+	//     <!-- 全局header -->
+	//     <nav-top></nav-top>
+	//     <works-one v-for="works in works" :works="works" type="normal"></works-one>
+	//     <back-top v-show="isBackTopShow==true"></back-top>
+	// </template>
+	// <script>
+	exports.default = {
+	    data: function data() {
+	        return {
+	            works: '',
+	            nextPageToken: '',
+	            type: '',
+	            isBackTopShow: false
+	        };
+	    },
+	    route: {
+	        data: function data(transition) {
+	            this.type = decodeURI(transition.to.params.type);
+	            // console.dir(transition.to.params.type);
+	            // console.dir(this.type);
+	        }
+	    },
+	    ready: function ready() {
+	        var self = this;
+	        window.onscroll = function () {
+	            if (document.body.clientHeight - document.body.scrollTop < 1000) {
+	                if (self.nextPageToken != '') {
+	                    self.getData();
+	                    self.nextPageToken = '';
+	                }
+	            }
+	            if (document.body.scrollTop > 1000) {
+	                self.isBackTopShow = true;
+	            } else {
+	                self.isBackTopShow = false;
+	            }
+	        };
+	    },
+	    watch: {
+	        'type': function type(val, oldVal) {
+	            // console.log('new: %s, old: %s', val, oldVal);
+	            var url = this.getLatestPublistUrl();
+	            // console.log(url);
+	            this.$http({ url: url, method: 'GET', xhr: { withCredentials: true } }).then(function (response) {
+	                this.works = response.data.data.list;
+	                this.nextPageToken = response.data.data.next_page_token;
+	                // console.dir(this.works);
+	            });
+	        }
+	    },
+	    methods: {
+	        getLatestPublistUrl: function getLatestPublistUrl() {
+	            var url = '';
+	            if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                url = localStorage.getItem('apphost') + 'apiv2/latest_publist_' + this.type + '.json';
+	            } else {
+	                url = localStorage.getItem('apphost') + 'apiv2/latest_publist?pub_type=' + this.type;
+	            }
+	            return url;
+	        },
+	        getData: function getData() {
+	            var url = this.getLatestPublistUrl();
+	            this.$http({ url: url, method: 'GET', data: { page_token: this.nextPageToken }, xhr: { withCredentials: true } }).then(function (response) {
+	                this.works = this.works.concat(response.data.data.list);
+	                this.nextPageToken = response.data.data.next_page_token;
+	                // console.dir(this.works);
+	                // console.dir(this.nextPageToken);
+	            });
+	        }
+	    },
+	    components: {
+	        'nav-top': __webpack_require__(36),
+	        'works-one': __webpack_require__(41),
+	        'back-top': __webpack_require__(46)
+	    }
+	};
+	// </script>
 	//
 	//
 	/* generated by vue-loader */
@@ -17757,7 +18096,7 @@
 /* 56 */
 /***/ function(module, exports) {
 
-	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"video\"></nav-top>\n";
+	module.exports = "\n    <!-- 全局header -->\n    <nav-top></nav-top>\n    <works-one v-for=\"works in works\" :works=\"works\" type=\"normal\"></works-one>\n    <back-top v-show=\"isBackTopShow==true\"></back-top>\n";
 
 /***/ },
 /* 57 */
@@ -17862,7 +18201,7 @@
 	var __vue_script__, __vue_template__
 	__webpack_require__(63)
 	__vue_script__ = __webpack_require__(65)
-	__vue_template__ = __webpack_require__(66)
+	__vue_template__ = __webpack_require__(71)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
@@ -17870,7 +18209,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\views\\tutorial.vue"
+	  var id = "G:\\github\\vue-pro\\src\\views\\mix.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -17894,8 +18233,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-7a850bd0&file=tutorial.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./tutorial.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-7a850bd0&file=tutorial.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./tutorial.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-63676292&file=mix.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./mix.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-63676292&file=mix.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./mix.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -17913,7 +18252,7 @@
 	
 	
 	// module
-	exports.push([module.id, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"tutorial.vue","sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".blank {\n  height: 10px;\n  background-color: #f2f1ef;\n}\n.mix-top {\n  margin-top: 14px;\n  height: 20px;\n}\n.mix-top span {\n  display: inline-block;\n  vertical-align: top;\n}\n.mix-top-left {\n  background-color: #fda946;\n  height: 20px;\n  width: 4px;\n  margin: 0 8px 0 8px;\n}\n.mix-title {\n  height: 20px;\n  line-height: 20px;\n  font-size: 14px;\n}\n.mix-more {\n  font-size: 14px;\n  float: right;\n  margin: 0 10px 0 0;\n  color: #9a9a9a;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-63676292&file=mix.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/views/mix.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,0BAA0B;CAC3B;AACD;EACE,iBAAiB;EACjB,aAAa;CACd;AACD;EACE,sBAAsB;EACtB,oBAAoB;CACrB;AACD;EACE,0BAA0B;EAC1B,aAAa;EACb,WAAW;EACX,oBAAoB;CACrB;AACD;EACE,aAAa;EACb,kBAAkB;EAClB,gBAAgB;CACjB;AACD;EACE,gBAAgB;EAChB,aAAa;EACb,mBAAmB;EACnB,eAAe;CAChB","file":"mix.vue","sourcesContent":[".blank {\n  height: 10px;\n  background-color: #f2f1ef;\n}\n.mix-top {\n  margin-top: 14px;\n  height: 20px;\n}\n.mix-top span {\n  display: inline-block;\n  vertical-align: top;\n}\n.mix-top-left {\n  background-color: #fda946;\n  height: 20px;\n  width: 4px;\n  margin: 0 8px 0 8px;\n}\n.mix-title {\n  height: 20px;\n  line-height: 20px;\n  font-size: 14px;\n}\n.mix-more {\n  font-size: 14px;\n  float: right;\n  margin: 0 10px 0 0;\n  color: #9a9a9a;\n}\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -17927,38 +18266,89 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	// <style lang="less">
+	//     .blank{height: 10px;background-color: #f2f1ef;}
+	//     .mix-top{margin-top: 14px;height: 20px;}
+	//     .mix-top span{display: inline-block;vertical-align: top;}
+	//     .mix-top-left{background-color: #fda946;height: 20px;width: 4px;margin: 0 8px 0 8px;}
+	//     .mix-title{height: 20px;line-height: 20px;font-size: 14px;}
+	//     .mix-more{font-size: 14px;float: right;margin: 0 10px 0 0;color: #9a9a9a;}
+	// </style>
 	// <template>
 	//     <!-- 全局header -->
-	//     <nav-top type="tutorial"></nav-top>
+	//     <nav-top type="mix"></nav-top>
+	//     <div v-for="mix in mix">
+	//         <div class="blank"></div>
+	//         <div class="mix-top">
+	//             <span class="mix-top-left"></span><span class="mix-title">{{mix.title}}</span><span class="mix-more" v-link="{ name: 'mix-more', params: { type: encodeURI(mix.title)}}">更多></span>
+	//         </div>
+	//         <mix-one v-for="mix.items in mix.items" :mix="mix.items[$index]"></mix-one>
+	//     </div>
 	// </template>
 	// <script>
 	exports.default = {
+	    data: function data() {
+	        return {
+	            mix: '',
+	            type: ''
+	        };
+	    },
+	    route: {
+	        data: function data(transition) {
+	            this.type = transition.to.params.type;
+	            // console.dir(transition.to.params.type);
+	            // console.dir(this.type);
+	        }
+	    },
+	    ready: function ready() {
+	        // console.dir(this.type);
+	        var url = this.getmixUrl();
+	        // console.log(url);
+	        this.$http({ url: url, method: 'GET', xhr: { withCredentials: true } }).then(function (response) {
+	            this.mix = response.data.data.list;
+	            // console.dir(this.mix);
+	        });
+	    },
+	    watch: {
+	        'type': function type(val, oldVal) {
+	            // console.log('new: %s, old: %s', val, oldVal);
+	            var url = this.getmixUrl();
+	            // console.log(url);
+	            this.$http({ url: url, method: 'GET', xhr: { withCredentials: true } }).then(function (response) {
+	                this.mix = response.data.data.list;
+	                // console.dir(this.mix);
+	            });
+	        }
+	    },
+	    methods: {
+	        getmixUrl: function getmixUrl() {
+	            var url = '';
+	            if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                url = localStorage.getItem('apphost') + 'apiv2/tutorial_and_review_v21_' + this.type + '.json';
+	            } else {
+	                url = localStorage.getItem('apphost') + 'apiv2/tutorial_and_review_v21?info_type=' + this.type;
+	            }
+	            return url;
+	        }
+	    },
 	    components: {
-	        'nav-top': __webpack_require__(36)
+	        'nav-top': __webpack_require__(36),
+	        'mix-one': __webpack_require__(66)
 	    }
 	};
 	// </script>
-	// <style lang="less">
-	//
-	// </style>
 	//
 	//
 	/* generated by vue-loader */
 
 /***/ },
 /* 66 */
-/***/ function(module, exports) {
-
-	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"tutorial\"></nav-top>\n";
-
-/***/ },
-/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
-	__webpack_require__(68)
-	__vue_script__ = __webpack_require__(70)
-	__vue_template__ = __webpack_require__(71)
+	__webpack_require__(67)
+	__vue_script__ = __webpack_require__(69)
+	__vue_template__ = __webpack_require__(70)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
@@ -17966,7 +18356,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "G:\\github\\vue-pro\\src\\views\\review.vue"
+	  var id = "G:\\github\\vue-pro\\src\\components\\mix-one.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -17975,13 +18365,13 @@
 	})()}
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(69);
+	var content = __webpack_require__(68);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(34)(content, {});
@@ -17990,8 +18380,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-74b51992&file=review.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./review.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-74b51992&file=review.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./review.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-7a79a38a&file=mix-one.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./mix-one.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-7a79a38a&file=mix-one.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./mix-one.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -18001,7 +18391,7 @@
 	}
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(33)();
@@ -18009,13 +18399,176 @@
 	
 	
 	// module
-	exports.push([module.id, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"review.vue","sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".mix-one {\n  height: 70px;\n  padding: 15px 10px 15px 6px;\n  border-bottom: 1px solid #dcdcdc;\n  display: block;\n  text-decoration: none;\n}\n.mix-one-left {\n  width: 100px;\n  height: 70px;\n  margin-right: 10px;\n  float: left;\n}\n.mix-one-left img {\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n.mix-one-right {\n  position: relative;\n  height: 70px;\n}\n.mix-one-right p {\n  overflow: hidden;\n}\n.mix-one-title {\n  font-size: 15px;\n  line-height: 18px;\n  max-height: 36px;\n  margin-bottom: 6px;\n  overflow: hidden;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  display: -webkit-box;\n  color: #222222;\n}\n.mix-one-subtitle {\n  font-size: 12px;\n  line-height: 14px;\n  max-height: 28px;\n  overflow: hidden;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  display: -webkit-box;\n  color: #9a9a9a;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-7a79a38a&file=mix-one.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/mix-one.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,4BAA4B;EAC5B,iCAAiC;EACjC,eAAe;EACf,sBAAsB;CACvB;AACD;EACE,aAAa;EACb,aAAa;EACb,mBAAmB;EACnB,YAAY;CACb;AACD;EACE,YAAY;EACZ,aAAa;EACb,iBAAiB;CAClB;AACD;EACE,mBAAmB;EACnB,aAAa;CACd;AACD;EACE,iBAAiB;CAClB;AACD;EACE,gBAAgB;EAChB,kBAAkB;EAClB,iBAAiB;EACjB,mBAAmB;EACnB,iBAAiB;EACjB,sBAAsB;EACtB,6BAA6B;EAC7B,qBAAqB;EACrB,eAAe;CAChB;AACD;EACE,gBAAgB;EAChB,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB;EACjB,sBAAsB;EACtB,6BAA6B;EAC7B,qBAAqB;EACrB,eAAe;CAChB","file":"mix-one.vue","sourcesContent":[".mix-one {\n  height: 70px;\n  padding: 15px 10px 15px 6px;\n  border-bottom: 1px solid #dcdcdc;\n  display: block;\n  text-decoration: none;\n}\n.mix-one-left {\n  width: 100px;\n  height: 70px;\n  margin-right: 10px;\n  float: left;\n}\n.mix-one-left img {\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n.mix-one-right {\n  position: relative;\n  height: 70px;\n}\n.mix-one-right p {\n  overflow: hidden;\n}\n.mix-one-title {\n  font-size: 15px;\n  line-height: 18px;\n  max-height: 36px;\n  margin-bottom: 6px;\n  overflow: hidden;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  display: -webkit-box;\n  color: #222222;\n}\n.mix-one-subtitle {\n  font-size: 12px;\n  line-height: 14px;\n  max-height: 28px;\n  overflow: hidden;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  display: -webkit-box;\n  color: #9a9a9a;\n}\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
+/* 69 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	// <style lang="less">
+	//     .mix-one{height: 70px;padding: 15px 10px 15px 6px;border-bottom: 1px solid #dcdcdc;display: block;text-decoration: none;}
+	//     .mix-one-left{width: 100px;height: 70px;margin-right: 10px;float: left;}
+	//     .mix-one-left img{width: 100%;height: 100%;overflow: hidden;}
+	//     .mix-one-right{position: relative;height: 70px;}
+	//     .mix-one-right p{overflow: hidden;}
+	//     .mix-one-title{font-size: 15px;line-height: 18px;max-height: 36px;margin-bottom: 6px;overflow:hidden;
+	//         -webkit-line-clamp:2;-webkit-box-orient: vertical;display: -webkit-box;color: #222222;}
+	//     .mix-one-subtitle{font-size: 12px;line-height: 14px;max-height: 28px;overflow:hidden;
+	//         -webkit-line-clamp:2;-webkit-box-orient: vertical;display: -webkit-box; color: #9a9a9a;}
+	// </style>
+	// <template>
+	// <a class="mix-one" v-bind:href="mixOneUrl">
+	// <!-- v-link="{ name: 'works-detail', params: { id: mix.item_id }}" -->
+	//     <div class="mix-one-left">
+	//         <img v-bind:src="mix.image">
+	//     </div>
+	//     <div class="mix-one-right">
+	//         <h4 class="mix-one-title">{{mix.title}}</h4>
+	//         <p class="mix-one-subtitle">{{mix.subtitle}}</p>
+	//     </div>
+	// </a>
+	// </template>
+	// <script>
+	exports.default = {
+	    props: ['mix'],
+	    data: function data() {
+	        return {
+	            mixOneUrl: ''
+	        };
+	    },
+	    ready: function ready() {
+	        this.mixOneUrl = this.refurlDeal(this.mix.ref_url);
+	    },
+	    methods: {
+	        refurlDeal: function refurlDeal(url) {
+	            // console.dir(url);
+	            var urlSplit = url.split('?');
+	            var urlType = urlSplit[0].split('/')[3];
+	            var urlParams = urlSplit[1].split(/[=&]/);
+	            var returnUrl = '';
+	            // console.dir(urlSplit);
+	            console.dir(urlType);
+	            // console.dir(urlParams);
+	            switch (urlType) {
+	                case 'pub':
+	                    var pubId = this.forMatch('pub_id', urlParams);
+	                    returnUrl = '#!/works-detail/' + pubId;
+	                    break;
+	                case 'web':
+	                    // let pubWebId = this.forMatch('pubid',urlParams);
+	                    // console.dir(pubWebId);
+	                    // if(pubWebId==''){
+	                    //     console.dir('2');
+	                    returnUrl = this.forMatch('url', urlParams);
+	                    // }else{
+	                    //     returnUrl = '/#!/works-detail/'+pubWebId;
+	                    // }  
+	                    break;
+	            }
+	            return returnUrl;
+	        },
+	        forMatch: function forMatch(str, urlParams) {
+	            var urlParamsLength = urlParams.length;
+	            var returnStr = '';
+	            // console.dir(str);
+	            for (var i = 0; i < urlParamsLength; i = i + 2) {
+	                if (urlParams[i].match(str)) {
+	                    console.dir(urlParams[i + 1]);
+	                    returnStr = decodeURIComponent(urlParams[i + 1]);
+	                }
+	            }
+	            return returnStr;
+	        }
+	    }
+	};
+	// </script>
+	/* generated by vue-loader */
+
+/***/ },
 /* 70 */
+/***/ function(module, exports) {
+
+	module.exports = "\r\n<a class=\"mix-one\" v-bind:href=\"mixOneUrl\">\r\n<!-- v-link=\"{ name: 'works-detail', params: { id: mix.item_id }}\" -->\r\n    <div class=\"mix-one-left\">\r\n        <img v-bind:src=\"mix.image\">\r\n    </div>\r\n    <div class=\"mix-one-right\">\r\n        <h4 class=\"mix-one-title\">{{mix.title}}</h4>\r\n        <p class=\"mix-one-subtitle\">{{mix.subtitle}}</p>\r\n    </div>\r\n</a>\r\n";
+
+/***/ },
+/* 71 */
+/***/ function(module, exports) {
+
+	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"mix\"></nav-top>\n    <div v-for=\"mix in mix\">\n        <div class=\"blank\"></div>\n        <div class=\"mix-top\">\n            <span class=\"mix-top-left\"></span><span class=\"mix-title\">{{mix.title}}</span><span class=\"mix-more\" v-link=\"{ name: 'mix-more', params: { type: encodeURI(mix.title)}}\">更多></span>\n        </div>\n        <mix-one v-for=\"mix.items in mix.items\" :mix=\"mix.items[$index]\"></mix-one>\n    </div>\n";
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(73)
+	__vue_script__ = __webpack_require__(75)
+	__vue_template__ = __webpack_require__(76)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "G:\\github\\vue-pro\\src\\views\\mix-more.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(74);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(34)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-7c49fae0&file=mix-more.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./mix-more.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-7c49fae0&file=mix-more.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./mix-more.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(33)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"mix-more.vue","sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18023,29 +18576,1097 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	// <template>
-	//     <!-- 全局header -->
-	//     <nav-top type="review"></nav-top>
-	// </template>
-	// <script>
-	exports.default = {
-	    components: {
-	        'nav-top': __webpack_require__(36)
-	    }
-	};
-	// </script>
 	// <style lang="less">
 	//
 	// </style>
+	// <template>
+	//     <nav-top v-show="nav_show==1" type="news"></nav-top>
+	//     <mix-one v-for="mix in mix" :mix="mix"></mix-one>
+	//     <back-top v-show="isBackTopShow==true"></back-top>
+	// </template>
+	// <script>
+	exports.default = {
+	    data: function data() {
+	        return {
+	            mix: '',
+	            tags: '',
+	            nav_show: 0,
+	            nextPageToken: '',
+	            isBackTopShow: false
+	        };
+	    },
+	    route: {
+	        data: function data(transition) {
+	            this.type = decodeURI(transition.to.params.type);
+	            switch (this.type) {
+	                case 'news':
+	                    this.tags = '{{行业动态}}';
+	                    this.nav_show = 1;
+	                    break;
+	                default:
+	                    this.tags = '{{' + this.type + '}}';
+	                    break;
+	            }
+	        }
+	    },
+	    created: function created() {},
+	    ready: function ready() {
+	        this.getData();
+	        var self = this;
+	        window.onscroll = function () {
+	            if (document.body.clientHeight - document.body.scrollTop < 1000) {
+	                if (self.nextPageToken != '') {
+	                    self.getData();
+	                    self.nextPageToken = '';
+	                }
+	            }
+	            if (document.body.scrollTop > 1000) {
+	                self.isBackTopShow = true;
+	            } else {
+	                self.isBackTopShow = false;
+	            }
+	        };
+	    },
+	    methods: {
+	        getMixUrl: function getMixUrl() {
+	            var url = '';
+	            if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                url = localStorage.getItem('apphost') + 'apiv2/infolist_by_taglist_' + encodeURI(this.tags) + '.json';
+	            } else {
+	                url = localStorage.getItem('apphost') + 'apiv2/infolist_by_taglist';
+	            }
+	            return url;
+	        },
+	        getData: function getData() {
+	            var url = this.getMixUrl();
+	            this.$http({ url: url, method: 'GET', data: { tags: this.tags, page_token: this.nextPageToken }, xhr: { withCredentials: true } }).then(function (response) {
+	                this.mix = response.data.data.list;
+	                // console.dir(this.mix);
+	            });
+	        }
+	    },
+	    components: {
+	        'nav-top': __webpack_require__(36),
+	        'mix-one': __webpack_require__(66),
+	        'back-top': __webpack_require__(46)
+	    }
+	};
+	// </script>
+	//
 	//
 	//
 	/* generated by vue-loader */
 
 /***/ },
-/* 71 */
+/* 76 */
 /***/ function(module, exports) {
 
-	module.exports = "\n    <!-- 全局header -->\n    <nav-top type=\"review\"></nav-top>\n";
+	module.exports = "\n    <nav-top v-show=\"nav_show==1\" type=\"news\"></nav-top>\n    <mix-one v-for=\"mix in mix\" :mix=\"mix\"></mix-one>\n    <back-top v-show=\"isBackTopShow==true\"></back-top>\n";
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(78)
+	__vue_script__ = __webpack_require__(80)
+	__vue_template__ = __webpack_require__(91)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "G:\\github\\vue-pro\\src\\views\\works-detail.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(79);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(34)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-63608094&file=works-detail.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./works-detail.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-63608094&file=works-detail.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./works-detail.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(33)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".owner {\n  height: 64px;\n}\n.owner-avatar {\n  width: 36px;\n  height: 36px;\n  border-radius: 18px;\n  margin: 14px 14px 0 10px;\n  float: left;\n}\n.owner-middle {\n  height: 48px;\n  float: left;\n  margin-top: 16px;\n}\n.owner-nickname {\n  font-size: 14px;\n  color: #4a4a4a;\n  height: 18px;\n  line-height: 18px;\n}\n.pub-date {\n  font-size: 12px;\n  color: #dcdcdc;\n  height: 14px;\n  line-height: 14px;\n}\n.blank {\n  height: 6px;\n  background-color: #dddddd;\n  clear: both;\n}\n.title {\n  font-size: 16px;\n  color: #3b4554;\n  margin: 10px;\n  height: auto;\n  line-height: 22px;\n}\n.tags-list {\n  margin: 10px 10px 10px 4px;\n  height: 20px;\n  overflow: hidden;\n}\n.tags-list li {\n  display: inline-block;\n  height: 18px;\n  padding: 0 6px 0 6px;\n  border: 1px solid #dbdbdb;\n  color: #9a9a9a;\n  font-size: 12px;\n  margin: 0 6px 0 6px;\n}\n.like-comment {\n  height: 44px;\n  border-top: 1px solid #dbdbdb;\n}\n.like-comment span {\n  display: inline-block;\n  text-align: center;\n  height: 40px;\n}\n.content-like {\n  border-right: 1px solid #dcdcdc;\n  width: 49%;\n}\n.content-comment {\n  width: 49%;\n}\n.icon {\n  width: 20px;\n  height: 20px;\n  margin: 12px 6px 0 0;\n  vertical-align: top;\n}\n.count {\n  font-size: 12px;\n  color: #9a9a9a;\n  vertical-align: top;\n  display: inline-block;\n  height: 40px;\n  line-height: 40px;\n  margin: 0 0 0 6px;\n}\n.comments {\n  margin-bottom: 42px;\n}\n.add-comment {\n  position: fixed;\n  bottom: 0;\n  width: 100%;\n  padding: 0 2.5% 0 2.5%;\n  background-color: #ffffff;\n}\n.add-comment-content {\n  border: none;\n  border-bottom: 1px solid #3a9df9;\n  width: 83%;\n  display: inline-block;\n  min-height: 18px;\n  line-height: 18px;\n  font-size: 14px;\n  margin: 10px 0 10px 0;\n  color: #9a9a9a;\n}\n.add-comment-submit {\n  font-size: 14px;\n  color: #9a9a9a;\n  display: inline-block;\n  vertical-align: top;\n  position: absolute;\n  width: 12%;\n  text-align: center;\n  top: 50%;\n  margin-top: -7px;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-63608094&file=works-detail.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/views/works-detail.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;CACd;AACD;EACE,YAAY;EACZ,aAAa;EACb,oBAAoB;EACpB,yBAAyB;EACzB,YAAY;CACb;AACD;EACE,aAAa;EACb,YAAY;EACZ,iBAAiB;CAClB;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,aAAa;EACb,kBAAkB;CACnB;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,aAAa;EACb,kBAAkB;CACnB;AACD;EACE,YAAY;EACZ,0BAA0B;EAC1B,YAAY;CACb;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,aAAa;EACb,aAAa;EACb,kBAAkB;CACnB;AACD;EACE,2BAA2B;EAC3B,aAAa;EACb,iBAAiB;CAClB;AACD;EACE,sBAAsB;EACtB,aAAa;EACb,qBAAqB;EACrB,0BAA0B;EAC1B,eAAe;EACf,gBAAgB;EAChB,oBAAoB;CACrB;AACD;EACE,aAAa;EACb,8BAA8B;CAC/B;AACD;EACE,sBAAsB;EACtB,mBAAmB;EACnB,aAAa;CACd;AACD;EACE,gCAAgC;EAChC,WAAW;CACZ;AACD;EACE,WAAW;CACZ;AACD;EACE,YAAY;EACZ,aAAa;EACb,qBAAqB;EACrB,oBAAoB;CACrB;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,oBAAoB;EACpB,sBAAsB;EACtB,aAAa;EACb,kBAAkB;EAClB,kBAAkB;CACnB;AACD;EACE,oBAAoB;CACrB;AACD;EACE,gBAAgB;EAChB,UAAU;EACV,YAAY;EACZ,uBAAuB;EACvB,0BAA0B;CAC3B;AACD;EACE,aAAa;EACb,iCAAiC;EACjC,WAAW;EACX,sBAAsB;EACtB,iBAAiB;EACjB,kBAAkB;EAClB,gBAAgB;EAChB,sBAAsB;EACtB,eAAe;CAChB;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,sBAAsB;EACtB,oBAAoB;EACpB,mBAAmB;EACnB,WAAW;EACX,mBAAmB;EACnB,SAAS;EACT,iBAAiB;CAClB","file":"works-detail.vue","sourcesContent":[".owner {\n  height: 64px;\n}\n.owner-avatar {\n  width: 36px;\n  height: 36px;\n  border-radius: 18px;\n  margin: 14px 14px 0 10px;\n  float: left;\n}\n.owner-middle {\n  height: 48px;\n  float: left;\n  margin-top: 16px;\n}\n.owner-nickname {\n  font-size: 14px;\n  color: #4a4a4a;\n  height: 18px;\n  line-height: 18px;\n}\n.pub-date {\n  font-size: 12px;\n  color: #dcdcdc;\n  height: 14px;\n  line-height: 14px;\n}\n.blank {\n  height: 6px;\n  background-color: #dddddd;\n  clear: both;\n}\n.title {\n  font-size: 16px;\n  color: #3b4554;\n  margin: 10px;\n  height: auto;\n  line-height: 22px;\n}\n.tags-list {\n  margin: 10px 10px 10px 4px;\n  height: 20px;\n  overflow: hidden;\n}\n.tags-list li {\n  display: inline-block;\n  height: 18px;\n  padding: 0 6px 0 6px;\n  border: 1px solid #dbdbdb;\n  color: #9a9a9a;\n  font-size: 12px;\n  margin: 0 6px 0 6px;\n}\n.like-comment {\n  height: 44px;\n  border-top: 1px solid #dbdbdb;\n}\n.like-comment span {\n  display: inline-block;\n  text-align: center;\n  height: 40px;\n}\n.content-like {\n  border-right: 1px solid #dcdcdc;\n  width: 49%;\n}\n.content-comment {\n  width: 49%;\n}\n.icon {\n  width: 20px;\n  height: 20px;\n  margin: 12px 6px 0 0;\n  vertical-align: top;\n}\n.count {\n  font-size: 12px;\n  color: #9a9a9a;\n  vertical-align: top;\n  display: inline-block;\n  height: 40px;\n  line-height: 40px;\n  margin: 0 0 0 6px;\n}\n.comments {\n  margin-bottom: 42px;\n}\n.add-comment {\n  position: fixed;\n  bottom: 0;\n  width: 100%;\n  padding: 0 2.5% 0 2.5%;\n  background-color: #ffffff;\n}\n.add-comment-content {\n  border: none;\n  border-bottom: 1px solid #3a9df9;\n  width: 83%;\n  display: inline-block;\n  min-height: 18px;\n  line-height: 18px;\n  font-size: 14px;\n  margin: 10px 0 10px 0;\n  color: #9a9a9a;\n}\n.add-comment-submit {\n  font-size: 14px;\n  color: #9a9a9a;\n  display: inline-block;\n  vertical-align: top;\n  position: absolute;\n  width: 12%;\n  text-align: center;\n  top: 50%;\n  margin-top: -7px;\n}\n"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	// <style lang="less">
+	//     .owner{height: 64px;}
+	//     .owner-avatar{width: 36px;height: 36px;border-radius: 18px;margin: 14px 14px 0 10px;float: left;}
+	//     .owner-middle{height: 48px;float: left;margin-top: 16px;}
+	//     .owner-nickname{font-size: 14px;color: #4a4a4a;height: 18px;line-height: 18px;}
+	//     .pub-date{font-size: 12px;color: #dcdcdc;height: 14px;line-height: 14px;}
+	//
+	//     .blank{height: 6px;background-color: #dddddd;clear: both;}
+	//     .title{font-size: 16px;color: #3b4554;margin: 10px;height: auto;line-height: 22px;}
+	//
+	//     .tags-list{margin: 10px 10px 10px 4px;height: 20px;overflow: hidden;}
+	//     .tags-list li{display: inline-block;height: 18px;padding: 0 6px 0 6px;border: 1px solid #dbdbdb;color: #9a9a9a;
+	//         font-size: 12px;margin: 0 6px 0 6px;}
+	//
+	//     .like-comment{height: 44px;border-top: 1px solid #dbdbdb;}
+	//     .like-comment span{display: inline-block;text-align: center;height: 40px;}
+	//     .content-like{border-right: 1px solid #dcdcdc;width: 49%;}
+	//     .content-comment{width: 49%;}
+	//     .icon{width: 20px;height: 20px;margin: 12px 6px 0 0;vertical-align: top;}
+	//     .count{font-size: 12px;color: #9a9a9a;vertical-align: top;display: inline-block;height: 40px;line-height: 40px;margin: 0 0 0 6px}
+	//
+	//     .comments{margin-bottom: 42px;}
+	//     .add-comment{position: fixed;bottom: 0;width: 100%;padding: 0 2.5% 0 2.5%;background-color: #ffffff;}
+	//     .add-comment-content{border:none;border-bottom: 1px solid #3a9df9;width: 83%;display: inline-block;min-height: 18px;line-height:18px;
+	//         font-size: 14px;margin: 10px 0 10px 0;color: #9a9a9a;}
+	//     .add-comment-submit{font-size: 14px;color: #9a9a9a;display: inline-block;vertical-align: top;position: absolute;width: 12%;
+	//         text-align: center;top: 50%;margin-top: -7px;}
+	// </style>
+	// <template>
+	//     <div class="owner">
+	//         <img class="owner-avatar" v-bind:src="owner.avatar_url">
+	//         <div class="owner-middle">
+	//             <p class="owner-nickname">{{owner.nickname}}</p>
+	//             <p class="pub-date">{{worksDetail.pub_date}}</p>
+	//         </div>
+	//     </div>
+	//     <div class="blank"></div>
+	//     <p class="title">{{worksDetail.title}}</p>
+	//     <div class="detail-list">
+	//         <detail-one v-for="worksDetail.detail_list in worksDetail.detail_list" :detail="worksDetail.detail_list[$index]"></detail-one>
+	//     </div>
+	//     <ul class="tags-list">
+	//         <li v-for="tags in tags">{{tags.tag_name}}</li>
+	//     </ul>
+	//     <div class="like-comment">
+	//         <span class="content-like" v-on:click="dealLike">
+	//             <img class="icon" v-bind:src="likedImgSrc">
+	//             <span class="count">{{worksDetail.likes_count}}</span>
+	//         </span>
+	//         <span class="content-comment">
+	//             <img class="icon" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png">
+	//             <span class="count">{{worksDetail.comments_count}}</span>
+	//         </span>
+	//     </div>
+	//     <div class="blank"></div>
+	//     <div class="comments">
+	//         <comments-one v-for="comments.list in comments.list" :comment="comments.list[$index]"></comments-one>
+	//     </div>
+	//     <div class="add-comment">
+	//         <textarea class="add-comment-content" name="comment-content" rows="1" wrap="hard" maxlength="140" placeholder="{{commentPlaceholder}}" v-on:focus="commentFocus" v-on:input="commentChange" v-model="commentContent" v-bind:style="{ height: commentContainerHeight + 'px' }"></textarea>
+	//         <span class="add-comment-submit" v-on:click="replyComment">发送</span>
+	//     </div>
+	// </template>
+	// <script>
+	exports.default = {
+	    data: function data() {
+	        return {
+	            id: '',
+	            worksDetail: {
+	                pub_date: '',
+	                title: '',
+	                comments_count: '',
+	                likes_count: '',
+	                detail_list: []
+	            },
+	            owner: {
+	                avatar_url: '',
+	                nickname: ''
+	            },
+	            comments: {
+	                next_page_token: '',
+	                list: []
+	            },
+	            tags: [],
+	            likedImgSrc: '',
+	            isLiked: '',
+	            commentContent: '',
+	            commentPlaceholder: '我的评论(140字以内)',
+	            commentContainerHeight: '',
+	            replyToUser: ''
+	        };
+	    },
+	    route: {
+	        data: function data(transition) {
+	            this.id = decodeURI(transition.to.params.id);
+	            // console.dir(transition.to.params.id);
+	            // console.dir(this.id);
+	        }
+	    },
+	    created: function created() {},
+	    ready: function ready() {
+	        var url = '';
+	        if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	            url = localStorage.getItem('apphost') + 'apiv2/publish_detail.json';
+	        } else {
+	            url = localStorage.getItem('apphost') + 'apiv2/publish_detail';
+	        }
+	        // console.log(url);
+	        this.$http({ url: url, method: 'GET', data: { pub_id: this.id }, xhr: { withCredentials: true } }).then(function (response) {
+	            if (response.data.code == 0) {
+	                this.worksDetail = response.data.data;
+	                this.worksDetail.pub_date = this.timestampToStr(response.data.data.pub_date);
+	                this.owner = response.data.data.owner;
+	                this.comments = response.data.data.comments;
+	                this.tags = response.data.data.tags;
+	                if (this.worksDetail.my_flags != null) {
+	                    if (this.worksDetail.my_flags.is_liked == 1) {
+	                        this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-choose.png';
+	                        this.isLiked = 1;
+	                    }
+	                } else {
+	                    this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png';
+	                    this.isLiked = 0;
+	                }
+	                this.replyToUser = this.owner;
+	                console.dir(this.replyToUser);
+	                // console.dir(this.worksDetail.owner.avatar_url);
+	            }
+	        });
+	    },
+	    watch: {
+	        'comments': function comments(val, oldVal) {
+	            console.dir('new: %s, old: %s', val, oldVal);
+	        }
+	    },
+	    methods: {
+	        timestampToStr: function timestampToStr(timestamp) {
+	            var unixTimestamp = new Date(timestamp * 1000);
+	            var d = new Date(timestamp * 1000);
+	            var jstimestamp = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + (d.getHours() - 8) + ":" + d.getMinutes();
+	            return jstimestamp;
+	        },
+	        dealLike: function dealLike() {
+	            if (this.isLiked == 1) {
+	                console.dir('1');
+	                var unlikeUrl = this.getUnlikeUrl();
+	                this.$http({ url: unlikeUrl, method: 'POST', data: { type: 'pub', id: this.id }, xhr: { withCredentials: true } }).then(function (response) {
+	                    if (response.data.code == 0) {
+	                        this.isLiked = 0;
+	                        this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png';
+	                        this.worksDetail.likes_count--;
+	                    }
+	                });
+	            } else {
+	                console.dir(0);
+	                var likeUrl = this.getLikeUrl();
+	                this.$http({ url: likeUrl, method: 'POST', data: { type: 'pub', id: this.id }, xhr: { withCredentials: true } }).then(function (response) {
+	                    if (response.data.code == 0) {
+	                        this.isLiked = 1;
+	                        this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-choose.png';
+	                        this.worksDetail.likes_count++;
+	                    }
+	                });
+	            }
+	        },
+	        getLikeUrl: function getLikeUrl() {
+	            var url = '';
+	            if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                url = localStorage.getItem('apphost') + 'apiv2/login.json';
+	            } else {
+	                url = localStorage.getItem('apphost') + 'apiv2/like';
+	            }
+	            return url;
+	        },
+	        getUnlikeUrl: function getUnlikeUrl() {
+	            var url = '';
+	            if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                url = localStorage.getItem('apphost') + 'apiv2/like.json';
+	            } else {
+	                url = localStorage.getItem('apphost') + 'apiv2/unlike';
+	            }
+	            return url;
+	        },
+	        commentFocus: function commentFocus(event) {
+	            console.dir(event);
+	            // console.dir(this.commentContent);
+	        },
+	        commentChange: function commentChange(event) {
+	            this.commentContainerHeight = event.path[0].scrollHeight - 10;
+	            console.dir(event.path[0].scrollHeight);
+	            // console.dir(this.commentContent);
+	        },
+	        replyComment: function replyComment(event) {
+	            console.dir(event);
+	            var commentUrl = this.getCommentUrl();
+	            this.$http({ url: commentUrl, method: 'POST', data: { type: 'pub', id: this.id, content: this.commentContent, reply_to: this.replyToUser.user_id }, xhr: { withCredentials: true } }).then(function (response) {
+	                if (response.data.code == 0) {
+	                    var url = '';
+	                    if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                        url = localStorage.getItem('apphost') + 'apiv2/publish_detail.json';
+	                    } else {
+	                        url = localStorage.getItem('apphost') + 'apiv2/publish_detail';
+	                    }
+	                    this.$http({ url: url, method: 'GET', data: { pub_id: this.id }, xhr: { withCredentials: true } }).then(function (response) {
+	                        if (response.data.code == 0) {
+	                            this.worksDetail = response.data.data;
+	                            this.comments = response.data.data.comments;
+	                            this.commentContent = '';
+	                            this.commentPlaceholder = '我的评论(140字以内)', this.commentContainerHeight = '20px', this.replyToUser = this.owner;
+	                            console.dir(this.replyToUser);
+	                        }
+	                    });
+	                }
+	            });
+	        },
+	        getCommentUrl: function getCommentUrl() {
+	            var url = '';
+	            if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                url = localStorage.getItem('apphost') + 'apiv2/like.json';
+	            } else {
+	                url = localStorage.getItem('apphost') + 'apiv2/comment';
+	            }
+	            return url;
+	        }
+	    },
+	    events: {
+	        'comment-click-msg': function commentClickMsg(msg) {
+	            // 事件回调内的 `this` 自动绑定到注册它的实例上
+	            // this.messages.push(msg);
+	            this.replyToUser = msg;
+	            this.commentPlaceholder = '回复:' + this.replyToUser.nickname;
+	            console.dir(msg);
+	        }
+	    },
+	    components: {
+	        'detail-one': __webpack_require__(81),
+	        'comments-one': __webpack_require__(86)
+	    }
+	};
+	// </script>
+	//
+	//
+	//
+	/* generated by vue-loader */
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(82)
+	__vue_script__ = __webpack_require__(84)
+	__vue_template__ = __webpack_require__(85)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "G:\\github\\vue-pro\\src\\components\\detail-one.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(83);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(34)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-1eeea1d8&file=detail-one.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./detail-one.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-1eeea1d8&file=detail-one.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./detail-one.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(33)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".detail-one-text {\n  font-size: 14px;\n  color: #737373;\n  line-height: 18px;\n  margin: 10px;\n}\n.detail-one-thumbnail {\n  width: 100%;\n}\n.detail-one-ihpv {\n  margin: 10px;\n}\n.detail-one-youkuv {\n  margin: 10px;\n}\n.detail-one-youkuv-iframe {\n  width: 100%;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-1eeea1d8&file=detail-one.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/detail-one.vue.style"],"names":[],"mappings":"AAAA;EACE,gBAAgB;EAChB,eAAe;EACf,kBAAkB;EAClB,aAAa;CACd;AACD;EACE,YAAY;CACb;AACD;EACE,aAAa;CACd;AACD;EACE,aAAa;CACd;AACD;EACE,YAAY;CACb","file":"detail-one.vue","sourcesContent":[".detail-one-text {\n  font-size: 14px;\n  color: #737373;\n  line-height: 18px;\n  margin: 10px;\n}\n.detail-one-thumbnail {\n  width: 100%;\n}\n.detail-one-ihpv {\n  margin: 10px;\n}\n.detail-one-youkuv {\n  margin: 10px;\n}\n.detail-one-youkuv-iframe {\n  width: 100%;\n}\n"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 84 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	// <style lang="less">
+	//     .detail-one-text{font-size: 14px;color: #737373;line-height: 18px;margin: 10px;}
+	//     .detail-one-thumbnail{width: 100%;}
+	//     .detail-one-ihpv{margin: 10px;}
+	//
+	//     .detail-one-youkuv{margin: 10px;}
+	//     .detail-one-youkuv-iframe{width: 100%;}
+	// </style>
+	// <template>
+	//     <div class="detail-one">
+	//         <p v-if="detail.type=='text'" class="detail-one-text">{{detail.content.text}}</p>
+	//         <img v-if="detail.type=='image'" v-bind:src="detail.content.thumbnail_url" class="detail-one-thumbnail">
+	//         <div v-if="detail.type=='ihp_v'" class="detail-one-ihpv">
+	//             <video width="100%" v-bind:style="{height: videoHeight + 'px' }" v-bind:poster="detail.content.thumbnail_url" controls>
+	//                 <source v-bind:src="detail.content.play_url" type="video/mp4">
+	//             </video>
+	//             <!-- <img v-on:click="videoPlay" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png"> -->
+	//         </div>
+	//         <div v-if="detail.type=='youku_v'" class="detail-one-youkuv">
+	//             <iframe class="detail-one-youkuv-iframe" v-bind:src="detail.content.play_url" v-bind:style="{height: iframeHeight + 'px' }" allowfullscreen scrolling="no"></iframe>
+	//         </div>
+	//
+	//     </div>
+	// </template>
+	// <script>
+	exports.default = {
+	    props: ['detail'],
+	    data: function data() {
+	        return {
+	            iframeHeight: '',
+	            videoHeight: ''
+	        };
+	    },
+	    ready: function ready() {
+	        this.iframeHeight = document.body.clientWidth * 9 / 16;
+	        this.videoHeight = document.body.clientWidth * 9 / 16;
+	    },
+	    methods: {
+	        videoPlay: function videoPlay(event) {
+	            console.dir(event);
+	        }
+	    }
+	};
+	// </script>
+	/* generated by vue-loader */
+
+/***/ },
+/* 85 */
+/***/ function(module, exports) {
+
+	module.exports = "\n    <div class=\"detail-one\">\n        <p v-if=\"detail.type=='text'\" class=\"detail-one-text\">{{detail.content.text}}</p>\n        <img v-if=\"detail.type=='image'\" v-bind:src=\"detail.content.thumbnail_url\" class=\"detail-one-thumbnail\">\n        <div v-if=\"detail.type=='ihp_v'\" class=\"detail-one-ihpv\">\n            <video width=\"100%\" v-bind:style=\"{height: videoHeight + 'px' }\" v-bind:poster=\"detail.content.thumbnail_url\" controls>\n                <source v-bind:src=\"detail.content.play_url\" type=\"video/mp4\">\n            </video>\n            <!-- <img v-on:click=\"videoPlay\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png\"> -->\n        </div>\n        <div v-if=\"detail.type=='youku_v'\" class=\"detail-one-youkuv\">\n            <iframe class=\"detail-one-youkuv-iframe\" v-bind:src=\"detail.content.play_url\" v-bind:style=\"{height: iframeHeight + 'px' }\" allowfullscreen scrolling=\"no\"></iframe>\n        </div>\n\n    </div>\n";
+
+/***/ },
+/* 86 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(87)
+	__vue_script__ = __webpack_require__(89)
+	__vue_template__ = __webpack_require__(90)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "G:\\github\\vue-pro\\src\\components\\comments-one.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(88);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(34)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-66ce7592&file=comments-one.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./comments-one.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-66ce7592&file=comments-one.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./comments-one.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(33)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".comments-one {\n  padding: 0 10px 0 0;\n  clear: both;\n}\n.comment-left {\n  float: left;\n  display: inline-block;\n}\n.comment-left img {\n  width: 36px;\n  height: 36px;\n  border-radius: 18px;\n  margin: 0 10px 0 10px;\n}\n.comments-right {\n  position: relative;\n  margin-left: 56px;\n  border-bottom: 1px solid #dcdcdc;\n}\n.comments-right-top {\n  height: 16px;\n  margin-top: 10px;\n}\n.comments-right-top span {\n  height: 16px;\n  line-height: 16px;\n  vertical-align: top;\n  display: inline-block;\n}\n.comments-owner-nickname {\n  font-size: 15px;\n  color: #3b4554;\n}\n.comments-created {\n  font-size: 12px;\n  color: #9a9a9a;\n  float: right;\n}\n.comments-content {\n  font-size: 13px;\n  color: #9a9a9a;\n  margin-top: 10px;\n  padding-bottom: 10px;\n}\n.comments-content span {\n  font-size: 13px;\n  color: #9a9a9a;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-66ce7592&file=comments-one.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/comments-one.vue.style"],"names":[],"mappings":"AAAA;EACE,oBAAoB;EACpB,YAAY;CACb;AACD;EACE,YAAY;EACZ,sBAAsB;CACvB;AACD;EACE,YAAY;EACZ,aAAa;EACb,oBAAoB;EACpB,sBAAsB;CACvB;AACD;EACE,mBAAmB;EACnB,kBAAkB;EAClB,iCAAiC;CAClC;AACD;EACE,aAAa;EACb,iBAAiB;CAClB;AACD;EACE,aAAa;EACb,kBAAkB;EAClB,oBAAoB;EACpB,sBAAsB;CACvB;AACD;EACE,gBAAgB;EAChB,eAAe;CAChB;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,aAAa;CACd;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,iBAAiB;EACjB,qBAAqB;CACtB;AACD;EACE,gBAAgB;EAChB,eAAe;CAChB","file":"comments-one.vue","sourcesContent":[".comments-one {\n  padding: 0 10px 0 0;\n  clear: both;\n}\n.comment-left {\n  float: left;\n  display: inline-block;\n}\n.comment-left img {\n  width: 36px;\n  height: 36px;\n  border-radius: 18px;\n  margin: 0 10px 0 10px;\n}\n.comments-right {\n  position: relative;\n  margin-left: 56px;\n  border-bottom: 1px solid #dcdcdc;\n}\n.comments-right-top {\n  height: 16px;\n  margin-top: 10px;\n}\n.comments-right-top span {\n  height: 16px;\n  line-height: 16px;\n  vertical-align: top;\n  display: inline-block;\n}\n.comments-owner-nickname {\n  font-size: 15px;\n  color: #3b4554;\n}\n.comments-created {\n  font-size: 12px;\n  color: #9a9a9a;\n  float: right;\n}\n.comments-content {\n  font-size: 13px;\n  color: #9a9a9a;\n  margin-top: 10px;\n  padding-bottom: 10px;\n}\n.comments-content span {\n  font-size: 13px;\n  color: #9a9a9a;\n}\n"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 89 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	// <style lang="less">
+	//     .comments-one{padding: 0 10px 0 0;clear: both;}
+	//     .comment-left{float: left;display: inline-block;}
+	//     .comment-left img{width: 36px;height: 36px;border-radius: 18px;margin: 0 10px 0 10px;}
+	//     .comments-right{position: relative;margin-left: 56px;border-bottom: 1px solid #dcdcdc;}
+	//     .comments-right-top{height: 16px;margin-top: 10px;}
+	//     .comments-right-top span{height: 16px;line-height: 16px;vertical-align: top;display: inline-block;}
+	//     .comments-owner-nickname{font-size: 15px;color: #3b4554;}
+	//     .comments-created{font-size: 12px;color: #9a9a9a;float: right;}
+	//     .comments-content{font-size: 13px;color: #9a9a9a;margin-top: 10px;padding-bottom: 10px;}
+	//     .comments-content span{font-size: 13px;color: #9a9a9a;}
+	// </style>
+	// <template>
+	//     <div class="comments-one" v-on:click="commentclick">
+	//         <div class="comment-left">
+	//             <img v-bind:src="comment.owner.avatar_url">
+	//         </div>
+	//         <div class="comments-right">
+	//             <div class="comments-right-top">
+	//                 <span class="comments-owner-nickname">{{comment.owner.nickname}}</span>
+	//                 <span class="comments-created">{{comment.created_at}}</span>
+	//             </div>
+	//             <p class="comments-content"><span v-if="comment.reply_to!=null"><span>回复</span><span style="margin: 0 5px 0 5px;color:#3a9df9;">{{comment.reply_to.nickname}}:</span></span>{{comment.content}}</p>
+	//         </div>
+	//     </div>
+	// </template>
+	// <script>
+	exports.default = {
+	    props: ['comment'],
+	    data: function data() {
+	        return {
+	            childMsg: ''
+	        };
+	    },
+	    ready: function ready() {
+	        this.comment.created_at = this.timestampToStr(this.comment.created_at);
+	        // console.dir(this.comment);
+	    },
+	    methods: {
+	        timestampToStr: function timestampToStr(timestamp) {
+	            var unixTimestamp = new Date(timestamp * 1000);
+	            var d = new Date(timestamp * 1000);
+	            var jstimestamp = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + (d.getHours() - 8) + ":" + d.getMinutes();
+	            return jstimestamp;
+	        },
+	        commentclick: function commentclick() {
+	            this.childMsg = this.comment.owner;
+	            this.$dispatch('comment-click-msg', this.childMsg);
+	            console.dir(this.childMsg);
+	        }
+	    }
+	};
+	// </script>
+	/* generated by vue-loader */
+
+/***/ },
+/* 90 */
+/***/ function(module, exports) {
+
+	module.exports = "\n    <div class=\"comments-one\" v-on:click=\"commentclick\">\n        <div class=\"comment-left\">\n            <img v-bind:src=\"comment.owner.avatar_url\">\n        </div>\n        <div class=\"comments-right\">\n            <div class=\"comments-right-top\">\n                <span class=\"comments-owner-nickname\">{{comment.owner.nickname}}</span>\n                <span class=\"comments-created\">{{comment.created_at}}</span>\n            </div>\n            <p class=\"comments-content\"><span v-if=\"comment.reply_to!=null\"><span>回复</span><span style=\"margin: 0 5px 0 5px;color:#3a9df9;\">{{comment.reply_to.nickname}}:</span></span>{{comment.content}}</p>\n        </div>\n    </div>\n";
+
+/***/ },
+/* 91 */
+/***/ function(module, exports) {
+
+	module.exports = "\n    <div class=\"owner\">\n        <img class=\"owner-avatar\" v-bind:src=\"owner.avatar_url\">\n        <div class=\"owner-middle\">\n            <p class=\"owner-nickname\">{{owner.nickname}}</p>\n            <p class=\"pub-date\">{{worksDetail.pub_date}}</p>\n        </div>\n    </div>\n    <div class=\"blank\"></div>\n    <p class=\"title\">{{worksDetail.title}}</p>\n    <div class=\"detail-list\">\n        <detail-one v-for=\"worksDetail.detail_list in worksDetail.detail_list\" :detail=\"worksDetail.detail_list[$index]\"></detail-one>\n    </div>\n    <ul class=\"tags-list\">\n        <li v-for=\"tags in tags\">{{tags.tag_name}}</li>\n    </ul>\n    <div class=\"like-comment\">\n        <span class=\"content-like\" v-on:click=\"dealLike\">\n            <img class=\"icon\" v-bind:src=\"likedImgSrc\">\n            <span class=\"count\">{{worksDetail.likes_count}}</span>\n        </span>\n        <span class=\"content-comment\">\n            <img class=\"icon\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png\">\n            <span class=\"count\">{{worksDetail.comments_count}}</span>\n        </span>\n    </div>\n    <div class=\"blank\"></div>\n    <div class=\"comments\">\n        <comments-one v-for=\"comments.list in comments.list\" :comment=\"comments.list[$index]\"></comments-one>\n    </div>\n    <div class=\"add-comment\">\n        <textarea class=\"add-comment-content\" name=\"comment-content\" rows=\"1\" wrap=\"hard\" maxlength=\"140\" placeholder=\"{{commentPlaceholder}}\" v-on:focus=\"commentFocus\" v-on:input=\"commentChange\" v-model=\"commentContent\" v-bind:style=\"{ height: commentContainerHeight + 'px' }\"></textarea>\n        <span class=\"add-comment-submit\" v-on:click=\"replyComment\">发送</span>\n    </div>\n";
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	__webpack_require__(93)
+	__vue_script__ = __webpack_require__(95)
+	__vue_template__ = __webpack_require__(99)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "G:\\github\\vue-pro\\src\\views\\login.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(94);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(34)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-3a2224c2&file=login.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./login.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js?sourceMap!./../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-3a2224c2&file=login.vue!./../../node_modules/less-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./login.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(33)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".login-form {\n  height: 100px;\n  border-radius: 4px;\n  border: 1px solid #cfcfcf;\n  margin: 18px 25px 0 25px;\n}\n.login-form div {\n  height: 40px;\n  padding: 5px 15px 5px 15px;\n}\n.login-container-account {\n  border-bottom: 1px solid #cfcfcf;\n}\n.login-form div input {\n  border: none;\n  color: #383838;\n  font-size: 18px;\n  vertical-align: middle;\n  height: 32px;\n  line-height: 32px;\n  margin: 4px 0 4px 0;\n  width: 100%;\n}\n.login-message {\n  font-size: 14px;\n  color: #f86c59;\n  margin: 0 30px 0 30px;\n  height: 32px;\n  line-height: 32px;\n}\n.login-submit {\n  display: block;\n  height: 50px;\n  background-color: #fe9901;\n  border-radius: 5px;\n  text-align: center;\n  line-height: 50px;\n  color: #ffffff;\n  text-decoration: none;\n  margin: 0 25px 0 25px;\n  font-size: 20px;\n}\n.register-reset {\n  font-size: 14px;\n  text-align: right;\n  margin: 20px 25px 45px 25px;\n  height: 16px;\n  color: #9a9a9a;\n}\n.register-reset span {\n  font-size: 14px;\n}\n.register {\n  color: #556e98;\n  margin-right: 8px;\n}\n.reset {\n  color: #9a9a9a;\n  margin-left: 8px;\n}\n.third-login-title {\n  height: 16px;\n  margin: 0 25px 0 25px;\n}\n.third-login-title p {\n  font-size: 14px;\n  height: 16px;\n  line-height: 16px;\n  float: left;\n  color: #9a9a9a;\n}\n.third-login-title-line {\n  position: relative;\n  border-bottom: 1px solid #e4e7eb;\n  margin: 0 0 0 130px;\n  height: 8px;\n}\n.third-login {\n  margin-top: 32px;\n}\n.third-login li {\n  width: 50%;\n  float: left;\n  text-align: center;\n}\n.third-login li a img {\n  width: 50px;\n  height: 50px;\n}\n.third-login li p {\n  font-size: 12px;\n  height: 14px;\n  line-height: 14px;\n  color: #9a9a9a;\n  margin-top: 12px;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-3a2224c2&file=login.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/views/login.vue.style"],"names":[],"mappings":"AAAA;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,yBAAyB;CAC1B;AACD;EACE,aAAa;EACb,2BAA2B;CAC5B;AACD;EACE,iCAAiC;CAClC;AACD;EACE,aAAa;EACb,eAAe;EACf,gBAAgB;EAChB,uBAAuB;EACvB,aAAa;EACb,kBAAkB;EAClB,oBAAoB;EACpB,YAAY;CACb;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,sBAAsB;EACtB,aAAa;EACb,kBAAkB;CACnB;AACD;EACE,eAAe;EACf,aAAa;EACb,0BAA0B;EAC1B,mBAAmB;EACnB,mBAAmB;EACnB,kBAAkB;EAClB,eAAe;EACf,sBAAsB;EACtB,sBAAsB;EACtB,gBAAgB;CACjB;AACD;EACE,gBAAgB;EAChB,kBAAkB;EAClB,4BAA4B;EAC5B,aAAa;EACb,eAAe;CAChB;AACD;EACE,gBAAgB;CACjB;AACD;EACE,eAAe;EACf,kBAAkB;CACnB;AACD;EACE,eAAe;EACf,iBAAiB;CAClB;AACD;EACE,aAAa;EACb,sBAAsB;CACvB;AACD;EACE,gBAAgB;EAChB,aAAa;EACb,kBAAkB;EAClB,YAAY;EACZ,eAAe;CAChB;AACD;EACE,mBAAmB;EACnB,iCAAiC;EACjC,oBAAoB;EACpB,YAAY;CACb;AACD;EACE,iBAAiB;CAClB;AACD;EACE,WAAW;EACX,YAAY;EACZ,mBAAmB;CACpB;AACD;EACE,YAAY;EACZ,aAAa;CACd;AACD;EACE,gBAAgB;EAChB,aAAa;EACb,kBAAkB;EAClB,eAAe;EACf,iBAAiB;CAClB","file":"login.vue","sourcesContent":[".login-form {\n  height: 100px;\n  border-radius: 4px;\n  border: 1px solid #cfcfcf;\n  margin: 18px 25px 0 25px;\n}\n.login-form div {\n  height: 40px;\n  padding: 5px 15px 5px 15px;\n}\n.login-container-account {\n  border-bottom: 1px solid #cfcfcf;\n}\n.login-form div input {\n  border: none;\n  color: #383838;\n  font-size: 18px;\n  vertical-align: middle;\n  height: 32px;\n  line-height: 32px;\n  margin: 4px 0 4px 0;\n  width: 100%;\n}\n.login-message {\n  font-size: 14px;\n  color: #f86c59;\n  margin: 0 30px 0 30px;\n  height: 32px;\n  line-height: 32px;\n}\n.login-submit {\n  display: block;\n  height: 50px;\n  background-color: #fe9901;\n  border-radius: 5px;\n  text-align: center;\n  line-height: 50px;\n  color: #ffffff;\n  text-decoration: none;\n  margin: 0 25px 0 25px;\n  font-size: 20px;\n}\n.register-reset {\n  font-size: 14px;\n  text-align: right;\n  margin: 20px 25px 45px 25px;\n  height: 16px;\n  color: #9a9a9a;\n}\n.register-reset span {\n  font-size: 14px;\n}\n.register {\n  color: #556e98;\n  margin-right: 8px;\n}\n.reset {\n  color: #9a9a9a;\n  margin-left: 8px;\n}\n.third-login-title {\n  height: 16px;\n  margin: 0 25px 0 25px;\n}\n.third-login-title p {\n  font-size: 14px;\n  height: 16px;\n  line-height: 16px;\n  float: left;\n  color: #9a9a9a;\n}\n.third-login-title-line {\n  position: relative;\n  border-bottom: 1px solid #e4e7eb;\n  margin: 0 0 0 130px;\n  height: 8px;\n}\n.third-login {\n  margin-top: 32px;\n}\n.third-login li {\n  width: 50%;\n  float: left;\n  text-align: center;\n}\n.third-login li a img {\n  width: 50px;\n  height: 50px;\n}\n.third-login li p {\n  font-size: 12px;\n  height: 14px;\n  line-height: 14px;\n  color: #9a9a9a;\n  margin-top: 12px;\n}\n"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _stringify = __webpack_require__(96);
+	
+	var _stringify2 = _interopRequireDefault(_stringify);
+	
+	Object.defineProperty(exports, "__esModule", {
+	        value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// <style lang="less">
+	// 	.login-form{height: 100px;border-radius: 4px;border: 1px solid #cfcfcf;margin: 18px 25px 0 25px;}
+	// 	.login-form div{height: 40px;padding: 5px 15px 5px 15px;}
+	// 	.login-container-account{border-bottom: 1px solid #cfcfcf;}
+	// 	.login-form div input{border: none;color: #383838;font-size: 18px;vertical-align: middle;height: 32px;line-height: 32px;
+	// 		margin: 4px 0 4px 0;width: 100%;}
+	//
+	// 	.login-message{font-size: 14px;color: #f86c59;margin: 0 30px 0 30px;height: 32px;line-height: 32px;}
+	// 	.login-submit{display: block;height: 50px;background-color: #fe9901;border-radius: 5px;text-align: center;line-height: 50px;
+	//             color: #ffffff;text-decoration: none;margin: 0 25px 0 25px;font-size: 20px;}
+	//
+	//     .register-reset{font-size: 14px;text-align: right;margin: 20px 25px 45px 25px;height: 16px;color: #9a9a9a;}
+	//     .register-reset span{font-size: 14px;}
+	//     .register{color: #556e98;margin-right: 8px;}
+	//     .reset{color: #9a9a9a;margin-left: 8px;}
+	//
+	//     .third-login-title{height: 16px;margin: 0 25px 0 25px;}
+	//     .third-login-title p{font-size: 14px;height: 16px;line-height: 16px;float: left;color: #9a9a9a;}
+	//     .third-login-title-line{position: relative;border-bottom: 1px solid #e4e7eb;margin: 0 0 0 130px;height: 8px;}
+	//     .third-login{margin-top: 32px;}
+	//     .third-login li{width: 50%;float: left;text-align: center;}
+	//     .third-login li a img{width: 50px;height: 50px;}
+	//     .third-login li p{font-size: 12px;height: 14px;line-height: 14px;color: #9a9a9a;margin-top: 12px;}
+	// </style>
+	// <template>
+	// 	<form class="login-form">
+	// 		<div class="login-container-account">
+	// 			<input v-model="account" type="text" placeholder="请输入手机号" name="account" maxlength="11"/>
+	// 		</div>
+	// 		<div class="login-container-password">
+	// 			<input v-model="password" type="password" placeholder="请输入6-16位密码" name="password" maxlength="16"/>
+	// 		</div>
+	// 	</form>
+	// 	<p class="login-message">{{message}}</p>
+	// 	<a class="login-submit" v-on:click="login">登录</a>
+	// 	<div class="register-reset">
+	// 		<span class="register">注册账号</span>|<span class="reset">找回密码</span>
+	// 	</div>
+	// 	<div class="third-login-title">
+	// 		<p>使用社交账号登录</p><div class="third-login-title-line"></div>
+	// 	</div>
+	// 	<ul class="third-login">
+	// 		<li><a v-bind:href="qqLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-qq.png"></a><p>QQ</p></li>
+	// 		<li><a v-bind:href="wxLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-wx.png"></a><p>微信</p></li>
+	// 		<li><a v-bind:href="youkuLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-youku.png"></a><p>优酷</p></li>
+	// 	</ul>
+	// </template>
+	// <script>
+	exports.default = {
+	        data: function data() {
+	                return {
+	                        account: '',
+	                        password: '',
+	                        message: '',
+	                        responseData: '',
+	                        qqLoginHref: '',
+	                        wxLoginHref: '',
+	                        youkuLoginHref: '',
+	                        redirectUrl: ''
+	                };
+	        },
+	        route: {
+	                data: function data(transition) {
+	                        this.redirectUrl = decodeURIComponent(transition.to.path.split('=')[1]);
+	                        console.dir(this.redirectUrl);
+	                }
+	        },
+	        ready: function ready() {
+	                this.setThirdLoginUrl();
+	        },
+	        methods: {
+	                login: function login() {
+	                        var url = this.getLoginUrl();
+	                        // console.log(url);
+	                        this.password = this.md5(this.password);
+	                        //postl
+	                        this.$http({ url: url, method: 'POST', data: { mobile: this.account, passwd: this.password }, xhr: { withCredentials: true } }).then(function (response) {
+	                                if (response.data.code == 0) {
+	                                        this.responseData = response.data.data;
+	                                        sessionStorage.setItem('userId', response.data.data.user_id);
+	                                        sessionStorage.setItem('userData', (0, _stringify2.default)(response.data.data));
+	                                        this.$route.router.go({ path: this.redirectUrl });
+	                                } else if (response.data.code == 108) {
+	                                        this.message = '账号或密码错误';
+	                                }
+	                        });
+	                },
+	                getLoginUrl: function getLoginUrl() {
+	                        var url = '';
+	                        if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                                url = localStorage.getItem('apphost') + 'apiv2/login.json';
+	                        } else {
+	                                url = localStorage.getItem('apphost') + 'api/accounts/login';
+	                        }
+	                        return url;
+	                },
+	                setThirdLoginUrl: function setThirdLoginUrl() {
+	                        if (localStorage.getItem('apphost') == 'http://localhost:8080/' || localStorage.getItem('apphost') == 'http://alpha.52hangpai.cn/') {
+	
+	                                this.qqLoginHref = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101261235&redirect_uri=http://t-fabiao.52hangpai.cn/third_party_login/qq_login';
+	                                // this.wxLoginHref = 'https://open.weixin.qq.com/connect/qrconnect?appid=wxc5cd0381ab942049&redirect_uri='
+	                                // 		+encodeURIComponent('http://t-fabiao.52hangpai.cn/third_party_login/wx_login')+'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+	                                this.wxLoginHref = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc5cd0381ab942049&redirect_uri=' + +encodeURIComponent('http://t-fabiao.52hangpai.cn/third_party_login/wx_login') + '&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+	
+	                                this.youkuLoginHref = 'https://openapi.youku.com/v2/oauth2/authorize?response_type=code&client_id=3b0ef82784168b3f&redirect_uri=http://t-fabiao.52hangpai.cn/third_party_login/youku_login';
+	                        } else if (localStorage.getItem('apphost') == 'http://mapi.52hangpai.cn/') {
+	                                this.qqLoginHref = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101260753&redirect_uri=http://fabu.52hangpai.cn/third_party_login/qq_login';
+	                                // this.wxLoginHref = 'https://open.weixin.qq.com/connect/qrconnect?appid=wxc5cd0381ab942049&redirect_uri='
+	                                // 		+encodeURIComponent('http://fabu.52hangpai.cn/third_party_login/wx_login')+'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+	                                this.youkuLoginHref = 'https://openapi.youku.com/v2/oauth2/authorize?response_type=code&client_id=143c766800baef8a&redirect_uri=http://fabu.52hangpai.cn/third_party_login/youku_login';
+	                        }
+	                },
+	                md5: function md5(string) {
+	                        function md5_RotateLeft(lValue, iShiftBits) {
+	                                return lValue << iShiftBits | lValue >>> 32 - iShiftBits;
+	                        }
+	                        function md5_AddUnsigned(lX, lY) {
+	                                var lX4, lY4, lX8, lY8, lResult;
+	                                lX8 = lX & 0x80000000;
+	                                lY8 = lY & 0x80000000;
+	                                lX4 = lX & 0x40000000;
+	                                lY4 = lY & 0x40000000;
+	                                lResult = (lX & 0x3FFFFFFF) + (lY & 0x3FFFFFFF);
+	                                if (lX4 & lY4) {
+	                                        return lResult ^ 0x80000000 ^ lX8 ^ lY8;
+	                                }
+	                                if (lX4 | lY4) {
+	                                        if (lResult & 0x40000000) {
+	                                                return lResult ^ 0xC0000000 ^ lX8 ^ lY8;
+	                                        } else {
+	                                                return lResult ^ 0x40000000 ^ lX8 ^ lY8;
+	                                        }
+	                                } else {
+	                                        return lResult ^ lX8 ^ lY8;
+	                                }
+	                        }
+	                        function md5_F(x, y, z) {
+	                                return x & y | ~x & z;
+	                        }
+	                        function md5_G(x, y, z) {
+	                                return x & z | y & ~z;
+	                        }
+	                        function md5_H(x, y, z) {
+	                                return x ^ y ^ z;
+	                        }
+	                        function md5_I(x, y, z) {
+	                                return y ^ (x | ~z);
+	                        }
+	                        function md5_FF(a, b, c, d, x, s, ac) {
+	                                a = md5_AddUnsigned(a, md5_AddUnsigned(md5_AddUnsigned(md5_F(b, c, d), x), ac));
+	                                return md5_AddUnsigned(md5_RotateLeft(a, s), b);
+	                        };
+	                        function md5_GG(a, b, c, d, x, s, ac) {
+	                                a = md5_AddUnsigned(a, md5_AddUnsigned(md5_AddUnsigned(md5_G(b, c, d), x), ac));
+	                                return md5_AddUnsigned(md5_RotateLeft(a, s), b);
+	                        };
+	                        function md5_HH(a, b, c, d, x, s, ac) {
+	                                a = md5_AddUnsigned(a, md5_AddUnsigned(md5_AddUnsigned(md5_H(b, c, d), x), ac));
+	                                return md5_AddUnsigned(md5_RotateLeft(a, s), b);
+	                        };
+	                        function md5_II(a, b, c, d, x, s, ac) {
+	                                a = md5_AddUnsigned(a, md5_AddUnsigned(md5_AddUnsigned(md5_I(b, c, d), x), ac));
+	                                return md5_AddUnsigned(md5_RotateLeft(a, s), b);
+	                        };
+	                        function md5_ConvertToWordArray(string) {
+	                                var lWordCount;
+	                                var lMessageLength = string.length;
+	                                var lNumberOfWords_temp1 = lMessageLength + 8;
+	                                var lNumberOfWords_temp2 = (lNumberOfWords_temp1 - lNumberOfWords_temp1 % 64) / 64;
+	                                var lNumberOfWords = (lNumberOfWords_temp2 + 1) * 16;
+	                                var lWordArray = Array(lNumberOfWords - 1);
+	                                var lBytePosition = 0;
+	                                var lByteCount = 0;
+	                                while (lByteCount < lMessageLength) {
+	                                        lWordCount = (lByteCount - lByteCount % 4) / 4;
+	                                        lBytePosition = lByteCount % 4 * 8;
+	                                        lWordArray[lWordCount] = lWordArray[lWordCount] | string.charCodeAt(lByteCount) << lBytePosition;
+	                                        lByteCount++;
+	                                }
+	                                lWordCount = (lByteCount - lByteCount % 4) / 4;
+	                                lBytePosition = lByteCount % 4 * 8;
+	                                lWordArray[lWordCount] = lWordArray[lWordCount] | 0x80 << lBytePosition;
+	                                lWordArray[lNumberOfWords - 2] = lMessageLength << 3;
+	                                lWordArray[lNumberOfWords - 1] = lMessageLength >>> 29;
+	                                return lWordArray;
+	                        };
+	                        function md5_WordToHex(lValue) {
+	                                var WordToHexValue = "",
+	                                    WordToHexValue_temp = "",
+	                                    lByte,
+	                                    lCount;
+	                                for (lCount = 0; lCount <= 3; lCount++) {
+	                                        lByte = lValue >>> lCount * 8 & 255;
+	                                        WordToHexValue_temp = "0" + lByte.toString(16);
+	                                        WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length - 2, 2);
+	                                }
+	                                return WordToHexValue;
+	                        };
+	                        function md5_Utf8Encode(string) {
+	                                string = string.replace(/\r\n/g, "\n");
+	                                var utftext = "";
+	                                for (var n = 0; n < string.length; n++) {
+	                                        var c = string.charCodeAt(n);
+	                                        if (c < 128) {
+	                                                utftext += String.fromCharCode(c);
+	                                        } else if (c > 127 && c < 2048) {
+	                                                utftext += String.fromCharCode(c >> 6 | 192);
+	                                                utftext += String.fromCharCode(c & 63 | 128);
+	                                        } else {
+	                                                utftext += String.fromCharCode(c >> 12 | 224);
+	                                                utftext += String.fromCharCode(c >> 6 & 63 | 128);
+	                                                utftext += String.fromCharCode(c & 63 | 128);
+	                                        }
+	                                }
+	                                return utftext;
+	                        };
+	                        var x = Array();
+	                        var k, AA, BB, CC, DD, a, b, c, d;
+	                        var S11 = 7,
+	                            S12 = 12,
+	                            S13 = 17,
+	                            S14 = 22;
+	                        var S21 = 5,
+	                            S22 = 9,
+	                            S23 = 14,
+	                            S24 = 20;
+	                        var S31 = 4,
+	                            S32 = 11,
+	                            S33 = 16,
+	                            S34 = 23;
+	                        var S41 = 6,
+	                            S42 = 10,
+	                            S43 = 15,
+	                            S44 = 21;
+	                        string = md5_Utf8Encode(string);
+	                        x = md5_ConvertToWordArray(string);
+	                        a = 0x67452301;b = 0xEFCDAB89;c = 0x98BADCFE;d = 0x10325476;
+	                        for (k = 0; k < x.length; k += 16) {
+	                                AA = a;BB = b;CC = c;DD = d;
+	                                a = md5_FF(a, b, c, d, x[k + 0], S11, 0xD76AA478);
+	                                d = md5_FF(d, a, b, c, x[k + 1], S12, 0xE8C7B756);
+	                                c = md5_FF(c, d, a, b, x[k + 2], S13, 0x242070DB);
+	                                b = md5_FF(b, c, d, a, x[k + 3], S14, 0xC1BDCEEE);
+	                                a = md5_FF(a, b, c, d, x[k + 4], S11, 0xF57C0FAF);
+	                                d = md5_FF(d, a, b, c, x[k + 5], S12, 0x4787C62A);
+	                                c = md5_FF(c, d, a, b, x[k + 6], S13, 0xA8304613);
+	                                b = md5_FF(b, c, d, a, x[k + 7], S14, 0xFD469501);
+	                                a = md5_FF(a, b, c, d, x[k + 8], S11, 0x698098D8);
+	                                d = md5_FF(d, a, b, c, x[k + 9], S12, 0x8B44F7AF);
+	                                c = md5_FF(c, d, a, b, x[k + 10], S13, 0xFFFF5BB1);
+	                                b = md5_FF(b, c, d, a, x[k + 11], S14, 0x895CD7BE);
+	                                a = md5_FF(a, b, c, d, x[k + 12], S11, 0x6B901122);
+	                                d = md5_FF(d, a, b, c, x[k + 13], S12, 0xFD987193);
+	                                c = md5_FF(c, d, a, b, x[k + 14], S13, 0xA679438E);
+	                                b = md5_FF(b, c, d, a, x[k + 15], S14, 0x49B40821);
+	                                a = md5_GG(a, b, c, d, x[k + 1], S21, 0xF61E2562);
+	                                d = md5_GG(d, a, b, c, x[k + 6], S22, 0xC040B340);
+	                                c = md5_GG(c, d, a, b, x[k + 11], S23, 0x265E5A51);
+	                                b = md5_GG(b, c, d, a, x[k + 0], S24, 0xE9B6C7AA);
+	                                a = md5_GG(a, b, c, d, x[k + 5], S21, 0xD62F105D);
+	                                d = md5_GG(d, a, b, c, x[k + 10], S22, 0x2441453);
+	                                c = md5_GG(c, d, a, b, x[k + 15], S23, 0xD8A1E681);
+	                                b = md5_GG(b, c, d, a, x[k + 4], S24, 0xE7D3FBC8);
+	                                a = md5_GG(a, b, c, d, x[k + 9], S21, 0x21E1CDE6);
+	                                d = md5_GG(d, a, b, c, x[k + 14], S22, 0xC33707D6);
+	                                c = md5_GG(c, d, a, b, x[k + 3], S23, 0xF4D50D87);
+	                                b = md5_GG(b, c, d, a, x[k + 8], S24, 0x455A14ED);
+	                                a = md5_GG(a, b, c, d, x[k + 13], S21, 0xA9E3E905);
+	                                d = md5_GG(d, a, b, c, x[k + 2], S22, 0xFCEFA3F8);
+	                                c = md5_GG(c, d, a, b, x[k + 7], S23, 0x676F02D9);
+	                                b = md5_GG(b, c, d, a, x[k + 12], S24, 0x8D2A4C8A);
+	                                a = md5_HH(a, b, c, d, x[k + 5], S31, 0xFFFA3942);
+	                                d = md5_HH(d, a, b, c, x[k + 8], S32, 0x8771F681);
+	                                c = md5_HH(c, d, a, b, x[k + 11], S33, 0x6D9D6122);
+	                                b = md5_HH(b, c, d, a, x[k + 14], S34, 0xFDE5380C);
+	                                a = md5_HH(a, b, c, d, x[k + 1], S31, 0xA4BEEA44);
+	                                d = md5_HH(d, a, b, c, x[k + 4], S32, 0x4BDECFA9);
+	                                c = md5_HH(c, d, a, b, x[k + 7], S33, 0xF6BB4B60);
+	                                b = md5_HH(b, c, d, a, x[k + 10], S34, 0xBEBFBC70);
+	                                a = md5_HH(a, b, c, d, x[k + 13], S31, 0x289B7EC6);
+	                                d = md5_HH(d, a, b, c, x[k + 0], S32, 0xEAA127FA);
+	                                c = md5_HH(c, d, a, b, x[k + 3], S33, 0xD4EF3085);
+	                                b = md5_HH(b, c, d, a, x[k + 6], S34, 0x4881D05);
+	                                a = md5_HH(a, b, c, d, x[k + 9], S31, 0xD9D4D039);
+	                                d = md5_HH(d, a, b, c, x[k + 12], S32, 0xE6DB99E5);
+	                                c = md5_HH(c, d, a, b, x[k + 15], S33, 0x1FA27CF8);
+	                                b = md5_HH(b, c, d, a, x[k + 2], S34, 0xC4AC5665);
+	                                a = md5_II(a, b, c, d, x[k + 0], S41, 0xF4292244);
+	                                d = md5_II(d, a, b, c, x[k + 7], S42, 0x432AFF97);
+	                                c = md5_II(c, d, a, b, x[k + 14], S43, 0xAB9423A7);
+	                                b = md5_II(b, c, d, a, x[k + 5], S44, 0xFC93A039);
+	                                a = md5_II(a, b, c, d, x[k + 12], S41, 0x655B59C3);
+	                                d = md5_II(d, a, b, c, x[k + 3], S42, 0x8F0CCC92);
+	                                c = md5_II(c, d, a, b, x[k + 10], S43, 0xFFEFF47D);
+	                                b = md5_II(b, c, d, a, x[k + 1], S44, 0x85845DD1);
+	                                a = md5_II(a, b, c, d, x[k + 8], S41, 0x6FA87E4F);
+	                                d = md5_II(d, a, b, c, x[k + 15], S42, 0xFE2CE6E0);
+	                                c = md5_II(c, d, a, b, x[k + 6], S43, 0xA3014314);
+	                                b = md5_II(b, c, d, a, x[k + 13], S44, 0x4E0811A1);
+	                                a = md5_II(a, b, c, d, x[k + 4], S41, 0xF7537E82);
+	                                d = md5_II(d, a, b, c, x[k + 11], S42, 0xBD3AF235);
+	                                c = md5_II(c, d, a, b, x[k + 2], S43, 0x2AD7D2BB);
+	                                b = md5_II(b, c, d, a, x[k + 9], S44, 0xEB86D391);
+	                                a = md5_AddUnsigned(a, AA);
+	                                b = md5_AddUnsigned(b, BB);
+	                                c = md5_AddUnsigned(c, CC);
+	                                d = md5_AddUnsigned(d, DD);
+	                        }
+	                        return (md5_WordToHex(a) + md5_WordToHex(b) + md5_WordToHex(c) + md5_WordToHex(d)).toLowerCase();
+	                }
+	        }
+	};
+	// </script>
+	//
+	//
+	//
+	/* generated by vue-loader */
+
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(97), __esModule: true };
+
+/***/ },
+/* 97 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var core = __webpack_require__(98);
+	module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
+	  return (core.JSON && core.JSON.stringify || JSON.stringify).apply(JSON, arguments);
+	};
+
+/***/ },
+/* 98 */
+/***/ function(module, exports) {
+
+	var core = module.exports = {version: '1.2.6'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+
+/***/ },
+/* 99 */
+/***/ function(module, exports) {
+
+	module.exports = "\n\t<form class=\"login-form\">\n\t\t<div class=\"login-container-account\">\n\t\t\t<input v-model=\"account\" type=\"text\" placeholder=\"请输入手机号\" name=\"account\" maxlength=\"11\"/>\n\t\t</div>\n\t\t<div class=\"login-container-password\">\n\t\t\t<input v-model=\"password\" type=\"password\" placeholder=\"请输入6-16位密码\" name=\"password\" maxlength=\"16\"/>\n\t\t</div>\n\t</form>\n\t<p class=\"login-message\">{{message}}</p>\n\t<a class=\"login-submit\" v-on:click=\"login\">登录</a>\n\t<div class=\"register-reset\">\n\t\t<span class=\"register\">注册账号</span>|<span class=\"reset\">找回密码</span>\n\t</div>\n\t<div class=\"third-login-title\">\n\t\t<p>使用社交账号登录</p><div class=\"third-login-title-line\"></div>\n\t</div>\n\t<ul class=\"third-login\">\n\t\t<li><a v-bind:href=\"qqLoginHref\"><img src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-qq.png\"></a><p>QQ</p></li>\n\t\t<li><a v-bind:href=\"wxLoginHref\"><img src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-wx.png\"></a><p>微信</p></li>\n\t\t<li><a v-bind:href=\"youkuLoginHref\"><img src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-youku.png\"></a><p>优酷</p></li>\n\t</ul>\n";
 
 /***/ }
 /******/ ]);
