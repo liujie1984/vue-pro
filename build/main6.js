@@ -17528,7 +17528,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".list-ul {\n  height: 40px;\n  width: 100%;\n  margin-bottom: 2px;\n}\n.list-ul li {\n  display: inline-block;\n  width: 14.2857%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 36px;\n  line-height: 36px;\n  font-size: 15px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-d0bb051e&file=nav-top.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/nav-top.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;CACpB;AACD;EACE,sBAAsB;EACtB,gBAAgB;EAChB,mBAAmB;EACnB,eAAe;EACf,aAAa;EACb,kBAAkB;EAClB,gBAAgB;CACjB;AACD;EACE,iCAAiC;EACjC,0BAA0B;CAC3B","file":"nav-top.vue","sourcesContent":[".list-ul {\n  height: 40px;\n  width: 100%;\n  margin-bottom: 2px;\n}\n.list-ul li {\n  display: inline-block;\n  width: 14.2857%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 36px;\n  line-height: 36px;\n  font-size: 15px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".list-ul {\n  height: 40px;\n  width: 100%;\n  margin-bottom: 2px;\n  position: fixed;\n  background-color: #ffffff;\n}\n.list-ul li {\n  display: inline-block;\n  width: 14.2857%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 36px;\n  line-height: 36px;\n  font-size: 15px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n.nav-top-blank {\n  height: 40px;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-d0bb051e&file=nav-top.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/components/nav-top.vue.style"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;EACnB,gBAAgB;EAChB,0BAA0B;CAC3B;AACD;EACE,sBAAsB;EACtB,gBAAgB;EAChB,mBAAmB;EACnB,eAAe;EACf,aAAa;EACb,kBAAkB;EAClB,gBAAgB;CACjB;AACD;EACE,iCAAiC;EACjC,0BAA0B;CAC3B;AACD;EACE,aAAa;CACd","file":"nav-top.vue","sourcesContent":[".list-ul {\n  height: 40px;\n  width: 100%;\n  margin-bottom: 2px;\n  position: fixed;\n  background-color: #ffffff;\n}\n.list-ul li {\n  display: inline-block;\n  width: 14.2857%;\n  text-align: center;\n  color: #9a9a9a;\n  height: 36px;\n  line-height: 36px;\n  font-size: 15px;\n}\n.custom-active-class {\n  border-bottom: 2px solid #222222;\n  color: #222222 !important;\n}\n.nav-top-blank {\n  height: 40px;\n}\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -17543,10 +17543,12 @@
 	    value: true
 	});
 	// <style lang="less">
-	//     .list-ul{height: 40px;width: 100%;margin-bottom: 2px;}
+	//     .list-ul{height: 40px;width: 100%;margin-bottom: 2px;position: fixed;background-color: #ffffff;}
 	//     .list-ul li{display: inline-block;width: 14.2857%;text-align: center;color: #9a9a9a;
 	//         height: 36px;line-height: 36px;font-size: 15px;}
 	//     .custom-active-class{border-bottom: 2px solid #222222;color: #222222 !important;}
+	//
+	//     .nav-top-blank{height: 40px;}
 	// </style>
 	// <template>
 	//     <ul class="list-ul">
@@ -17558,6 +17560,9 @@
 	//         <li v-link="{name:'mix',params: { type: 'review' }, activeClass: 'custom-active-class'}">评测</li>
 	//         <li v-link="{name:'mix-more',params: { type: 'news' }, activeClass: 'custom-active-class'}">资讯</li>
 	//     </ul>
+	//     <div class="nav-top-blank">
+	//
+	//     </div>
 	// </template>
 	// <script>
 	exports.default = {
@@ -17573,7 +17578,7 @@
 /* 40 */
 /***/ function(module, exports) {
 
-	module.exports = "\r\n    <ul class=\"list-ul\">\r\n        <li v-link=\"{name:'recommend', activeClass: 'custom-active-class'}\">推荐</li>\r\n        <li v-link=\"{name:'works-more',params: { type: 'image' }, activeClass: 'custom-active-class'}\">图片</li>\r\n        <li v-link=\"{name:'works-more',params: { type: 'video' }, activeClass: 'custom-active-class'}\">视频</li>\r\n        <li v-link=\"{name:'focus', activeClass: 'custom-active-class'}\">关注</li>\r\n        <li v-link=\"{name:'mix',params: { type: 'tutorial' }, activeClass: 'custom-active-class'}\">教程</li>\r\n        <li v-link=\"{name:'mix',params: { type: 'review' }, activeClass: 'custom-active-class'}\">评测</li>\r\n        <li v-link=\"{name:'mix-more',params: { type: 'news' }, activeClass: 'custom-active-class'}\">资讯</li>\r\n    </ul>\r\n";
+	module.exports = "\r\n    <ul class=\"list-ul\">\r\n        <li v-link=\"{name:'recommend', activeClass: 'custom-active-class'}\">推荐</li>\r\n        <li v-link=\"{name:'works-more',params: { type: 'image' }, activeClass: 'custom-active-class'}\">图片</li>\r\n        <li v-link=\"{name:'works-more',params: { type: 'video' }, activeClass: 'custom-active-class'}\">视频</li>\r\n        <li v-link=\"{name:'focus', activeClass: 'custom-active-class'}\">关注</li>\r\n        <li v-link=\"{name:'mix',params: { type: 'tutorial' }, activeClass: 'custom-active-class'}\">教程</li>\r\n        <li v-link=\"{name:'mix',params: { type: 'review' }, activeClass: 'custom-active-class'}\">评测</li>\r\n        <li v-link=\"{name:'mix-more',params: { type: 'news' }, activeClass: 'custom-active-class'}\">资讯</li>\r\n    </ul>\r\n    <div class=\"nav-top-blank\">\r\n        \r\n    </div>\r\n";
 
 /***/ },
 /* 41 */
@@ -17725,7 +17730,8 @@
 	//             <img class="icon" v-bind:src="likedImgSrc">
 	//             <span class="count">{{works.likes_count}}</span>
 	//         </span>
-	//         <span class="content-comment" v-link="{name:'works-detail',params: { id: works.pub_id}}">
+	//         <span class="content-comment" v-on:click="dealComment">
+	//         <!-- v-link="{name:'works-detail',params: { id: works.pub_id}} -->
 	//             <img class="icon" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png">
 	//             <span class="count">{{works.comments_count}}</span>
 	//         </span>
@@ -17763,26 +17769,36 @@
 	    ready: function ready() {},
 	    methods: {
 	        dealLike: function dealLike() {
-	            if (this.isLiked == 1) {
-	                console.dir('1');
-	                var unlikeUrl = this.getUnlikeUrl();
-	                this.$http({ url: unlikeUrl, method: 'POST', data: { type: 'pub', id: this.works.pub_id }, xhr: { withCredentials: true } }).then(function (response) {
-	                    if (response.data.code == 0) {
-	                        this.isLiked = 0;
-	                        this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png';
-	                        this.works.likes_count--;
-	                    }
-	                });
+	            if (this.getCookie('user_info') != null && this.getCookie('user_info') != '' && this.getCookie('user_info') != undefined) {
+	                if (this.isLiked == 1) {
+	                    var unlikeUrl = this.getUnlikeUrl();
+	                    this.$http({ url: unlikeUrl, method: 'POST', data: { type: 'pub', id: this.works.pub_id }, xhr: { withCredentials: true } }).then(function (response) {
+	                        if (response.data.code == 0) {
+	                            this.isLiked = 0;
+	                            this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png';
+	                            this.works.likes_count--;
+	                        }
+	                    });
+	                } else {
+	                    var likeUrl = this.getLikeUrl();
+	                    this.$http({ url: likeUrl, method: 'POST', data: { type: 'pub', id: this.works.pub_id }, xhr: { withCredentials: true } }).then(function (response) {
+	                        if (response.data.code == 0) {
+	                            this.isLiked = 1;
+	                            this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-choose.png';
+	                            this.works.likes_count++;
+	                        }
+	                    });
+	                }
 	            } else {
-	                console.dir(0);
-	                var likeUrl = this.getLikeUrl();
-	                this.$http({ url: likeUrl, method: 'POST', data: { type: 'pub', id: this.works.pub_id }, xhr: { withCredentials: true } }).then(function (response) {
-	                    if (response.data.code == 0) {
-	                        this.isLiked = 1;
-	                        this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-choose.png';
-	                        this.works.likes_count++;
-	                    }
-	                });
+	                console.dir(this);
+	                this.$route.router.go({ name: 'login' });
+	            }
+	        },
+	        dealComment: function dealComment() {
+	            if (this.getCookie('user_info') != null && this.getCookie('user_info') != '' && this.getCookie('user_info') != undefined) {
+	                this.$route.router.go({ name: 'works-detail', params: { id: this.works.pub_id } });
+	            } else {
+	                this.$route.router.go({ name: 'login' });
 	            }
 	        },
 	        dealTopleftText: function dealTopleftText() {
@@ -17806,6 +17822,17 @@
 	                url = localStorage.getItem('apphost') + 'apiv2/unlike';
 	            }
 	            return url;
+	        },
+	        getCookie: function getCookie(cname) {
+	            var name = cname + "=";
+	            var ca = document.cookie.split(';');
+	            for (var i = 0; i < ca.length; i++) {
+	                var c = ca[i];
+	                while (c.charAt(0) == ' ') {
+	                    c = c.substring(1);
+	                }if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+	            }
+	            return "";
 	        }
 	    }
 	};
@@ -17816,7 +17843,7 @@
 /* 45 */
 /***/ function(module, exports) {
 
-	module.exports = "\r\n<div class=\"one\">\r\n    <div class=\"owner\">\r\n        <img class=\"avatar\" v-bind:src=\"works.owner.avatar_url\">\r\n        <span class=\"nickname\">{{works.owner.nickname}}</span>\r\n    </div>\r\n    <div v-link=\"{name:'works-detail',params: { id: works.pub_id}}\">\r\n        <div v-if=\"type=='recommend'\" class=\"recommend-title\">{{works.title}}</div>\r\n        <div class=\"thumbnail\">\r\n            <div v-if=\"works.common_flags.topleft_text!=null\" class=\"thumbnail-topleft-text\">\r\n                <p class=\"thumbnail-topleft-text-0\">{{topleftText[0]}}</p>\r\n                <p>{{topleftText[1]}}</p>\r\n            </div>\r\n            <div v-bind:class=\"{'thumbnail-topleft-text-top': works.common_flags.topleft_text!=null}\">\r\n                <div v-if=\"works.thumbnail.type=='image'\" class=\"thumbnail-image\">\r\n                    <span v-if=\"works.image_count>1\" class=\"image-count\">{{works.image_count}}图</span>\r\n                    <img class=\"thumbnail-image-img\" v-bind:class=\"{'thumbnail-image-img-top': works.image_count>1}\" v-bind:src=\"works.thumbnail.content.thumbnail_url\">\r\n                </div>\r\n                <div v-if=\"works.thumbnail.type=='text'\" class=\"thumbnail-text\">\r\n                    <p class=\"thumbnail-text-content\">{{works.thumbnail.content.text}}</p>\r\n                </div>\r\n                <div v-if=\"works.thumbnail.type=='ihp_v'||works.thumbnail.type=='youku_v'\" class=\"thumbnail-video\">\r\n                    <img class=\"thumbnail-video-img\" v-bind:src=\"works.thumbnail.content.thumbnail_url\">\r\n                    <img class=\"thumbnail-video-play\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png\">\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div v-if=\"type=='normal'\" class=\"normal-title\">{{works.title}}</div>\r\n    </div>\r\n    <div v-if=\"works.tags!=null\" class=\"works-tags\">\r\n        <ul>\r\n            <li v-for=\"works.tags in works.tags\">{{works.tags[$index].tag_name}}</li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"like-comment\">\r\n        <span class=\"content-like\" v-on:click=\"dealLike\">\r\n            <img class=\"icon\" v-bind:src=\"likedImgSrc\">\r\n            <span class=\"count\">{{works.likes_count}}</span>\r\n        </span>\r\n        <span class=\"content-comment\" v-link=\"{name:'works-detail',params: { id: works.pub_id}}\">\r\n            <img class=\"icon\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png\">\r\n            <span class=\"count\">{{works.comments_count}}</span>\r\n        </span>\r\n    </div>\r\n    <div class=\"blank\"></div>\r\n</div>\r\n";
+	module.exports = "\r\n<div class=\"one\">\r\n    <div class=\"owner\">\r\n        <img class=\"avatar\" v-bind:src=\"works.owner.avatar_url\">\r\n        <span class=\"nickname\">{{works.owner.nickname}}</span>\r\n    </div>\r\n    <div v-link=\"{name:'works-detail',params: { id: works.pub_id}}\">\r\n        <div v-if=\"type=='recommend'\" class=\"recommend-title\">{{works.title}}</div>\r\n        <div class=\"thumbnail\">\r\n            <div v-if=\"works.common_flags.topleft_text!=null\" class=\"thumbnail-topleft-text\">\r\n                <p class=\"thumbnail-topleft-text-0\">{{topleftText[0]}}</p>\r\n                <p>{{topleftText[1]}}</p>\r\n            </div>\r\n            <div v-bind:class=\"{'thumbnail-topleft-text-top': works.common_flags.topleft_text!=null}\">\r\n                <div v-if=\"works.thumbnail.type=='image'\" class=\"thumbnail-image\">\r\n                    <span v-if=\"works.image_count>1\" class=\"image-count\">{{works.image_count}}图</span>\r\n                    <img class=\"thumbnail-image-img\" v-bind:class=\"{'thumbnail-image-img-top': works.image_count>1}\" v-bind:src=\"works.thumbnail.content.thumbnail_url\">\r\n                </div>\r\n                <div v-if=\"works.thumbnail.type=='text'\" class=\"thumbnail-text\">\r\n                    <p class=\"thumbnail-text-content\">{{works.thumbnail.content.text}}</p>\r\n                </div>\r\n                <div v-if=\"works.thumbnail.type=='ihp_v'||works.thumbnail.type=='youku_v'\" class=\"thumbnail-video\">\r\n                    <img class=\"thumbnail-video-img\" v-bind:src=\"works.thumbnail.content.thumbnail_url\">\r\n                    <img class=\"thumbnail-video-play\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png\">\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div v-if=\"type=='normal'\" class=\"normal-title\">{{works.title}}</div>\r\n    </div>\r\n    <div v-if=\"works.tags!=null\" class=\"works-tags\">\r\n        <ul>\r\n            <li v-for=\"works.tags in works.tags\">{{works.tags[$index].tag_name}}</li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"like-comment\">\r\n        <span class=\"content-like\" v-on:click=\"dealLike\">\r\n            <img class=\"icon\" v-bind:src=\"likedImgSrc\">\r\n            <span class=\"count\">{{works.likes_count}}</span>\r\n        </span>\r\n        <span class=\"content-comment\" v-on:click=\"dealComment\">\r\n        <!-- v-link=\"{name:'works-detail',params: { id: works.pub_id}} -->\r\n            <img class=\"icon\" src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png\">\r\n            <span class=\"count\">{{works.comments_count}}</span>\r\n        </span>\r\n    </div>\r\n    <div class=\"blank\"></div>\r\n</div>\r\n";
 
 /***/ },
 /* 46 */
@@ -17906,8 +17933,8 @@
 	    ready: function ready() {},
 	    methods: {
 	        backTop: function backTop(event) {
-	            // document.body.scrollTop = -10;
-	            this.scrollTopReduction();
+	            document.body.scrollTop = 0;
+	            // this.scrollTopReduction();
 	        },
 	        scrollTopReduction: function scrollTopReduction() {
 	            for (var i = 0; document.body.scrollTop > 0; i++) {
@@ -18878,26 +18905,28 @@
 	            return jstimestamp;
 	        },
 	        dealLike: function dealLike() {
-	            if (this.isLiked == 1) {
-	                console.dir('1');
-	                var unlikeUrl = this.getUnlikeUrl();
-	                this.$http({ url: unlikeUrl, method: 'POST', data: { type: 'pub', id: this.id }, xhr: { withCredentials: true } }).then(function (response) {
-	                    if (response.data.code == 0) {
-	                        this.isLiked = 0;
-	                        this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png';
-	                        this.worksDetail.likes_count--;
-	                    }
-	                });
+	            if (this.getCookie('user_info') != null && this.getCookie('user_info') != '' && this.getCookie('user_info') != undefined) {
+	                if (this.isLiked == 1) {
+	                    var unlikeUrl = this.getUnlikeUrl();
+	                    this.$http({ url: unlikeUrl, method: 'POST', data: { type: 'pub', id: this.works.pub_id }, xhr: { withCredentials: true } }).then(function (response) {
+	                        if (response.data.code == 0) {
+	                            this.isLiked = 0;
+	                            this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png';
+	                            this.works.likes_count--;
+	                        }
+	                    });
+	                } else {
+	                    var likeUrl = this.getLikeUrl();
+	                    this.$http({ url: likeUrl, method: 'POST', data: { type: 'pub', id: this.works.pub_id }, xhr: { withCredentials: true } }).then(function (response) {
+	                        if (response.data.code == 0) {
+	                            this.isLiked = 1;
+	                            this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-choose.png';
+	                            this.works.likes_count++;
+	                        }
+	                    });
+	                }
 	            } else {
-	                console.dir(0);
-	                var likeUrl = this.getLikeUrl();
-	                this.$http({ url: likeUrl, method: 'POST', data: { type: 'pub', id: this.id }, xhr: { withCredentials: true } }).then(function (response) {
-	                    if (response.data.code == 0) {
-	                        this.isLiked = 1;
-	                        this.likedImgSrc = 'http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-choose.png';
-	                        this.worksDetail.likes_count++;
-	                    }
-	                });
+	                this.$route.router.go({ name: 'login' });
 	            }
 	        },
 	        getLikeUrl: function getLikeUrl() {
@@ -18928,27 +18957,30 @@
 	            // console.dir(this.commentContent);
 	        },
 	        replyComment: function replyComment(event) {
-	            console.dir(event);
-	            var commentUrl = this.getCommentUrl();
-	            this.$http({ url: commentUrl, method: 'POST', data: { type: 'pub', id: this.id, content: this.commentContent, reply_to: this.replyToUser.user_id }, xhr: { withCredentials: true } }).then(function (response) {
-	                if (response.data.code == 0) {
-	                    var url = '';
-	                    if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
-	                        url = localStorage.getItem('apphost') + 'apiv2/publish_detail.json';
-	                    } else {
-	                        url = localStorage.getItem('apphost') + 'apiv2/publish_detail';
-	                    }
-	                    this.$http({ url: url, method: 'GET', data: { pub_id: this.id }, xhr: { withCredentials: true } }).then(function (response) {
-	                        if (response.data.code == 0) {
-	                            this.worksDetail = response.data.data;
-	                            this.comments = response.data.data.comments;
-	                            this.commentContent = '';
-	                            this.commentPlaceholder = '我的评论(140字以内)', this.commentContainerHeight = '20px', this.replyToUser = this.owner;
-	                            console.dir(this.replyToUser);
+	            if (this.getCookie('user_info') != null && this.getCookie('user_info') != '' && this.getCookie('user_info') != undefined) {
+	                var commentUrl = this.getCommentUrl();
+	                this.$http({ url: commentUrl, method: 'POST', data: { type: 'pub', id: this.id, content: this.commentContent, reply_to: this.replyToUser.user_id }, xhr: { withCredentials: true } }).then(function (response) {
+	                    if (response.data.code == 0) {
+	                        var url = '';
+	                        if (localStorage.getItem('apphost') == 'http://localhost:8080/') {
+	                            url = localStorage.getItem('apphost') + 'apiv2/publish_detail.json';
+	                        } else {
+	                            url = localStorage.getItem('apphost') + 'apiv2/publish_detail';
 	                        }
-	                    });
-	                }
-	            });
+	                        this.$http({ url: url, method: 'GET', data: { pub_id: this.id }, xhr: { withCredentials: true } }).then(function (response) {
+	                            if (response.data.code == 0) {
+	                                this.worksDetail = response.data.data;
+	                                this.comments = response.data.data.comments;
+	                                this.commentContent = '';
+	                                this.commentPlaceholder = '我的评论(140字以内)', this.commentContainerHeight = '20px', this.replyToUser = this.owner;
+	                                console.dir(this.replyToUser);
+	                            }
+	                        });
+	                    }
+	                });
+	            } else {
+	                this.$route.router.go({ name: 'login' });
+	            }
 	        },
 	        getCommentUrl: function getCommentUrl() {
 	            var url = '';
@@ -18958,6 +18990,17 @@
 	                url = localStorage.getItem('apphost') + 'apiv2/comment';
 	            }
 	            return url;
+	        },
+	        getCookie: function getCookie(cname) {
+	            var name = cname + "=";
+	            var ca = document.cookie.split(';');
+	            for (var i = 0; i < ca.length; i++) {
+	                var c = ca[i];
+	                while (c.charAt(0) == ' ') {
+	                    c = c.substring(1);
+	                }if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+	            }
+	            return "";
 	        }
 	    },
 	    events: {
@@ -19301,7 +19344,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".login-form {\n  height: 100px;\n  border-radius: 4px;\n  border: 1px solid #cfcfcf;\n  margin: 18px 25px 0 25px;\n}\n.login-form div {\n  height: 40px;\n  padding: 5px 15px 5px 15px;\n}\n.login-container-account {\n  border-bottom: 1px solid #cfcfcf;\n}\n.login-form div input {\n  border: none;\n  color: #383838;\n  font-size: 18px;\n  vertical-align: middle;\n  height: 32px;\n  line-height: 32px;\n  margin: 4px 0 4px 0;\n  width: 100%;\n}\n.login-message {\n  font-size: 14px;\n  color: #f86c59;\n  margin: 0 30px 0 30px;\n  height: 32px;\n  line-height: 32px;\n}\n.login-submit {\n  display: block;\n  height: 50px;\n  background-color: #fe9901;\n  border-radius: 5px;\n  text-align: center;\n  line-height: 50px;\n  color: #ffffff;\n  text-decoration: none;\n  margin: 0 25px 0 25px;\n  font-size: 20px;\n}\n.register-reset {\n  font-size: 14px;\n  text-align: right;\n  margin: 20px 25px 45px 25px;\n  height: 16px;\n  color: #9a9a9a;\n}\n.register-reset span {\n  font-size: 14px;\n}\n.register {\n  color: #556e98;\n  margin-right: 8px;\n}\n.reset {\n  color: #9a9a9a;\n  margin-left: 8px;\n}\n.third-login-title {\n  height: 16px;\n  margin: 0 25px 0 25px;\n}\n.third-login-title p {\n  font-size: 14px;\n  height: 16px;\n  line-height: 16px;\n  float: left;\n  color: #9a9a9a;\n}\n.third-login-title-line {\n  position: relative;\n  border-bottom: 1px solid #e4e7eb;\n  margin: 0 0 0 130px;\n  height: 8px;\n}\n.third-login {\n  margin-top: 32px;\n}\n.third-login li {\n  width: 50%;\n  float: left;\n  text-align: center;\n}\n.third-login li a img {\n  width: 50px;\n  height: 50px;\n}\n.third-login li p {\n  font-size: 12px;\n  height: 14px;\n  line-height: 14px;\n  color: #9a9a9a;\n  margin-top: 12px;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-3a2224c2&file=login.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/views/login.vue.style"],"names":[],"mappings":"AAAA;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,yBAAyB;CAC1B;AACD;EACE,aAAa;EACb,2BAA2B;CAC5B;AACD;EACE,iCAAiC;CAClC;AACD;EACE,aAAa;EACb,eAAe;EACf,gBAAgB;EAChB,uBAAuB;EACvB,aAAa;EACb,kBAAkB;EAClB,oBAAoB;EACpB,YAAY;CACb;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,sBAAsB;EACtB,aAAa;EACb,kBAAkB;CACnB;AACD;EACE,eAAe;EACf,aAAa;EACb,0BAA0B;EAC1B,mBAAmB;EACnB,mBAAmB;EACnB,kBAAkB;EAClB,eAAe;EACf,sBAAsB;EACtB,sBAAsB;EACtB,gBAAgB;CACjB;AACD;EACE,gBAAgB;EAChB,kBAAkB;EAClB,4BAA4B;EAC5B,aAAa;EACb,eAAe;CAChB;AACD;EACE,gBAAgB;CACjB;AACD;EACE,eAAe;EACf,kBAAkB;CACnB;AACD;EACE,eAAe;EACf,iBAAiB;CAClB;AACD;EACE,aAAa;EACb,sBAAsB;CACvB;AACD;EACE,gBAAgB;EAChB,aAAa;EACb,kBAAkB;EAClB,YAAY;EACZ,eAAe;CAChB;AACD;EACE,mBAAmB;EACnB,iCAAiC;EACjC,oBAAoB;EACpB,YAAY;CACb;AACD;EACE,iBAAiB;CAClB;AACD;EACE,WAAW;EACX,YAAY;EACZ,mBAAmB;CACpB;AACD;EACE,YAAY;EACZ,aAAa;CACd;AACD;EACE,gBAAgB;EAChB,aAAa;EACb,kBAAkB;EAClB,eAAe;EACf,iBAAiB;CAClB","file":"login.vue","sourcesContent":[".login-form {\n  height: 100px;\n  border-radius: 4px;\n  border: 1px solid #cfcfcf;\n  margin: 18px 25px 0 25px;\n}\n.login-form div {\n  height: 40px;\n  padding: 5px 15px 5px 15px;\n}\n.login-container-account {\n  border-bottom: 1px solid #cfcfcf;\n}\n.login-form div input {\n  border: none;\n  color: #383838;\n  font-size: 18px;\n  vertical-align: middle;\n  height: 32px;\n  line-height: 32px;\n  margin: 4px 0 4px 0;\n  width: 100%;\n}\n.login-message {\n  font-size: 14px;\n  color: #f86c59;\n  margin: 0 30px 0 30px;\n  height: 32px;\n  line-height: 32px;\n}\n.login-submit {\n  display: block;\n  height: 50px;\n  background-color: #fe9901;\n  border-radius: 5px;\n  text-align: center;\n  line-height: 50px;\n  color: #ffffff;\n  text-decoration: none;\n  margin: 0 25px 0 25px;\n  font-size: 20px;\n}\n.register-reset {\n  font-size: 14px;\n  text-align: right;\n  margin: 20px 25px 45px 25px;\n  height: 16px;\n  color: #9a9a9a;\n}\n.register-reset span {\n  font-size: 14px;\n}\n.register {\n  color: #556e98;\n  margin-right: 8px;\n}\n.reset {\n  color: #9a9a9a;\n  margin-left: 8px;\n}\n.third-login-title {\n  height: 16px;\n  margin: 0 25px 0 25px;\n}\n.third-login-title p {\n  font-size: 14px;\n  height: 16px;\n  line-height: 16px;\n  float: left;\n  color: #9a9a9a;\n}\n.third-login-title-line {\n  position: relative;\n  border-bottom: 1px solid #e4e7eb;\n  margin: 0 0 0 130px;\n  height: 8px;\n}\n.third-login {\n  margin-top: 32px;\n}\n.third-login li {\n  width: 50%;\n  float: left;\n  text-align: center;\n}\n.third-login li a img {\n  width: 50px;\n  height: 50px;\n}\n.third-login li p {\n  font-size: 12px;\n  height: 14px;\n  line-height: 14px;\n  color: #9a9a9a;\n  margin-top: 12px;\n}\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".login-form {\n  height: 100px;\n  border-radius: 4px;\n  border: 1px solid #cfcfcf;\n  margin: 18px 25px 0 25px;\n}\n.login-form div {\n  height: 40px;\n  padding: 5px 15px 5px 15px;\n}\n.login-container-account {\n  border-bottom: 1px solid #cfcfcf;\n}\n.login-form div input {\n  border: none;\n  color: #383838;\n  font-size: 18px;\n  vertical-align: middle;\n  height: 32px;\n  line-height: 32px;\n  margin: 4px 0 4px 0;\n  width: 100%;\n}\n.login-message {\n  font-size: 14px;\n  color: #f86c59;\n  margin: 0 30px 0 30px;\n  height: 32px;\n  line-height: 32px;\n}\n.login-submit {\n  display: block;\n  height: 50px;\n  background-color: #fe9901;\n  border-radius: 5px;\n  text-align: center;\n  line-height: 50px;\n  color: #ffffff;\n  text-decoration: none;\n  margin: 0 25px 0 25px;\n  font-size: 20px;\n}\n.register-reset {\n  font-size: 14px;\n  text-align: right;\n  margin: 20px 25px 45px 25px;\n  height: 16px;\n  color: #9a9a9a;\n}\n.register-reset span {\n  font-size: 14px;\n}\n.register {\n  color: #556e98;\n  margin-right: 8px;\n}\n.reset {\n  color: #9a9a9a;\n  margin-left: 8px;\n}\n.third-login-title {\n  height: 16px;\n  margin: 0 25px 0 25px;\n}\n.third-login-title p {\n  font-size: 14px;\n  height: 16px;\n  line-height: 16px;\n  float: left;\n  color: #9a9a9a;\n}\n.third-login-title-line {\n  position: relative;\n  border-bottom: 1px solid #e4e7eb;\n  margin: 0 0 0 130px;\n  height: 8px;\n}\n.third-login {\n  margin-top: 32px;\n}\n.third-login li {\n  float: left;\n  text-align: center;\n}\n.third-login li a img {\n  width: 50px;\n  height: 50px;\n}\n.third-login li p {\n  font-size: 12px;\n  height: 14px;\n  line-height: 14px;\n  color: #9a9a9a;\n  margin-top: 12px;\n}\n.in-wx {\n  width: 33.33%;\n}\n.not-in-wx {\n  width: 50%;\n}\n", "", {"version":3,"sources":["/../../vue-loader/lib/style-rewriter.js?id=_v-3a2224c2&file=login.vue!G:/github/vue-pro/node_modules/less-loader/index.js!G:/github/vue-pro/node_modules/vue-loader/lib/selector.js?type=style&index=0!G:/github/vue-pro/src/views/login.vue.style"],"names":[],"mappings":"AAAA;EACE,cAAc;EACd,mBAAmB;EACnB,0BAA0B;EAC1B,yBAAyB;CAC1B;AACD;EACE,aAAa;EACb,2BAA2B;CAC5B;AACD;EACE,iCAAiC;CAClC;AACD;EACE,aAAa;EACb,eAAe;EACf,gBAAgB;EAChB,uBAAuB;EACvB,aAAa;EACb,kBAAkB;EAClB,oBAAoB;EACpB,YAAY;CACb;AACD;EACE,gBAAgB;EAChB,eAAe;EACf,sBAAsB;EACtB,aAAa;EACb,kBAAkB;CACnB;AACD;EACE,eAAe;EACf,aAAa;EACb,0BAA0B;EAC1B,mBAAmB;EACnB,mBAAmB;EACnB,kBAAkB;EAClB,eAAe;EACf,sBAAsB;EACtB,sBAAsB;EACtB,gBAAgB;CACjB;AACD;EACE,gBAAgB;EAChB,kBAAkB;EAClB,4BAA4B;EAC5B,aAAa;EACb,eAAe;CAChB;AACD;EACE,gBAAgB;CACjB;AACD;EACE,eAAe;EACf,kBAAkB;CACnB;AACD;EACE,eAAe;EACf,iBAAiB;CAClB;AACD;EACE,aAAa;EACb,sBAAsB;CACvB;AACD;EACE,gBAAgB;EAChB,aAAa;EACb,kBAAkB;EAClB,YAAY;EACZ,eAAe;CAChB;AACD;EACE,mBAAmB;EACnB,iCAAiC;EACjC,oBAAoB;EACpB,YAAY;CACb;AACD;EACE,iBAAiB;CAClB;AACD;EACE,YAAY;EACZ,mBAAmB;CACpB;AACD;EACE,YAAY;EACZ,aAAa;CACd;AACD;EACE,gBAAgB;EAChB,aAAa;EACb,kBAAkB;EAClB,eAAe;EACf,iBAAiB;CAClB;AACD;EACE,cAAc;CACf;AACD;EACE,WAAW;CACZ","file":"login.vue","sourcesContent":[".login-form {\n  height: 100px;\n  border-radius: 4px;\n  border: 1px solid #cfcfcf;\n  margin: 18px 25px 0 25px;\n}\n.login-form div {\n  height: 40px;\n  padding: 5px 15px 5px 15px;\n}\n.login-container-account {\n  border-bottom: 1px solid #cfcfcf;\n}\n.login-form div input {\n  border: none;\n  color: #383838;\n  font-size: 18px;\n  vertical-align: middle;\n  height: 32px;\n  line-height: 32px;\n  margin: 4px 0 4px 0;\n  width: 100%;\n}\n.login-message {\n  font-size: 14px;\n  color: #f86c59;\n  margin: 0 30px 0 30px;\n  height: 32px;\n  line-height: 32px;\n}\n.login-submit {\n  display: block;\n  height: 50px;\n  background-color: #fe9901;\n  border-radius: 5px;\n  text-align: center;\n  line-height: 50px;\n  color: #ffffff;\n  text-decoration: none;\n  margin: 0 25px 0 25px;\n  font-size: 20px;\n}\n.register-reset {\n  font-size: 14px;\n  text-align: right;\n  margin: 20px 25px 45px 25px;\n  height: 16px;\n  color: #9a9a9a;\n}\n.register-reset span {\n  font-size: 14px;\n}\n.register {\n  color: #556e98;\n  margin-right: 8px;\n}\n.reset {\n  color: #9a9a9a;\n  margin-left: 8px;\n}\n.third-login-title {\n  height: 16px;\n  margin: 0 25px 0 25px;\n}\n.third-login-title p {\n  font-size: 14px;\n  height: 16px;\n  line-height: 16px;\n  float: left;\n  color: #9a9a9a;\n}\n.third-login-title-line {\n  position: relative;\n  border-bottom: 1px solid #e4e7eb;\n  margin: 0 0 0 130px;\n  height: 8px;\n}\n.third-login {\n  margin-top: 32px;\n}\n.third-login li {\n  float: left;\n  text-align: center;\n}\n.third-login li a img {\n  width: 50px;\n  height: 50px;\n}\n.third-login li p {\n  font-size: 12px;\n  height: 14px;\n  line-height: 14px;\n  color: #9a9a9a;\n  margin-top: 12px;\n}\n.in-wx {\n  width: 33.33%;\n}\n.not-in-wx {\n  width: 50%;\n}\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -19342,9 +19385,11 @@
 	//     .third-login-title p{font-size: 14px;height: 16px;line-height: 16px;float: left;color: #9a9a9a;}
 	//     .third-login-title-line{position: relative;border-bottom: 1px solid #e4e7eb;margin: 0 0 0 130px;height: 8px;}
 	//     .third-login{margin-top: 32px;}
-	//     .third-login li{width: 50%;float: left;text-align: center;}
+	//     .third-login li{float: left;text-align: center;}
 	//     .third-login li a img{width: 50px;height: 50px;}
 	//     .third-login li p{font-size: 12px;height: 14px;line-height: 14px;color: #9a9a9a;margin-top: 12px;}
+	//     .in-wx{width: 33.33%;}
+	//     .not-in-wx{width: 50%;}
 	// </style>
 	// <template>
 	// 	<form class="login-form">
@@ -19364,9 +19409,9 @@
 	// 		<p>使用社交账号登录</p><div class="third-login-title-line"></div>
 	// 	</div>
 	// 	<ul class="third-login">
-	// 		<li><a v-bind:href="qqLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-qq.png"></a><p>QQ</p></li>
-	// 		<li><a v-bind:href="wxLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-wx.png"></a><p>微信</p></li>
-	// 		<li><a v-bind:href="youkuLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-youku.png"></a><p>优酷</p></li>
+	// 		<li v-bind:class="{ 'in-wx': inWx, 'not-in-wx': notInWx }"><a v-bind:href="qqLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-qq.png"></a><p>QQ</p></li>
+	// 		<li v-if="isWx==true" v-bind:class="{ 'in-wx': inWx, 'not-in-wx': notInWx }"><a v-bind:href="wxLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-wx.png"></a><p>微信</p></li>
+	// 		<li v-bind:class="{ 'in-wx': inWx, 'not-in-wx': notInWx }"><a v-bind:href="youkuLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-youku.png"></a><p>优酷</p></li>
 	// 	</ul>
 	// </template>
 	// <script>
@@ -19380,13 +19425,24 @@
 	                        qqLoginHref: '',
 	                        wxLoginHref: '',
 	                        youkuLoginHref: '',
-	                        redirectUrl: ''
+	                        redirectUrl: '',
+	                        inWx: '',
+	                        notInWx: ''
 	                };
 	        },
 	        route: {
 	                data: function data(transition) {
 	                        this.redirectUrl = decodeURIComponent(transition.to.path.split('=')[1]);
 	                        console.dir(this.redirectUrl);
+	                }
+	        },
+	        created: function created() {
+	                if (/MicroMessenger/i.test(navigator.userAgent)) {
+	                        this.inWx = true;
+	                        this.notInWx = false;
+	                } else {
+	                        this.inWx = false;
+	                        this.notInWx = true;
 	                }
 	        },
 	        ready: function ready() {
@@ -19422,15 +19478,22 @@
 	                        if (localStorage.getItem('apphost') == 'http://localhost:8080/' || localStorage.getItem('apphost') == 'http://alpha.52hangpai.cn/') {
 	
 	                                this.qqLoginHref = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101261235&redirect_uri=http://t-fabiao.52hangpai.cn/third_party_login/qq_login';
-	                                // this.wxLoginHref = 'https://open.weixin.qq.com/connect/qrconnect?appid=wxc5cd0381ab942049&redirect_uri='
+	                                // this.wxLoginHref = 'https://open.weixin.qq.com/connect/qrconnect?appid=wxfc9b795f6150b319&redirect_uri='
 	                                // 		+encodeURIComponent('http://t-fabiao.52hangpai.cn/third_party_login/wx_login')+'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
-	                                this.wxLoginHref = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc5cd0381ab942049&redirect_uri=' + +encodeURIComponent('http://t-fabiao.52hangpai.cn/third_party_login/wx_login') + '&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
 	
+	                                this.wxLoginHref = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfc9b795f6150b319&redirect_uri=' + encodeURI('http://t-fabiao.52hangpai.cn/third_party_login/wx_login') + '&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+	
+	                                // this.wxLoginHref='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc5cd0381ab942049&redirect_uri='
+	                                //     +encodeURI('http://fabu.52hangpai.cn/third_party_login/wx_login')
+	                                //     +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
 	                                this.youkuLoginHref = 'https://openapi.youku.com/v2/oauth2/authorize?response_type=code&client_id=3b0ef82784168b3f&redirect_uri=http://t-fabiao.52hangpai.cn/third_party_login/youku_login';
 	                        } else if (localStorage.getItem('apphost') == 'http://mapi.52hangpai.cn/') {
 	                                this.qqLoginHref = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101260753&redirect_uri=http://fabu.52hangpai.cn/third_party_login/qq_login';
 	                                // this.wxLoginHref = 'https://open.weixin.qq.com/connect/qrconnect?appid=wxc5cd0381ab942049&redirect_uri='
 	                                // 		+encodeURIComponent('http://fabu.52hangpai.cn/third_party_login/wx_login')+'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+	
+	                                this.wxLoginHref = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc5cd0381ab942049&redirect_uri=' + encodeURI('http://fabu.52hangpai.cn/third_party_login/wx_login') + '&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+	
 	                                this.youkuLoginHref = 'https://openapi.youku.com/v2/oauth2/authorize?response_type=code&client_id=143c766800baef8a&redirect_uri=http://fabu.52hangpai.cn/third_party_login/youku_login';
 	                        }
 	                },
@@ -19666,7 +19729,7 @@
 /* 99 */
 /***/ function(module, exports) {
 
-	module.exports = "\n\t<form class=\"login-form\">\n\t\t<div class=\"login-container-account\">\n\t\t\t<input v-model=\"account\" type=\"text\" placeholder=\"请输入手机号\" name=\"account\" maxlength=\"11\"/>\n\t\t</div>\n\t\t<div class=\"login-container-password\">\n\t\t\t<input v-model=\"password\" type=\"password\" placeholder=\"请输入6-16位密码\" name=\"password\" maxlength=\"16\"/>\n\t\t</div>\n\t</form>\n\t<p class=\"login-message\">{{message}}</p>\n\t<a class=\"login-submit\" v-on:click=\"login\">登录</a>\n\t<div class=\"register-reset\">\n\t\t<span class=\"register\">注册账号</span>|<span class=\"reset\">找回密码</span>\n\t</div>\n\t<div class=\"third-login-title\">\n\t\t<p>使用社交账号登录</p><div class=\"third-login-title-line\"></div>\n\t</div>\n\t<ul class=\"third-login\">\n\t\t<li><a v-bind:href=\"qqLoginHref\"><img src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-qq.png\"></a><p>QQ</p></li>\n\t\t<li><a v-bind:href=\"wxLoginHref\"><img src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-wx.png\"></a><p>微信</p></li>\n\t\t<li><a v-bind:href=\"youkuLoginHref\"><img src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-youku.png\"></a><p>优酷</p></li>\n\t</ul>\n";
+	module.exports = "\n\t<form class=\"login-form\">\n\t\t<div class=\"login-container-account\">\n\t\t\t<input v-model=\"account\" type=\"text\" placeholder=\"请输入手机号\" name=\"account\" maxlength=\"11\"/>\n\t\t</div>\n\t\t<div class=\"login-container-password\">\n\t\t\t<input v-model=\"password\" type=\"password\" placeholder=\"请输入6-16位密码\" name=\"password\" maxlength=\"16\"/>\n\t\t</div>\n\t</form>\n\t<p class=\"login-message\">{{message}}</p>\n\t<a class=\"login-submit\" v-on:click=\"login\">登录</a>\n\t<div class=\"register-reset\">\n\t\t<span class=\"register\">注册账号</span>|<span class=\"reset\">找回密码</span>\n\t</div>\n\t<div class=\"third-login-title\">\n\t\t<p>使用社交账号登录</p><div class=\"third-login-title-line\"></div>\n\t</div>\n\t<ul class=\"third-login\">\n\t\t<li v-bind:class=\"{ 'in-wx': inWx, 'not-in-wx': notInWx }\"><a v-bind:href=\"qqLoginHref\"><img src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-qq.png\"></a><p>QQ</p></li>\n\t\t<li v-if=\"isWx==true\" v-bind:class=\"{ 'in-wx': inWx, 'not-in-wx': notInWx }\"><a v-bind:href=\"wxLoginHref\"><img src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-wx.png\"></a><p>微信</p></li>\n\t\t<li v-bind:class=\"{ 'in-wx': inWx, 'not-in-wx': notInWx }\"><a v-bind:href=\"youkuLoginHref\"><img src=\"http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-youku.png\"></a><p>优酷</p></li>\n\t</ul>\n";
 
 /***/ }
 /******/ ]);

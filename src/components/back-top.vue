@@ -16,8 +16,8 @@
         },
         methods:{
             backTop: function(event){
-                // document.body.scrollTop = -10;
-                this.scrollTopReduction();
+                document.body.scrollTop = 0;
+                // this.scrollTopReduction();
             },
             scrollTopReduction : function(){
                 for(var i=0;document.body.scrollTop>0;i++){

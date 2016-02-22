@@ -18,9 +18,11 @@
     .third-login-title p{font-size: 14px;height: 16px;line-height: 16px;float: left;color: #9a9a9a;}
     .third-login-title-line{position: relative;border-bottom: 1px solid #e4e7eb;margin: 0 0 0 130px;height: 8px;}
     .third-login{margin-top: 32px;}
-    .third-login li{width: 50%;float: left;text-align: center;}
+    .third-login li{float: left;text-align: center;}
     .third-login li a img{width: 50px;height: 50px;}
     .third-login li p{font-size: 12px;height: 14px;line-height: 14px;color: #9a9a9a;margin-top: 12px;}
+    .in-wx{width: 33.33%;}
+    .not-in-wx{width: 50%;}
 </style>
 <template>
 	<form class="login-form">
@@ -40,9 +42,9 @@
 		<p>使用社交账号登录</p><div class="third-login-title-line"></div>
 	</div>
 	<ul class="third-login">
-		<li><a v-bind:href="qqLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-qq.png"></a><p>QQ</p></li>
-		<li><a v-bind:href="wxLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-wx.png"></a><p>微信</p></li>
-		<li><a v-bind:href="youkuLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-youku.png"></a><p>优酷</p></li>
+		<li v-bind:class="{ 'in-wx': inWx, 'not-in-wx': notInWx }"><a v-bind:href="qqLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-qq.png"></a><p>QQ</p></li>
+		<li v-if="isWx==true" v-bind:class="{ 'in-wx': inWx, 'not-in-wx': notInWx }"><a v-bind:href="wxLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-wx.png"></a><p>微信</p></li>
+		<li v-bind:class="{ 'in-wx': inWx, 'not-in-wx': notInWx }"><a v-bind:href="youkuLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-youku.png"></a><p>优酷</p></li>
 	</ul>
 </template>
 <script>
@@ -56,13 +58,24 @@
                 qqLoginHref:'',
                 wxLoginHref:'',
                 youkuLoginHref:'',
-                redirectUrl:''
+                redirectUrl:'',
+                inWx: '',
+                notInWx: '',
       		}
       	},
       	route:{
             data (transition){
             	this.redirectUrl = decodeURIComponent(transition.to.path.split('=')[1]);
                 console.dir(this.redirectUrl);
+            }
+        },
+        created: function(){
+            if (/MicroMessenger/i.test(navigator.userAgent)) { 
+                this.inWx = true;
+                this.notInWx = false;
+            }else{
+                this.inWx = false;
+                this.notInWx = true;
             }
         },
       	ready:function() {
@@ -98,17 +111,26 @@
          		if (localStorage.getItem('apphost')=='http://localhost:8080/'||localStorage.getItem('apphost')=='http://alpha.52hangpai.cn/') {
 
               		this.qqLoginHref = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101261235&redirect_uri=http://t-fabiao.52hangpai.cn/third_party_login/qq_login';
-              		// this.wxLoginHref = 'https://open.weixin.qq.com/connect/qrconnect?appid=wxc5cd0381ab942049&redirect_uri='
+              		// this.wxLoginHref = 'https://open.weixin.qq.com/connect/qrconnect?appid=wxfc9b795f6150b319&redirect_uri='
                 // 		+encodeURIComponent('http://t-fabiao.52hangpai.cn/third_party_login/wx_login')+'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
-                    this.wxLoginHref='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc5cd0381ab942049&redirect_uri='+
-                        +encodeURIComponent('http://t-fabiao.52hangpai.cn/third_party_login/wx_login')
+
+                    this.wxLoginHref='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfc9b795f6150b319&redirect_uri='
+                        +encodeURI('http://t-fabiao.52hangpai.cn/third_party_login/wx_login')
                         +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
 
+                    // this.wxLoginHref='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc5cd0381ab942049&redirect_uri='
+                    //     +encodeURI('http://fabu.52hangpai.cn/third_party_login/wx_login')
+                    //     +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
               		this.youkuLoginHref = 'https://openapi.youku.com/v2/oauth2/authorize?response_type=code&client_id=3b0ef82784168b3f&redirect_uri=http://t-fabiao.52hangpai.cn/third_party_login/youku_login';              		
             	}else if(localStorage.getItem('apphost')=='http://mapi.52hangpai.cn/'){
               		this.qqLoginHref = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101260753&redirect_uri=http://fabu.52hangpai.cn/third_party_login/qq_login';
               		// this.wxLoginHref = 'https://open.weixin.qq.com/connect/qrconnect?appid=wxc5cd0381ab942049&redirect_uri='
                 // 		+encodeURIComponent('http://fabu.52hangpai.cn/third_party_login/wx_login')+'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+
+                    this.wxLoginHref='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc5cd0381ab942049&redirect_uri='
+                        +encodeURI('http://fabu.52hangpai.cn/third_party_login/wx_login')
+                        +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+
               		this.youkuLoginHref = 'https://openapi.youku.com/v2/oauth2/authorize?response_type=code&client_id=143c766800baef8a&redirect_uri=http://fabu.52hangpai.cn/third_party_login/youku_login';
             	}
          	},

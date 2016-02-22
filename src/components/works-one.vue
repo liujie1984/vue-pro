@@ -76,7 +76,8 @@
             <img class="icon" v-bind:src="likedImgSrc">
             <span class="count">{{works.likes_count}}</span>
         </span>
-        <span class="content-comment" v-link="{name:'works-detail',params: { id: works.pub_id}}">
+        <span class="content-comment" v-on:click="dealComment">
+        <!-- v-link="{name:'works-detail',params: { id: works.pub_id}} -->
             <img class="icon" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png">
             <span class="count">{{works.comments_count}}</span>
         </span>
@@ -139,7 +140,14 @@
                     }
                 }else{
                     console.dir(this);
-                    this.router.go({ name: 'login'});
+                    this.$route.router.go({ name: 'login'});
+                }
+            },
+            dealComment: function(){
+                if(this.getCookie('user_info')!=null&&this.getCookie('user_info')!=''&&this.getCookie('user_info')!=undefined) {
+                    this.$route.router.go({ name:'works-detail',params: { id: this.works.pub_id}});
+                }else{
+                    this.$route.router.go({ name: 'login'});
                 }
             },
             dealTopleftText: function(){

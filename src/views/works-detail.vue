@@ -144,26 +144,28 @@
                 return jstimestamp;
             },
             dealLike: function(){
-                if(this.isLiked==1){
-                    console.dir('1');
-                    let unlikeUrl = this.getUnlikeUrl();
-                    this.$http({url: unlikeUrl, method: 'POST',data: {type:'pub',id:this.id},xhr:{withCredentials:true},}).then(function (response) {
-                        if(response.data.code==0){
-                            this.isLiked=0;
-                            this.likedImgSrc='http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png';
-                            this.worksDetail.likes_count--;
-                        }
-                    });
+                if(this.getCookie('user_info')!=null&&this.getCookie('user_info')!=''&&this.getCookie('user_info')!=undefined) {
+                    if(this.isLiked==1){
+                        let unlikeUrl = this.getUnlikeUrl();
+                        this.$http({url: unlikeUrl, method: 'POST',data: {type:'pub',id:this.works.pub_id},xhr:{withCredentials:true},}).then(function (response) {
+                            if(response.data.code==0){
+                                this.isLiked=0;
+                                this.likedImgSrc='http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png';
+                                this.works.likes_count--;
+                            }
+                        });
+                    }else{
+                        let likeUrl = this.getLikeUrl();
+                        this.$http({url: likeUrl, method: 'POST',data: {type:'pub',id:this.works.pub_id},xhr:{withCredentials:true},}).then(function (response) {
+                            if(response.data.code==0){
+                                this.isLiked=1;
+                                this.likedImgSrc='http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-choose.png';
+                                this.works.likes_count++;
+                            }
+                        });
+                    }
                 }else{
-                    console.dir(0);
-                    let likeUrl = this.getLikeUrl();
-                    this.$http({url: likeUrl, method: 'POST',data: {type:'pub',id:this.id},xhr:{withCredentials:true},}).then(function (response) {
-                        if(response.data.code==0){
-                            this.isLiked=1;
-                            this.likedImgSrc='http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-choose.png';
-                            this.worksDetail.likes_count++;
-                        }
-                    });
+                    this.$route.router.go({ name: 'login'});
                 }
             },
             getLikeUrl: function(){
@@ -194,29 +196,32 @@
                 // console.dir(this.commentContent);
             },
             replyComment: function(event){
-                console.dir(event);
-                let commentUrl = this.getCommentUrl();
-                this.$http({url: commentUrl, method: 'POST',data: {type:'pub',id:this.id,content:this.commentContent,reply_to:this.replyToUser.user_id},xhr:{withCredentials:true},}).then(function (response) {
-                    if(response.data.code==0){
-                        let url = '';
-                        if (localStorage.getItem('apphost')=='http://localhost:8080/'){
-                            url = localStorage.getItem('apphost') + 'apiv2/publish_detail.json';
-                        }else{
-                            url = localStorage.getItem('apphost') + 'apiv2/publish_detail';
-                        }
-                        this.$http({url: url, method: 'GET',data:{pub_id:this.id},xhr:{withCredentials:true}}).then(function (response) {
-                            if(response.data.code==0){
-                                this.worksDetail = response.data.data;
-                                this.comments = response.data.data.comments;
-                                this.commentContent = '';
-                                this.commentPlaceholder = '我的评论(140字以内)',
-                                this.commentContainerHeight = '20px',
-                                this.replyToUser = this.owner;
-                                console.dir(this.replyToUser);
+                if(this.getCookie('user_info')!=null&&this.getCookie('user_info')!=''&&this.getCookie('user_info')!=undefined) {
+                    let commentUrl = this.getCommentUrl();
+                    this.$http({url: commentUrl, method: 'POST',data: {type:'pub',id:this.id,content:this.commentContent,reply_to:this.replyToUser.user_id},xhr:{withCredentials:true},}).then(function (response) {
+                        if(response.data.code==0){
+                            let url = '';
+                            if (localStorage.getItem('apphost')=='http://localhost:8080/'){
+                                url = localStorage.getItem('apphost') + 'apiv2/publish_detail.json';
+                            }else{
+                                url = localStorage.getItem('apphost') + 'apiv2/publish_detail';
                             }
-                        });
-                    }
-                });
+                            this.$http({url: url, method: 'GET',data:{pub_id:this.id},xhr:{withCredentials:true}}).then(function (response) {
+                                if(response.data.code==0){
+                                    this.worksDetail = response.data.data;
+                                    this.comments = response.data.data.comments;
+                                    this.commentContent = '';
+                                    this.commentPlaceholder = '我的评论(140字以内)',
+                                    this.commentContainerHeight = '20px',
+                                    this.replyToUser = this.owner;
+                                    console.dir(this.replyToUser);
+                                }
+                            });
+                        }
+                    });
+                }else{
+                    this.$route.router.go({ name: 'login'});
+                }
             },
             getCommentUrl: function(){
                 let url = '';
@@ -226,6 +231,16 @@
                     url = localStorage.getItem('apphost') + 'apiv2/comment';
                 }
                 return url;
+            },
+            getCookie: function(cname) {
+                var name = cname + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0; i<ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1);
+                    if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+                }
+                return "";
             },
      	},
         events: {
