@@ -1,12 +1,15 @@
 <style lang="less">
     .owner{height: 64px;}
     .owner-avatar{width: 36px;height: 36px;border-radius: 18px;margin: 14px 14px 0 10px;float: left;}
+    .owner-avatar-vip{position: relative;width: 17px;height: 17px;margin: 34px 10px 0 -25px;float: left;}
     .owner-middle{height: 48px;float: left;margin-top: 16px;}
     .owner-nickname{font-size: 14px;color: #4a4a4a;height: 18px;line-height: 18px;}
     .pub-date{font-size: 12px;color: #dcdcdc;height: 14px;line-height: 14px;}
 
     .blank{height: 6px;background-color: #dddddd;clear: both;}
     .title{font-size: 16px;color: #3b4554;margin: 10px;height: auto;line-height: 22px;}
+    .title-icon{margin: 0 5px 0 0;}
+    .title-icon span{font-size: 16px;font-weight: bolder;line-height: 20px;height: 20px;}
 
     .tags-list{margin: 10px 10px 10px 4px;height: 20px;overflow: hidden;}
     .tags-list li{display: inline-block;height: 18px;padding: 0 6px 0 6px;border: 1px solid #dbdbdb;color: #9a9a9a;
@@ -27,15 +30,21 @@
         text-align: center;top: 50%;margin-top: -7px;}
 </style>
 <template>
-    <div class="owner">
+    <div v-link="{name:'person-other',params: { id: owner.user_id}}" class="owner">
         <img class="owner-avatar" v-bind:src="owner.avatar_url">
+        <img v-if="owner.is_vip==1" class="owner-avatar-vip" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-is-vip.png">
         <div class="owner-middle">
             <p class="owner-nickname">{{owner.nickname}}</p>
             <p class="pub-date">{{worksDetail.pub_date}}</p>
         </div>
     </div>
     <div class="blank"></div>
-    <p class="title">{{worksDetail.title}}</p>
+    <p class="title">
+        <span class="title-icon" v-if="worksDetail.common_flags.labels!=null">
+            <span v-for="label in worksDetail.common_flags.labels" v-bind:style="{ color: '#'+label.color}">{{label.text}}</span>
+        </span>
+        {{worksDetail.title}}
+    </p>
     <div class="detail-list">
         <detail-one v-for="worksDetail.detail_list in worksDetail.detail_list" :detail="worksDetail.detail_list[$index]"></detail-one>
     </div>
@@ -71,11 +80,15 @@
                     title:'',
                     comments_count:'',
                     likes_count:'',
-                    detail_list:[]
+                    detail_list:[],
+                    common_flags:{
+                        labels:[],
+                    }
                 },
                 owner:{
                     avatar_url:'',
-                    nickname:''
+                    nickname:'',
+                    is_vip:'',
                 },
                 comments:{
                     next_page_token:'',
@@ -124,7 +137,7 @@
                         this.isLiked=0;
                     }
                     this.replyToUser = this.owner;
-                    console.dir(this.replyToUser);
+                    // console.dir(this.replyToUser);
                     // console.dir(this.worksDetail.owner.avatar_url);
                 }
             });
@@ -147,20 +160,20 @@
                 if(this.getCookie('user_info')!=null&&this.getCookie('user_info')!=''&&this.getCookie('user_info')!=undefined) {
                     if(this.isLiked==1){
                         let unlikeUrl = this.getUnlikeUrl();
-                        this.$http({url: unlikeUrl, method: 'POST',data: {type:'pub',id:this.works.pub_id},xhr:{withCredentials:true},}).then(function (response) {
+                        this.$http({url: unlikeUrl, method: 'POST',data: {type:'pub',id:this.id},xhr:{withCredentials:true},}).then(function (response) {
                             if(response.data.code==0){
                                 this.isLiked=0;
                                 this.likedImgSrc='http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-unchoose.png';
-                                this.works.likes_count--;
+                                this.worksDetail.likes_count--;
                             }
                         });
                     }else{
                         let likeUrl = this.getLikeUrl();
-                        this.$http({url: likeUrl, method: 'POST',data: {type:'pub',id:this.works.pub_id},xhr:{withCredentials:true},}).then(function (response) {
+                        this.$http({url: likeUrl, method: 'POST',data: {type:'pub',id:this.id},xhr:{withCredentials:true},}).then(function (response) {
                             if(response.data.code==0){
                                 this.isLiked=1;
                                 this.likedImgSrc='http://7xqamv.com2.z0.glb.qiniucdn.com/icon-like-choose.png';
-                                this.works.likes_count++;
+                                this.worksDetail.likes_count++;
                             }
                         });
                     }
@@ -192,7 +205,7 @@
             },
             commentChange: function(event){
                 this.commentContainerHeight = event.path[0].scrollHeight-10;
-                console.dir(event.path[0].scrollHeight);
+                // console.dir(event.path[0].scrollHeight);
                 // console.dir(this.commentContent);
             },
             replyComment: function(event){
@@ -214,7 +227,7 @@
                                     this.commentPlaceholder = '我的评论(140字以内)',
                                     this.commentContainerHeight = '20px',
                                     this.replyToUser = this.owner;
-                                    console.dir(this.replyToUser);
+                                    // console.dir(this.replyToUser);
                                 }
                             });
                         }
@@ -228,7 +241,7 @@
                 if (localStorage.getItem('apphost')=='http://localhost:8080/'){
                     url = localStorage.getItem('apphost') + 'apiv2/like.json';
                 }else{
-                    url = localStorage.getItem('apphost') + 'apiv2/comment';
+                    url = localStorage.getItem('apphost') + 'apiv2/publish_new_comment';
                 }
                 return url;
             },

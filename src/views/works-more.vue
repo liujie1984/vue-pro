@@ -4,7 +4,10 @@
 <template>
     <!-- 全局header -->
     <nav-top></nav-top>
-    <works-one v-for="works in works" :works="works" type="normal"></works-one>
+    <div v-touch:swipe="swipeSquare" v-touch-options:swipe="{direction: 'horizontal',threshold: 100}">
+        <works-one v-for="works in works" :works="works" type="normal"></works-one>
+    </div>
+    <footer-bottom></footer-bottom>
     <back-top v-show="isBackTopShow==true"></back-top>
 </template>
 <script>
@@ -70,12 +73,29 @@
                 	// console.dir(this.works);
                 	// console.dir(this.nextPageToken);
             	});
-        	}
+        	},
+            swipeSquare: function (e) {
+            // console.dir(e.deltaX);
+                if(e.deltaX>100){
+                    if(this.type == 'image'){
+                        this.$route.router.go({ name:'recommend' });
+                    }else if(this.type == 'video'){
+                        this.$route.router.go({ name:'works-more',params: { type: 'image' }});
+                    }
+                }else if(e.deltaX<-100){
+                   if(this.type == 'image'){
+                        this.$route.router.go({ name:'works-more',params: { type: 'video' }});
+                    }else if(this.type == 'video'){
+                        this.$route.router.go({ name:'focus' });
+                    }
+                }
+            },
     	},
     	components:{
         	'nav-top':require('../components/nav-top.vue'),
         	'works-one':require('../components/works-one.vue'),
             'back-top':require('../components/back-top.vue'),
+            'footer-bottom':require('../components/footer-bottom.vue'),
     	}
 	};
 </script>

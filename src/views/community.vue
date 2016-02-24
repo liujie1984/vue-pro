@@ -5,51 +5,63 @@
     #banner-choose li{display: inline-block;width: 5px;height: 5px;border-radius: 5px;
         background-color: white;margin:0 3px 0 3px;}
     .banner-choose-color{background-color:yellow !important;}
+
+    #community-title-list{height: 90px;width: 100%;}
+    .community-title-one{width: 33%;font-size: 16px;color: #222222;height: 45px;line-height: 45px;
+        display: inline-block;text-align: center;border-bottom: 1px solid #dcdcdc;border-right: 1px solid #dcdcdc;}
+
+    #community-block{height: 10px;background-color: #f2f1ef;}
 </style>
 <template>
-    <!-- 全局header -->
-    <nav-top type="recommend"></nav-top>
     <!-- banner轮播begin -->
     <div id="banner">
         <a v-bind:href="bannerUrl">
-            <img id="banner-image" v-touch:swipe="onSwipe" v-touch-options:swipe="{direction: 'horizontal',threshold: 100}"
+            <img id="banner-image" v-touch:swipe.stop="onSwipe" v-touch-options:swipe="{threshold: 100}"
             v-bind:src="bannerImg">
         </a>
-            <!-- {name:'works-detail',params: { id: 1}} -->
         <ul id="banner-choose">
             <li v-for="banner in banner" v-bind:class="{'banner-choose-color': $index==bannerNum}"></li>
         </ul>
     </div>
-    <!-- 作品列表 -->
-    <div id="works-list" v-touch:swipeleft="swipeSquareLeft" v-touch-options:swipe="{direction: 'horizontal',threshold: 100}">
-        <works-one v-for="works in works" :works="works" type="recommend"></works-one>
+    <!-- 社区列表 -->
+    <ul id="community-title-list">
+        <li class="community-title-one" v-for="a in communityTitleList" v-link="{name:'community-more',params: { id: a.community_id}}">{{a.title}}</span>
+    </ul>
+    <div id="community-block"></div>
+    <div id="community-list">
+        <community-one v-for="communitys in communitys" :communitys="communitys"></community-one>
     </div>
+    <!-- 作品列表 -->
     <footer-bottom></footer-bottom>
     <back-top v-show="isBackTopShow==true"></back-top>
 </template>
 <script>
     export default {
-        data:function(){
+        data: function(){
             return {
                 bannerNum:0,
                 bannerImg:'',
                 bannerUrl:'',
                 bannerLength:0,
                 banner:'',
-                bannerTimer:'',
-                works:'',
+                communityTitleList:[{
+                    title:'',
+                }],
+                communitys:'',
                 nextPageToken:'',
                 isBackTopShow: false,
             }
         },
-        init:function() {
+        init: function() {
 
         },
-        created:function() {
-            let url = this.getRecommendListUrl();
+        created: function() {
+            let url = this.getCommunityMainUrl();
             this.$http({url: url, method: 'GET',xhr:{withCredentials:true}}).then(function (response) {
                 this.banner = response.data.data.banner_list;
-                this.works = response.data.data.list;
+                this.communitys = response.data.data.list;
+                this.communityTitleList = response.data.data.community_list;
+                // console.dir(this.communityTitleList);
                 this.nextPageToken = response.data.data.next_page_token;
 
                 this.bannerImg = this.banner[0].image;
@@ -79,12 +91,12 @@
             }
         },
         methods:{
-            getRecommendListUrl: function(){
+            getCommunityMainUrl: function(){
                 let url = '';
                 if (localStorage.getItem('apphost')=='http://localhost:8080/'){
-                    url = localStorage.getItem('apphost') + 'apiv2/recommend_list.json';
+                    url = localStorage.getItem('apphost') + 'apiv2/community_main.json';
                 }else{
-                    url = localStorage.getItem('apphost') + 'apiv2/recommend_list_v21';
+                    url = localStorage.getItem('apphost') + 'apiv2/community_main';
                 }
                 return url;
             },
@@ -102,26 +114,22 @@
                 setTimeout(function(){
                     self.bannerTimer = setInterval(self.bannerShuffling,2000,self);
                 },6000,self);
-            // console.dir(this.bannerNum);
-            // console.dir(e.deltaX);
-            },
-            swipeSquareLeft: function (e) {
-                this.$route.router.go({ name:'works-more',params: { type: 'image' }});
             },
             bannerShuffling: function(self){
                 self.bannerImg=self.banner[self.bannerNum].image;
                 self.bannerUrl = self.refurlDeal(self.banner[self.bannerNum].ref_url);
+                console.dir(self.bannerUrl);
                 if(self.bannerNum<self.bannerLength-1){
                     self.bannerNum++;
-                 }else{
+                }else{
                     self.bannerNum=0;
                 }
             },
             getData: function(){
-                let url = this.getRecommendListUrl();
+                let url = this.getCommunityMainUrl();
                 // page_token:xxx
                 this.$http({url: url, method: 'GET',data:{page_token:this.nextPageToken},xhr:{withCredentials:true}}).then(function (response) {
-                    this.works = this.works.concat(response.data.data.list);
+                    this.communitys = this.communitys.concat(response.data.data.list);
                     this.nextPageToken = response.data.data.next_page_token;
                 // console.dir(this.works);
                 // console.dir(this.nextPageToken);
@@ -161,7 +169,7 @@
                 // console.dir(str);
                 for(let i=0;i<urlParamsLength;i=i+2){
                     if(urlParams[i].match(str)){
-                    // console.dir(urlParams[i+1]);
+                        // console.dir(urlParams[i+1]);
                         returnStr = decodeURIComponent(urlParams[i+1]);
                     }
                 }
@@ -169,8 +177,7 @@
             }
         },
         components:{
-            'nav-top':require('../components/nav-top.vue'),
-            'works-one':require('../components/works-one.vue'),
+            'community-one':require('../components/community-one.vue'),
             'back-top':require('../components/back-top.vue'),
             'footer-bottom':require('../components/footer-bottom.vue'),
         }

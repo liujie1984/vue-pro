@@ -1,0 +1,23 @@
+{
+  "code": 0,
+  "msg": "OK",
+  "data": {
+    "user_id": 1,
+    "nickname": "我心依旧",
+    "gender": "U",
+    "avatar_url": "http://avatar.52hangpai.cn/repo//ce/45/ce9e9d07f7c4c00842ee10a2a171b045-256.jpg",
+    "is_vip": 0,
+    "location": "湖北省|武汉市|东西湖区",
+    "platform_name": "ihp",
+    "binding_mobile": "15219472625",
+    "drone_name": "精灵",
+    "pub_count": 13,
+    "thread_count": 2,
+    "followed_count": 121,
+    "followers_count": 49,
+    "mix_tags_count": 3,
+    "is_followed": 0,
+    "is_my_follower": 0,
+    "flags": 0
+  }
+}

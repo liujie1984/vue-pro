@@ -1,6 +1,7 @@
 <style lang="less">
     .owner{height: 56px;}
     .avatar{height: 36px;width: 36px;border-radius: 18px;margin: 10px 10px 0 10px;}
+    .avatar-vip{position: relative;width: 17px;height: 17px;margin: 0 10px 0 -20px;}
     .nickname{vertical-align: top;font-size: 14px;color: #4a4a4a;height: 60px;line-height: 60px;
         display: inline-block;}
 
@@ -39,8 +40,9 @@
 </style>
 <template>
 <div class="one">
-    <div class="owner">
+    <div v-link="{name:'person-other',params: { id: works.owner.user_id}}" class="owner" >
         <img class="avatar" v-bind:src="works.owner.avatar_url">
+        <img v-if="works.owner.is_vip==1" class="avatar-vip" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-is-vip.png">
         <span class="nickname">{{works.owner.nickname}}</span>
     </div>
     <div v-link="{name:'works-detail',params: { id: works.pub_id}}">
@@ -97,7 +99,7 @@
         },
         created: function(){
             // console.dir(this.type);
-            // console.dir(this.works.pub_id);
+            // console.dir(this.works);
             // console.dir(this.works.common_flags.topleft_text);
             if(this.works.common_flags.topleft_text!=null){
                 this.dealTopleftText();

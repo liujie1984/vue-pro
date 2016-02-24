@@ -43,7 +43,7 @@
 	</div>
 	<ul class="third-login">
 		<li v-bind:class="{ 'in-wx': inWx, 'not-in-wx': notInWx }"><a v-bind:href="qqLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-qq.png"></a><p>QQ</p></li>
-		<li v-if="isWx==true" v-bind:class="{ 'in-wx': inWx, 'not-in-wx': notInWx }"><a v-bind:href="wxLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-wx.png"></a><p>微信</p></li>
+		<li v-if="inWx==true" v-bind:class="{ 'in-wx': inWx, 'not-in-wx': notInWx }"><a v-bind:href="wxLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-wx.png"></a><p>微信</p></li>
 		<li v-bind:class="{ 'in-wx': inWx, 'not-in-wx': notInWx }"><a v-bind:href="youkuLoginHref"><img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-login-youku.png"></a><p>优酷</p></li>
 	</ul>
 </template>
@@ -71,6 +71,7 @@
         },
         created: function(){
             if (/MicroMessenger/i.test(navigator.userAgent)) { 
+                // alert(this)
                 this.inWx = true;
                 this.notInWx = false;
             }else{
@@ -87,9 +88,10 @@
             	// console.log(url);
             	this.password = this.md5(this.password);
             	//postl
-        		this.$http({url: url, method: 'POST',data: {mobile:this.account,passwd:this.password},xhr:{withCredentials:true}}).then(function (response) {
+        		this.$http({url: url, method: 'GET',data: {mobile:this.account,passwd:this.password},xhr:{withCredentials:true}}).then(function (response) {
         			if(response.data.code==0){
         				this.responseData = response.data.data;
+                        // Vue.http.headers.common['User-Token'] = response.data.data.token;
         				sessionStorage.setItem('userId',response.data.data.user_id);
         				sessionStorage.setItem('userData',JSON.stringify(response.data.data)); 
         				this.$route.router.go({ path: this.redirectUrl});

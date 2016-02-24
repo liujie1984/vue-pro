@@ -6,7 +6,7 @@ module.exports = {
     // 输出
     output: {
         path: path.join(__dirname, './build'),
-        filename: 'main.js',
+        filename: 'main7.js',
         publicPath: '/build/'
     },
     module: {

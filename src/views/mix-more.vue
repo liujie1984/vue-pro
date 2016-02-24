@@ -2,8 +2,11 @@
 
 </style>
 <template>
-    <nav-top v-show="nav_show==1" type="news"></nav-top>
-    <mix-one v-for="mix in mix" :mix="mix"></mix-one>
+    <nav-top v-if="navShow==1" type="news"></nav-top>
+    <div v-touch:swipe ="swipeSquare" v-touch-options:swipe="{direction: 'horizontal',threshold: 100}">
+        <mix-one v-for="mix in mix" :mix="mix"></mix-one>
+    </div>
+    <footer-bottom v-if="footerShow==1" type="news"></footer-bottom>
     <back-top v-show="isBackTopShow==true"></back-top>
 </template>
 <script>
@@ -12,7 +15,8 @@
       		return {
       			mix:'',
                 tags:'',
-                nav_show:0,
+                navShow:0,
+                footerShow:0,
                 nextPageToken:'',
                 isBackTopShow: false,
       		}
@@ -23,7 +27,8 @@
                 switch (this.type){
                     case 'news':
                         this.tags='{{行业动态}}';
-                        this.nav_show=1;
+                        this.navShow=1;
+                        this.footerShow=1;
                         break;
                     default:
                         this.tags='{{'+this.type+'}}';
@@ -68,12 +73,23 @@
                     this.mix = response.data.data.list;
                 // console.dir(this.mix);
                 });
-            }
+            },
+            swipeSquare: function (e) {
+            // console.dir(e.deltaX);
+                if(this.type == 'news'){
+                    if(e.deltaX>100){
+                        this.$route.router.go({ name:'mix',params: { type: 'tutorial' }});
+                    }else if(e.deltaX<-100){
+                        this.$route.router.go({ name:'mix',params: { type: 'review' }});
+                    }
+                }
+            },
      	},
         components:{
             'nav-top':require('../components/nav-top.vue'),
             'mix-one':require('../components/mix-one.vue'),
             'back-top':require('../components/back-top.vue'),
+            'footer-bottom':require('../components/footer-bottom.vue'),
         }
     }
 </script>

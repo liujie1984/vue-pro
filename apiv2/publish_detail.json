@@ -22,6 +22,7 @@
     "share_url": "http://beta2.52hangpai.cn/app_share/share_pub?pub_id=8991",
     "ref_url": "",
     "owner": {
+      "is_vip": 1,
       "user_id": 650,
       "nickname": "Ihave   a  dream",
       "gender": "M",

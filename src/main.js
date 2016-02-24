@@ -17,15 +17,16 @@ Vue.http.headers.common['User-Token'] = '0';
 Vue.http.headers.common['Network'] = '0';
 // Vue.http.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 Vue.http.options.emulateJSON = true;
-console.dir(Vue.http);
+// console.dir(Vue.http);
 var App = Vue.extend({
     data:function(){
         return {
             navNum:0,
+            msg:'login',
         }
     },
     ready:function() {
-        console.dir(location);
+        // console.dir(location);
         if (location.href.indexOf('fabu') > 0){
             localStorage.setItem('apphost','http://mapi.52hangpai.cn/');
         }
@@ -35,11 +36,13 @@ var App = Vue.extend({
         if (location.href.indexOf('localhost') > 0) {
             localStorage.setItem('apphost','http://localhost:8080/');
         }
-         console.dir(this.getCookie('user_info'));
+         // console.dir(this.getCookie('user_info'));
         if(this.getCookie('user_info')!=null&&this.getCookie('user_info')!=''&&this.getCookie('user_info')!=undefined) {
             let userInfo = JSON.parse(decodeURIComponent(this.getCookie('user_info')));
             sessionStorage.setItem('userId',userInfo.data.user_id);
-            sessionStorage.setItem('userData',decodeURIComponent(this.getCookie('user_info'))); 
+            sessionStorage.setItem('userData',decodeURIComponent(JSON.stringify(userInfo.data)));
+            // this.thirdPartyLogin();
+            // Vue.http.headers.common['User-Token'] = userInfo.data.token;
             // this.clearCookie('userData');
         }
         // console.dir(JSON.parse(decodeURIComponent(this.getCookie('user_info'))));
@@ -58,29 +61,12 @@ var App = Vue.extend({
         },
         clearCookie: function(name) {  
             this.setCookie(name, "", -1);  
-        } 
-        // onSwipe: function (e) {
-        //     var names = ['recommend','works-more/image','works-more/video','focus','mix/tutorial','mix/review','mix-more/news'];
-        //     let namesLength = names.length;
-        //     if(e.deltaX>100){
-        //         this.navNum++;
-        //         if(this.navNum >= namesLength){
-        //             this.navNum = 0;
-        //         }
-        //         let route = names[this.navNum].split("/");
-
-        //         router.go({ name: route[0],params: { type: route[1] }});
-        //     }else if(e.deltaX<-100){
-        //         this.navNum--;
-        //         if(this.navNum<0){
-        //             this.navNum = namesLength-1;
-        //         }
-        //         let route = names[this.navNum].split("/");
-
-        //         router.replace({ name: route[0],params: { type: route[1] }});
-        //     }
-        //     console.dir(e.deltaX);
-        // }
+        },
+        thirdPartyLogin: function () {
+            console.dir('thirdPartyLogin');
+            console.dir(this.msg);
+            this.$broadcast('third-party-login-msg',this.msg);
+        },
     },
 });
 var router = new VueRouter({
@@ -107,9 +93,9 @@ router.beforeEach(transition => {
 
 router.map({
     /* 404路由 */
-    '*': {
-        component: require('./views/recommend.vue')
-    },
+    // '*': {
+    //     component: require('./views/recommend.vue')
+    // },
     '/':{				
         name:'recommend',
         component:require('./views/recommend.vue')
@@ -130,7 +116,7 @@ router.map({
     '/square/focus':{               
         name:'focus',
         component:require('./views/focus.vue'),
-        auth: true
+        auth: true,
     },
     '/square/mix/:type':{               
         name:'mix',
@@ -144,9 +130,55 @@ router.map({
         name:'works-detail',
         component:require('./views/works-detail.vue')
     },
+    '/community':{              
+        name:'community',
+        component:require('./views/community.vue')
+    },
+    '/community-more/:id':{              
+        name:'community-more',
+        component:require('./views/community-more.vue')
+    },
     '/login':{               
         name:'login',
         component:require('./views/login.vue')
+    },
+    '/person':{               
+        name:'person',
+        component:require('./views/person.vue'),
+        auth: true,
+    },
+    '/person/:id':{               
+        name:'person-other',
+        component:require('./views/person.vue'),
+    },
+    '/message':{               
+        name:'message',
+        component:require('./views/message.vue')
+    },
+    '/message/like-list':{               
+        name:'message-like-list',
+        component:require('./views/message-like-list.vue'),
+        auth: true,
+    },
+    '/message/comment-list':{               
+        name:'message-comment-list',
+        component:require('./views/message-comment-list.vue'),
+        auth: true,
+    },
+    '/message/follow-list':{               
+        name:'message-follow-list',
+        component:require('./views/message-follow-list.vue'),
+        auth: true,
+    },
+    '/message/chat-list':{               
+        name:'message-chat-list',
+        component:require('./views/message-chat-list.vue'),
+        auth: true,
+    },
+    '/message/systeminfo-list':{               
+        name:'message-systeminfo-list',
+        component:require('./views/message-systeminfo-list.vue'),
+        auth: true,
     },
     // '/register':{               
     //     name:'register',

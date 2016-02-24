@@ -9,13 +9,16 @@
 <template>
     <!-- 全局header -->
     <nav-top type="mix"></nav-top>
-    <div v-for="mix in mix">
-        <div class="blank"></div>
-        <div class="mix-top">
-            <span class="mix-top-left"></span><span class="mix-title">{{mix.title}}</span><span class="mix-more" v-link="{ name: 'mix-more', params: { type: encodeURI(mix.title)}}">更多></span>
+    <div v-touch:swipe="swipeSquare" v-touch-options:swipe="{direction: 'horizontal',threshold: 100}">
+        <div v-for="mix in mix">
+            <div class="blank"></div>
+            <div class="mix-top">
+                <span class="mix-top-left"></span><span class="mix-title">{{mix.title}}</span><span class="mix-more" v-link="{ name: 'mix-more', params: { type: encodeURI(mix.title)}}">更多></span>
         </div>
         <mix-one v-for="mix.items in mix.items" :mix="mix.items[$index]"></mix-one>
     </div>
+    </div>
+    <footer-bottom></footer-bottom>
 </template>
 <script>
     export default {
@@ -61,11 +64,28 @@
                     url = localStorage.getItem('apphost') + 'apiv2/tutorial_and_review_v21?info_type='+this.type;
                 }
                 return url;
-            }
+            },
+            swipeSquare: function (e) {
+            // console.dir(e.deltaX);
+                if(e.deltaX>100){
+                    if(this.type == 'tutorial'){
+                        this.$route.router.go({ name:'focus' });
+                    }else if(this.type == 'review'){
+                        this.$route.router.go({name:'mix-more',params: { type: 'news' }});
+                    }
+                }else if(e.deltaX<-100){
+                    if(this.type == 'tutorial'){
+                        this.$route.router.go({ name:'mix-more',params: { type: 'news' }});
+                    }else if(this.type == 'review'){
+                        // this.$route.router.go({ name:'works-more',params: { type: 'image' }});
+                    }
+                }
+            },
         },
         components:{
             'nav-top':require('../components/nav-top.vue'),
-            'mix-one':require('../components/mix-one.vue')
+            'mix-one':require('../components/mix-one.vue'),
+            'footer-bottom':require('../components/footer-bottom.vue'),
         }
     }
 </script>
