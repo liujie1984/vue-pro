@@ -7,12 +7,12 @@
     .comments-right-top span{height: 16px;line-height: 16px;vertical-align: top;display: inline-block;}
     .comments-owner-nickname{font-size: 15px;color: #3b4554;}
     .comments-created{font-size: 12px;color: #9a9a9a;float: right;}
-    .comments-content{font-size: 13px;color: #9a9a9a;margin-top: 10px;padding-bottom: 10px;}
+    .comments-content{font-size: 13px;color: #9a9a9a;margin-top: 10px;padding-bottom: 10px;min-height: 13px;}
     .comments-content span{font-size: 13px;color: #9a9a9a;}
 </style>
 <template>
     <div class="comments-one" v-on:click="commentclick">
-        <div class="comment-left">
+        <div class="comment-left" v-link="{name:'person-other',params: { id: comment.owner.user_id}}">
             <img v-bind:src="comment.owner.avatar_url">
         </div>
         <div class="comments-right">
@@ -45,9 +45,9 @@
                 return jstimestamp;
             },
             commentclick: function(){
-                this.childMsg = this.comment.owner;
+                this.childMsg = this.comment;
                 this.$dispatch('comment-click-msg', this.childMsg);
-                console.dir(this.childMsg);
+                // console.dir(this.childMsg);
             },
         },
     };

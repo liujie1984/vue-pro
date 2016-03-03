@@ -1,31 +1,32 @@
 <style lang="less">
-    #banner{height: 140px;}
-    #banner-image{height:140px;width:100%;}
-    #banner-choose{margin-top:-28px;text-align:center;}
-    #banner-choose li{display: inline-block;width: 5px;height: 5px;border-radius: 5px;
+    #community-banner{height: 150px;}
+    #community-banner-image{width:100%;height: 150px;}
+    #community-banner-choose{margin-top:-28px;text-align:center;}
+    #community-banner-choose li{display: inline-block;width: 5px;height: 5px;border-radius: 5px;
         background-color: white;margin:0 3px 0 3px;}
     .banner-choose-color{background-color:yellow !important;}
 
-    #community-title-list{height: 90px;width: 100%;}
-    .community-title-one{width: 33%;font-size: 16px;color: #222222;height: 45px;line-height: 45px;
-        display: inline-block;text-align: center;border-bottom: 1px solid #dcdcdc;border-right: 1px solid #dcdcdc;}
+    #community-title-list{height: 90px;width: 100%;background-color: #ffffff;z-index: 10;border-bottom: 1px solid #f2f1ef;}
+    .community-titile-fixed{position: fixed;top: 0;}
+    .community-title-one{width: 33%;font-size: 16px;color: #222222;height: 44px;line-height: 44px;
+        display: inline-block;text-align: center;border-top: 1px solid #f2f1ef;border-right: 1px solid #f2f1ef;}
 
     #community-block{height: 10px;background-color: #f2f1ef;}
 </style>
 <template>
     <!-- banner轮播begin -->
-    <div id="banner">
+    <div id="community-banner">
         <a v-bind:href="bannerUrl">
-            <img id="banner-image" v-touch:swipe.stop="onSwipe" v-touch-options:swipe="{threshold: 100}"
+            <img id="community-banner-image" v-touch:swipe.stop="onSwipe" v-touch-options:swipe="{threshold: 100}"
             v-bind:src="bannerImg">
         </a>
-        <ul id="banner-choose">
+        <ul id="community-banner-choose">
             <li v-for="banner in banner" v-bind:class="{'banner-choose-color': $index==bannerNum}"></li>
         </ul>
     </div>
     <!-- 社区列表 -->
-    <ul id="community-title-list">
-        <li class="community-title-one" v-for="a in communityTitleList" v-link="{name:'community-more',params: { id: a.community_id}}">{{a.title}}</span>
+    <ul id="community-title-list"  v-bind:class="{ 'community-titile-fixed': isTitleFixed }">
+        <li class="community-title-one" v-for="a in communityTitleList" v-link="{name:'community-more',params: { id: a.community_id,title:encodeURIComponent(a.title)}}">{{a.title}}</span>
     </ul>
     <div id="community-block"></div>
     <div id="community-list">
@@ -50,12 +51,14 @@
                 communitys:'',
                 nextPageToken:'',
                 isBackTopShow: false,
+                isTitleFixed: false,
             }
         },
         init: function() {
 
         },
         created: function() {
+            document.title = '社区';
             let url = this.getCommunityMainUrl();
             this.$http({url: url, method: 'GET',xhr:{withCredentials:true}}).then(function (response) {
                 this.banner = response.data.data.banner_list;
@@ -82,6 +85,12 @@
                         self.nextPageToken='';
                     }
                 // console.dir(self);
+                }
+                if(document.body.scrollTop>140){
+                    // console.dir(document.body.scrollTop);
+                    self.isTitleFixed = true;
+                }else{
+                    self.isTitleFixed = false;
                 }
                 if(document.body.scrollTop>1000) {
                     self.isBackTopShow = true;
@@ -118,7 +127,7 @@
             bannerShuffling: function(self){
                 self.bannerImg=self.banner[self.bannerNum].image;
                 self.bannerUrl = self.refurlDeal(self.banner[self.bannerNum].ref_url);
-                console.dir(self.bannerUrl);
+                // console.dir(self.bannerUrl);
                 if(self.bannerNum<self.bannerLength-1){
                     self.bannerNum++;
                 }else{

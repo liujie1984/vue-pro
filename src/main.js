@@ -6,7 +6,7 @@ import VueTouch from 'vue-touch'
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(VueTouch);
-Vue.config.debug = true;
+// Vue.config.debug = true;
 //request headers
 Vue.http.headers.common['App-Ver'] = '2.1';
 Vue.http.headers.common['Device-Id'] = '1';
@@ -17,7 +17,8 @@ Vue.http.headers.common['User-Token'] = '0';
 Vue.http.headers.common['Network'] = '0';
 // Vue.http.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 Vue.http.options.emulateJSON = true;
-// console.dir(Vue.http);
+// console.dir(Vue);
+
 var App = Vue.extend({
     data:function(){
         return {
@@ -63,12 +64,21 @@ var App = Vue.extend({
             this.setCookie(name, "", -1);  
         },
         thirdPartyLogin: function () {
-            console.dir('thirdPartyLogin');
-            console.dir(this.msg);
+            // console.dir('thirdPartyLogin');
+            // console.dir(this.msg);
             this.$broadcast('third-party-login-msg',this.msg);
         },
+        events: {
+            'user-token-msg': function (msg) {
+            // 事件回调内的 `this` 自动绑定到注册它的实例上
+                console.dir(this);
+            },    
+        },
+        
     },
 });
+
+// console.dir(App);
 var router = new VueRouter({
     hashbang: true,
     history: false,
@@ -134,7 +144,7 @@ router.map({
         name:'community',
         component:require('./views/community.vue')
     },
-    '/community-more/:id':{              
+    '/community-more/:id/:title':{              
         name:'community-more',
         component:require('./views/community-more.vue')
     },
@@ -151,34 +161,56 @@ router.map({
         name:'person-other',
         component:require('./views/person.vue'),
     },
+    '/tag/:id':{               
+        name:'tag',
+        component:require('./views/tag.vue'),
+    },
+    '/tag-detail/:id':{               
+        name:'tag-detail',
+        component:require('./views/tag-detail.vue'),
+    },
+    '/person-works/:id':{               
+        name:'person-works',
+        component:require('./views/person-works.vue'),
+    },
+    '/person-community/:id':{               
+        name:'person-community',
+        component:require('./views/person-community.vue'),
+    },
+    '/person-follow/:id':{               
+        name:'person-follow',
+        component:require('./views/person-follow.vue'),
+    },    
+    '/person-flower/:id':{               
+        name:'person-flower',
+        component:require('./views/person-flower.vue'),
+    },
     '/message':{               
         name:'message',
-        component:require('./views/message.vue')
-    },
-    '/message/like-list':{               
-        name:'message-like-list',
-        component:require('./views/message-like-list.vue'),
+        component:require('./views/message.vue'),
         auth: true,
     },
-    '/message/comment-list':{               
-        name:'message-comment-list',
-        component:require('./views/message-comment-list.vue'),
+    '/message-more/:type':{               
+        name:'message-more',
+        component:require('./views/message-more.vue'),
         auth: true,
     },
-    '/message/follow-list':{               
-        name:'message-follow-list',
-        component:require('./views/message-follow-list.vue'),
+    '/sysinfo-more':{               
+        name:'sysinfo-more',
+        component:require('./views/sysinfo-more.vue'),
         auth: true,
     },
-    '/message/chat-list':{               
-        name:'message-chat-list',
-        component:require('./views/message-chat-list.vue'),
-        auth: true,
+    '/find':{               
+        name:'find',
+        component:require('./views/find.vue'),
     },
-    '/message/systeminfo-list':{               
-        name:'message-systeminfo-list',
-        component:require('./views/message-systeminfo-list.vue'),
-        auth: true,
+    '/activity-detail/:id':{               
+        name:'activity-detail',
+        component:require('./views/activity-detail.vue'),
+    },
+    '/activity-review':{               
+        name:'activity-review',
+        component:require('./views/activity-review.vue'),
     },
     // '/register':{               
     //     name:'register',

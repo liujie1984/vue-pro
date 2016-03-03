@@ -38,8 +38,9 @@
         },
         created: function(){
             
-        },
+        },  
     	ready:function() {
+            document.title = this.type;
             this.getData();
             let self = this;
             window.onscroll = function(){

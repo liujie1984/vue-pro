@@ -1,5 +1,5 @@
 <style lang="less">
-    .back-top{width: 50px;height: 50px;position: fixed;bottom: 60px;right: 10px;}
+    .back-top{width: 50px;height: 50px;position: fixed;bottom: 60px;right: 10px;background: transparent;}
 </style>
 <template>
     <img src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-backtop.png" class="back-top" v-on:click="backTop">
@@ -22,7 +22,7 @@
             scrollTopReduction : function(){
                 for(var i=0;document.body.scrollTop>0;i++){
                     document.body.scrollTop = document.body.scrollTop - i/100000;
-                    console.dir(document.body.scrollTop);
+                    // console.dir(document.body.scrollTop);
                 }
             },
         },

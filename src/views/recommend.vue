@@ -1,8 +1,8 @@
 <style lang="less">
-    #banner{height: 140px;}
-    #banner-image{height:140px;width:100%;}
-    #banner-choose{margin-top:-28px;text-align:center;}
-    #banner-choose li{display: inline-block;width: 5px;height: 5px;border-radius: 5px;
+    #recommend-banner{height: 150px;}
+    #recommend-banner-image{width:100%;height: 150px;}
+    #recommend-banner-choose{margin-top:-28px;text-align:center;}
+    #recommend-banner-choose li{display: inline-block;width: 5px;height: 5px;border-radius: 5px;
         background-color: white;margin:0 3px 0 3px;}
     .banner-choose-color{background-color:yellow !important;}
 </style>
@@ -10,13 +10,13 @@
     <!-- 全局header -->
     <nav-top type="recommend"></nav-top>
     <!-- banner轮播begin -->
-    <div id="banner">
+    <div id="recommend-banner">
         <a v-bind:href="bannerUrl">
-            <img id="banner-image" v-touch:swipe="onSwipe" v-touch-options:swipe="{direction: 'horizontal',threshold: 100}"
+            <img id="recommend-banner-image" v-touch:swipe="onSwipe" v-touch-options:swipe="{direction: 'horizontal',threshold: 100}"
             v-bind:src="bannerImg">
         </a>
             <!-- {name:'works-detail',params: { id: 1}} -->
-        <ul id="banner-choose">
+        <ul id="recommend-banner-choose">
             <li v-for="banner in banner" v-bind:class="{'banner-choose-color': $index==bannerNum}"></li>
         </ul>
     </div>
@@ -37,7 +37,7 @@
                 bannerLength:0,
                 banner:'',
                 bannerTimer:'',
-                works:'',
+                works:[],
                 nextPageToken:'',
                 isBackTopShow: false,
             }
@@ -46,6 +46,7 @@
 
         },
         created:function() {
+            document.title = '广场';
             let url = this.getRecommendListUrl();
             this.$http({url: url, method: 'GET',xhr:{withCredentials:true}}).then(function (response) {
                 this.banner = response.data.data.banner_list;
@@ -60,11 +61,31 @@
             });
         },
         ready:function() {
+            var throttle = function ( fn, interval ) {
+                var __self = fn, // 保存需要被延迟执行的函数引用
+                    timer, // 定时器
+                    firstTime = true; // 是否是第一次调用
+                    return function () {
+                        var args = arguments,
+                        __me = this;
+                        if ( firstTime ) { // 如果是第一次调用，不需延迟执行
+                            __self.apply(__me, args);
+                            return firstTime = false;
+                        }
+                        if ( timer ) { // 如果定时器还在，说明前一次延迟执行还没有完成
+                            return false;
+                        }
+                        timer = setTimeout(function () { // 延迟一段时间执行
+                            clearTimeout(timer);
+                            timer = null;
+                            __self.apply(__me, args);
+                        }, interval || 500 );
+                    };
+                };
             let self = this;
-            window.onscroll = function(){
-            // console.dir(document.body.clientHeight);
-            // console.dir(document.body.scrollTop);
-                if(document.body.clientHeight-document.body.scrollTop<1000){
+            window.onscroll = throttle(function(){
+                // console.dir('onscroll');
+                if(document.body.clientHeight-document.body.scrollTop<1500){
                     if(self.nextPageToken!=''){
                         self.getData();
                         self.nextPageToken='';
@@ -76,7 +97,7 @@
                 }else{
                     self.isBackTopShow = false;
                 }
-            }
+            },500);
         },
         methods:{
             getRecommendListUrl: function(){

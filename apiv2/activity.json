@@ -1,0 +1,33 @@
+{
+  "code": 0,
+  "msg": "OK",
+  "data": {
+    "activity_id": 18,
+    "name": "年度晒机盛典",
+    "thumbnail_url": "http://admin.52hangpai.cn/uploads/background1452584936495.jpg",
+    "share_url": "http://alpha.52hangpai.cn/app_share/share_activity?activity_id=18",
+    "activity_time": "1450627200-1451491199",
+    "rule": "",
+    "simple_rule": "2015年就要翻篇啦，这一年或许你刚入手了新飞机，或许已带着爱机跨越了千山万水……回望玩飞机的这一年，快来“爱航拍”APP晒出你的飞机，为这一年的搞机历程划个华丽丽的句号吧：     不管是炸鸡盛宴、新机裸照、全家福，还是DIY秀，只要内容跟你的飞机有关，并带上标题#年度晒机盛典#即可参与活动。",
+    "prize": [
+      "一等奖 年度搞机达人1名，奖品：ND减光镜一块或秋田神烦狗一只，2选1    二等奖 年度最帅机长1名，奖品：9450碳纤自紧桨一对或小米手环一个，2选1   三等奖 年度好机友  奖品：爱航拍商城抵"
+    ],
+    "info": "评选规则\r\n点赞数（70%）+官方评选（30%）=综合得分\r\n\r\n特别提醒\r\n所发内容形式不限图片、视频或话题，只要跟飞机有关，只要带上标题#年度晒机盛典#皆可！！",
+    "is_end": 1,
+    "allow_pub_types": [
+      "youku_v",
+      "ihp_v"
+    ],
+    "tags": [
+      {
+        "tag_id": 129,
+        "tag_name": "年度晒机盛典",
+        "thumbnail_url": "",
+        "referenced_count": 0
+      }
+    ],
+    "share_desc": "快来参加爱航拍的年度晒机盛典，秀爱机还有奖品拿，看看你的灰机是不是让人眼前一亮",
+    "StartTime": 0,
+    "StopTime": 0
+  }
+}

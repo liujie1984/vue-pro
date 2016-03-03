@@ -1,0 +1,65 @@
+{
+  "code": 0,
+  "msg": "OK",
+  "data": {
+    "next_page_token": "",
+    "list": [
+      {
+        "activity_id": 29,
+        "name": "爱航拍飞虎训练营1.1",
+        "thumbnail_url": "http://7xpmag.com2.z0.glb.qiniucdn.com/background1456209482822.png",
+        "ref_url": "ihangpai://ihp.app/act_detail?act_id=29&title=%E7%88%B1%E8%88%AA%E6%8B%8D%E9%A3%9E%E8%99%8E%E8%AE%AD%E7%BB%83%E8%90%A51.1&img_url=http%3A%2F%2F7xpmag.com2.z0.glb.qiniucdn.com%2Fbackground1456209482822.png",
+        "share_url": "http://beta2.52hangpai.cn/app_share/share_activity?activity_id=29",
+        "share_desc": ""
+      },
+      {
+        "activity_id": 28,
+        "name": "让年味飞",
+        "thumbnail_url": "http://7xpmag.com2.z0.glb.qiniucdn.com/background1454295628808.png",
+        "ref_url": "ihangpai://ihp.app/act_detail?act_id=28&title=%E8%AE%A9%E5%B9%B4%E5%91%B3%E9%A3%9E&img_url=http%3A%2F%2F7xpmag.com2.z0.glb.qiniucdn.com%2Fbackground1454295628808.png",
+        "share_url": "http://beta2.52hangpai.cn/app_share/share_activity?activity_id=28",
+        "share_desc": ""
+      },
+      {
+        "activity_id": 27,
+        "name": "你那里下雪了吗",
+        "thumbnail_url": "http://7xpmag.com2.z0.glb.qiniucdn.com/background1453713818343.jpg",
+        "ref_url": "ihangpai://ihp.app/act_detail?act_id=27&title=%E4%BD%A0%E9%82%A3%E9%87%8C%E4%B8%8B%E9%9B%AA%E4%BA%86%E5%90%97&img_url=http%3A%2F%2F7xpmag.com2.z0.glb.qiniucdn.com%2Fbackground1453713818343.jpg",
+        "share_url": "http://beta2.52hangpai.cn/app_share/share_activity?activity_id=27",
+        "share_desc": ""
+      },
+      {
+        "activity_id": 18,
+        "name": "年度晒机盛典",
+        "thumbnail_url": "http://admin.52hangpai.cn/uploads/background1452584936495.jpg",
+        "ref_url": "ihangpai://ihp.app/act_detail?act_id=18&title=%E5%B9%B4%E5%BA%A6%E6%99%92%E6%9C%BA%E7%9B%9B%E5%85%B8&img_url=http%3A%2F%2Fadmin.52hangpai.cn%2Fuploads%2Fbackground1452584936495.jpg",
+        "share_url": "http://beta2.52hangpai.cn/app_share/share_activity?activity_id=18",
+        "share_desc": ""
+      },
+      {
+        "activity_id": 19,
+        "name": "月光倾城",
+        "thumbnail_url": "http://7xpmag.com2.z0.glb.qiniucdn.com/background1452226525703.jpg",
+        "ref_url": "ihangpai://ihp.app/act_detail?act_id=19&title=%E6%9C%88%E5%85%89%E5%80%BE%E5%9F%8E&img_url=http%3A%2F%2F7xpmag.com2.z0.glb.qiniucdn.com%2Fbackground1452226525703.jpg",
+        "share_url": "http://beta2.52hangpai.cn/app_share/share_activity?activity_id=19",
+        "share_desc": ""
+      },
+      {
+        "activity_id": 17,
+        "name": "最美家乡",
+        "thumbnail_url": "http://7xpmag.com2.z0.glb.qiniucdn.com/background1452225558440.jpg",
+        "ref_url": "ihangpai://ihp.app/act_detail?act_id=17&title=%E6%9C%80%E7%BE%8E%E5%AE%B6%E4%B9%A1&img_url=http%3A%2F%2F7xpmag.com2.z0.glb.qiniucdn.com%2Fbackground1452225558440.jpg",
+        "share_url": "http://beta2.52hangpai.cn/app_share/share_activity?activity_id=17",
+        "share_desc": ""
+      },
+      {
+        "activity_id": 23,
+        "name": "水印大赛",
+        "thumbnail_url": "http://admin.52hangpai.cn/uploads/background1452694991617.jpg",
+        "ref_url": "ihangpai://ihp.app/act_detail?act_id=23&title=%E6%B0%B4%E5%8D%B0%E5%A4%A7%E8%B5%9B&img_url=http%3A%2F%2Fadmin.52hangpai.cn%2Fuploads%2Fbackground1452694991617.jpg",
+        "share_url": "http://beta2.52hangpai.cn/app_share/share_activity?activity_id=23",
+        "share_desc": ""
+      }
+    ]
+  }
+}

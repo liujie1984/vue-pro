@@ -35,6 +35,9 @@
                 // console.dir(this.type);
             }
         },
+        created: function(){
+            document.title = '广场';
+        },
         ready:function() {
             // console.dir(this.type);
             let url = this.getmixUrl();

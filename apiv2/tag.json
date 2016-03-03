@@ -1,0 +1,130 @@
+{
+  "code": 0,
+  "msg": "OK",
+  "data": {
+    "next_page_token": "",
+    "list": [
+      {
+        "tag_id": 90,
+        "tag_name": "风景",
+        "thumbnail_url": "",
+        "referenced_count": 859,
+        "is_hot": 1
+      },
+      {
+        "tag_id": 76,
+        "tag_name": "城市",
+        "thumbnail_url": "",
+        "referenced_count": 639
+      },
+      {
+        "tag_id": 95,
+        "tag_name": "建筑",
+        "thumbnail_url": "",
+        "referenced_count": 558
+      },
+      {
+        "tag_id": 82,
+        "tag_name": "夜景",
+        "thumbnail_url": "",
+        "referenced_count": 364
+      },
+      {
+        "tag_id": 92,
+        "tag_name": "大海",
+        "thumbnail_url": "",
+        "referenced_count": 200
+      },
+      {
+        "tag_id": 113,
+        "tag_name": "交流&问答",
+        "thumbnail_url": "",
+        "referenced_count": 197
+      },
+      {
+        "tag_id": 78,
+        "tag_name": "晒飞机",
+        "thumbnail_url": "",
+        "referenced_count": 190
+      },
+      {
+        "tag_id": 107,
+        "tag_name": "路",
+        "thumbnail_url": "",
+        "referenced_count": 177
+      },
+      {
+        "tag_id": 89,
+        "tag_name": "天空",
+        "thumbnail_url": "",
+        "referenced_count": 174
+      },
+      {
+        "tag_id": 94,
+        "tag_name": "日出日落",
+        "thumbnail_url": "",
+        "referenced_count": 162
+      },
+      {
+        "tag_id": 79,
+        "tag_name": "二手交易",
+        "thumbnail_url": "",
+        "referenced_count": 151
+      },
+      {
+        "tag_id": 72,
+        "tag_name": "大疆精灵",
+        "thumbnail_url": "",
+        "referenced_count": 150
+      },
+      {
+        "tag_id": 74,
+        "tag_name": "人物",
+        "thumbnail_url": "",
+        "referenced_count": 124
+      },
+      {
+        "tag_id": 103,
+        "tag_name": "山",
+        "thumbnail_url": "",
+        "referenced_count": 119
+      },
+      {
+        "tag_id": 108,
+        "tag_name": "趣拍",
+        "thumbnail_url": "",
+        "referenced_count": 103
+      },
+      {
+        "tag_id": 98,
+        "tag_name": "桥",
+        "thumbnail_url": "",
+        "referenced_count": 99
+      },
+      {
+        "tag_id": 129,
+        "tag_name": "年度晒机盛典",
+        "thumbnail_url": "",
+        "referenced_count": 97
+      },
+      {
+        "tag_id": 101,
+        "tag_name": "湖",
+        "thumbnail_url": "",
+        "referenced_count": 93
+      },
+      {
+        "tag_id": 109,
+        "tag_name": "乡村",
+        "thumbnail_url": "",
+        "referenced_count": 78
+      },
+      {
+        "tag_id": 128,
+        "tag_name": "月光倾城",
+        "thumbnail_url": "",
+        "referenced_count": 70
+      }
+    ]
+  }
+}

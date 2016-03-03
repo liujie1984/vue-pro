@@ -27,6 +27,9 @@
                 // console.dir(this.type);
             }
         },
+        created: function(){
+            document.title = '广场';
+        },
     	ready:function() {
         	let self = this;
         	window.onscroll = function(){

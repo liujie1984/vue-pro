@@ -40,7 +40,7 @@
                 let urlParams = urlSplit[1].split((/[=&]/));
                 let returnUrl = '';
                 // console.dir(urlSplit);
-                console.dir(urlType);
+                // console.dir(urlType);
                 // console.dir(urlParams);
                 switch (urlType)
                 {
@@ -67,7 +67,7 @@
                 // console.dir(str);
                 for(let i=0;i<urlParamsLength;i=i+2){
                     if(urlParams[i].match(str)){
-                        console.dir(urlParams[i+1]);
+                        // console.dir(urlParams[i+1]);
                         returnStr = decodeURIComponent(urlParams[i+1]);
                     }
                 }

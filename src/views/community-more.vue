@@ -12,6 +12,7 @@
     	data:function(){
       		return {
                 id:'',
+                title:'',
                 communitys:'',
                 nextPageToken:'',
                 isBackTopShow: false,
@@ -20,12 +21,16 @@
         route:{
             data (transition){
                 this.id = decodeURI(transition.to.params.id);
+                this.title = transition.to.params.title;
+                // console.dir(this.title);
             }
         },
         created: function(){
             
         },
     	ready:function() {
+            document.title = this.title;
+            
             this.getData();
             let self = this;
             window.onscroll = function(){

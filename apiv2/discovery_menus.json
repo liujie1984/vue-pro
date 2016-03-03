@@ -1,0 +1,33 @@
+{
+  "code": 0,
+  "msg": "OK",
+  "data": {
+    "next_page_token": "",
+    "list": [
+      {
+        "menu_id": 1,
+        "title": "行业动态",
+        "ref_url": "ihangpai://ihp.app/info_list?url=http%3A%2F%2Falpha.52hangpai.cn%2Fapiv2%2Finfolist_by_taglist%3Ftags%3D%7B%7B%E8%A1%8C%E4%B8%9A%E5%8A%A8%E6%80%81%7D%7D&title=%E8%A1%8C%E4%B8%9A%E5%8A%A8%E6%80%81",
+        "img_url": "http://7xlavy.com2.z0.glb.qiniucdn.com/discovery/industry_news.jpg"
+      },
+      {
+        "menu_id": 2,
+        "title": "二手交易",
+        "ref_url": "ihangpai://ihp.app/pub_list?url=http%3A%2F%2Falpha.52hangpai.cn%2Fapiv2%2Fget_publist_by_tag%3Ftag_id%3D79&title=%E4%BA%8C%E6%89%8B%E4%BA%A4%E6%98%93",
+        "img_url": "http://7xlavy.com2.z0.glb.qiniucdn.com/discovery/second_hand.jpg"
+      },
+      {
+        "menu_id": 3,
+        "title": "同城飞友",
+        "ref_url": "ihangpai://ihp.app/web?url=http%3A%2F%2Falpha.52hangpai.cn%2Fapp_share%2Fcity_flyer%3Fsession_id%3Dfe8a7c3bab7879c2301ec34f65d3bf54&title=%E5%90%8C%E5%9F%8E%E9%A3%9E%E5%8F%8B&desc=&thumbnail=",
+        "img_url": "http://7xlavy.com2.z0.glb.qiniucdn.com/discovery/nearby_users.png"
+      },
+      {
+        "menu_id": 4,
+        "title": "活动集锦",
+        "ref_url": "ihangpai://ihp.app/act_list?title=%E6%B4%BB%E5%8A%A8%E9%9B%86%E9%94%A6",
+        "img_url": "http://7xlavy.com2.z0.glb.qiniucdn.com/discovery/activity_list.jpg"
+      }
+    ]
+  }
+}

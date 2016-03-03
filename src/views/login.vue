@@ -1,9 +1,9 @@
 <style lang="less">
-	.login-form{height: 100px;border-radius: 4px;border: 1px solid #cfcfcf;margin: 18px 25px 0 25px;}
-	.login-form div{height: 40px;padding: 5px 15px 5px 15px;}
+	.login-form{height: 100px;border-radius: 2px;border: 1px solid #cfcfcf;margin: 18px 25px 0 25px;}
+	.login-input-container{height: 39px;padding: 5px 15px 5px 15px;}
 	.login-container-account{border-bottom: 1px solid #cfcfcf;}
-	.login-form div input{border: none;color: #383838;font-size: 18px;vertical-align: middle;height: 32px;line-height: 32px;
-		margin: 4px 0 4px 0;width: 100%;}
+	.login-input{border: none;color: #383838;font-size: 18px;vertical-align: middle;height: 30px;line-height: 30px;
+	   width: 98%;margin-top: 4px;}
 
 	.login-message{font-size: 14px;color: #f86c59;margin: 0 30px 0 30px;height: 32px;line-height: 32px;}
 	.login-submit{display: block;height: 50px;background-color: #fe9901;border-radius: 5px;text-align: center;line-height: 50px;
@@ -14,7 +14,7 @@
     .register{color: #556e98;margin-right: 8px;}
     .reset{color: #9a9a9a;margin-left: 8px;}
 
-    .third-login-title{height: 16px;margin: 0 25px 0 25px;}
+    .third-login-title{height: 16px;margin: 20px 25px 0 25px;}
     .third-login-title p{font-size: 14px;height: 16px;line-height: 16px;float: left;color: #9a9a9a;}
     .third-login-title-line{position: relative;border-bottom: 1px solid #e4e7eb;margin: 0 0 0 130px;height: 8px;}
     .third-login{margin-top: 32px;}
@@ -26,18 +26,18 @@
 </style>
 <template>
 	<form class="login-form">
-		<div class="login-container-account">
-			<input v-model="account" type="text" placeholder="请输入手机号" name="account" maxlength="11"/>
+		<div class="login-input-container login-container-account">
+			<input class="login-input" v-model="account" type="text" placeholder="请输入手机号" name="account" maxlength="11"/>
 		</div>
-		<div class="login-container-password">
-			<input v-model="password" type="password" placeholder="请输入6-16位密码" name="password" maxlength="16"/>
+		<div class="login-input-container">
+			<input class="login-input" v-model="password" type="password" placeholder="请输入6-16位密码" name="password" maxlength="16"/>
 		</div>
 	</form>
 	<p class="login-message">{{message}}</p>
 	<a class="login-submit" v-on:click="login">登录</a>
-	<div class="register-reset">
+<!-- 	<div class="register-reset">
 		<span class="register">注册账号</span>|<span class="reset">找回密码</span>
-	</div>
+	</div> -->
 	<div class="third-login-title">
 		<p>使用社交账号登录</p><div class="third-login-title-line"></div>
 	</div>
@@ -66,12 +66,11 @@
       	route:{
             data (transition){
             	this.redirectUrl = decodeURIComponent(transition.to.path.split('=')[1]);
-                console.dir(this.redirectUrl);
             }
         },
         created: function(){
+            document.title = '登录';
             if (/MicroMessenger/i.test(navigator.userAgent)) { 
-                // alert(this)
                 this.inWx = true;
                 this.notInWx = false;
             }else{
@@ -85,15 +84,12 @@
         methods:{
             login: function(){
             	let url = this.getLoginUrl();
-            	// console.log(url);
             	this.password = this.md5(this.password);
-            	//postl
         		this.$http({url: url, method: 'GET',data: {mobile:this.account,passwd:this.password},xhr:{withCredentials:true}}).then(function (response) {
         			if(response.data.code==0){
         				this.responseData = response.data.data;
-                        // Vue.http.headers.common['User-Token'] = response.data.data.token;
         				sessionStorage.setItem('userId',response.data.data.user_id);
-        				sessionStorage.setItem('userData',JSON.stringify(response.data.data)); 
+        				sessionStorage.setItem('userData',JSON.stringify(response.data.data));
         				this.$route.router.go({ path: this.redirectUrl});
         			}else if(response.data.code==108){
         				this.message='账号或密码错误';
@@ -113,26 +109,15 @@
          		if (localStorage.getItem('apphost')=='http://localhost:8080/'||localStorage.getItem('apphost')=='http://alpha.52hangpai.cn/') {
 
               		this.qqLoginHref = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101261235&redirect_uri=http://t-fabiao.52hangpai.cn/third_party_login/qq_login';
-              		// this.wxLoginHref = 'https://open.weixin.qq.com/connect/qrconnect?appid=wxfc9b795f6150b319&redirect_uri='
-                // 		+encodeURIComponent('http://t-fabiao.52hangpai.cn/third_party_login/wx_login')+'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
-
                     this.wxLoginHref='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfc9b795f6150b319&redirect_uri='
                         +encodeURI('http://t-fabiao.52hangpai.cn/third_party_login/wx_login')
                         +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
-
-                    // this.wxLoginHref='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc5cd0381ab942049&redirect_uri='
-                    //     +encodeURI('http://fabu.52hangpai.cn/third_party_login/wx_login')
-                    //     +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
               		this.youkuLoginHref = 'https://openapi.youku.com/v2/oauth2/authorize?response_type=code&client_id=3b0ef82784168b3f&redirect_uri=http://t-fabiao.52hangpai.cn/third_party_login/youku_login';              		
             	}else if(localStorage.getItem('apphost')=='http://mapi.52hangpai.cn/'){
               		this.qqLoginHref = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101260753&redirect_uri=http://fabu.52hangpai.cn/third_party_login/qq_login';
-              		// this.wxLoginHref = 'https://open.weixin.qq.com/connect/qrconnect?appid=wxc5cd0381ab942049&redirect_uri='
-                // 		+encodeURIComponent('http://fabu.52hangpai.cn/third_party_login/wx_login')+'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
-
                     this.wxLoginHref='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc5cd0381ab942049&redirect_uri='
                         +encodeURI('http://fabu.52hangpai.cn/third_party_login/wx_login')
                         +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
-
               		this.youkuLoginHref = 'https://openapi.youku.com/v2/oauth2/authorize?response_type=code&client_id=143c766800baef8a&redirect_uri=http://fabu.52hangpai.cn/third_party_login/youku_login';
             	}
          	},

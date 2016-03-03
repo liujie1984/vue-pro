@@ -1,0 +1,32 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": {
+    "list": [
+      {
+        "message_type": "like",
+        "unread_num": "8"
+      },
+      {
+        "message_type": "comment",
+        "unread_num": "4"
+      },
+      {
+        "message_type": "thread_follow",
+        "unread_num": "0"
+      },
+      {
+        "message_type": "follow",
+        "unread_num": "4"
+      },
+      {
+        "message_type": "system",
+        "unread_num": "0"
+      },
+      {
+        "message_type": "im_chat",
+        "unread_num": "0"
+      }
+    ]
+  }
+}

@@ -14,7 +14,7 @@
             <video width="100%" v-bind:style="{height: videoHeight + 'px' }" v-bind:poster="detail.content.thumbnail_url" controls>
                 <source v-bind:src="detail.content.play_url" type="video/mp4">
             </video>
-            <img class="video-paly-icon" v-on:click="videoPlay" v-bind:style="{ marginTop: '-15px',top: iconTop}" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png">
+<!--             <img class="video-paly-icon" v-on:click="videoPlay" v-bind:style="{ marginTop: '-15px',top: iconTop}" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-video-play-c.png"> -->
         </div>
         <div v-if="detail.type=='youku_v'" class="detail-one-youkuv">
             <iframe class="detail-one-youkuv-iframe" v-bind:src="detail.content.play_url" v-bind:style="{height: iframeHeight + 'px' }" allowfullscreen scrolling="no"></iframe>
@@ -40,7 +40,7 @@
         methods: {
             videoPlay: function (event) {
                 event.path[1].children[0].play();
-                console.dir(event.path[1].children[0]);
+                // console.dir(event.path[1].children[0]);
             }
         }
     };

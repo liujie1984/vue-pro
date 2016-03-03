@@ -1,10 +1,14 @@
 <style lang="less">
     .owner{height: 64px;}
+    .owner-user{float: left;}
     .owner-avatar{width: 36px;height: 36px;border-radius: 18px;margin: 14px 14px 0 10px;float: left;}
     .owner-avatar-vip{position: relative;width: 17px;height: 17px;margin: 34px 10px 0 -25px;float: left;}
     .owner-middle{height: 48px;float: left;margin-top: 16px;}
     .owner-nickname{font-size: 14px;color: #4a4a4a;height: 18px;line-height: 18px;}
     .pub-date{font-size: 12px;color: #dcdcdc;height: 14px;line-height: 14px;}
+    .works-detail-follow{height: 20px;float: right;margin: 20px 10px 0 0;position: relative;font-size: 14px;
+        color: #222222;padding: 1px 6px 1px 6px;display: inline-block;line-height: 20px;}
+    .works-detail-follow-deal-border{border: 1px solid #222222;}
 
     .blank{height: 6px;background-color: #dddddd;clear: both;}
     .title{font-size: 16px;color: #3b4554;margin: 10px;height: auto;line-height: 22px;}
@@ -14,6 +18,7 @@
     .tags-list{margin: 10px 10px 10px 4px;height: 20px;overflow: hidden;}
     .tags-list li{display: inline-block;height: 18px;padding: 0 6px 0 6px;border: 1px solid #dbdbdb;color: #9a9a9a;
         font-size: 12px;margin: 0 6px 0 6px;}
+    .tags-list li a{text-decoration: none;color: #9a9a9a;display: inline-block;height: 18px;line-height: 18px;}
 
     .like-comment{height: 44px;border-top: 1px solid #dbdbdb;}
     .like-comment span{display: inline-block;text-align: center;height: 40px;}
@@ -30,13 +35,18 @@
         text-align: center;top: 50%;margin-top: -7px;}
 </style>
 <template>
-    <div v-link="{name:'person-other',params: { id: owner.user_id}}" class="owner">
-        <img class="owner-avatar" v-bind:src="owner.avatar_url">
-        <img v-if="owner.is_vip==1" class="owner-avatar-vip" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-is-vip.png">
-        <div class="owner-middle">
-            <p class="owner-nickname">{{owner.nickname}}</p>
-            <p class="pub-date">{{worksDetail.pub_date}}</p>
+    <div class="owner">
+        <div v-link="{name:'person-other',params: { id: owner.user_id}}" class="owner-user">
+            <img class="owner-avatar" v-bind:src="owner.avatar_url">
+            <img v-if="owner.is_vip==1" class="owner-avatar-vip" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-is-vip.png">
+            <div class="owner-middle">
+                <p class="owner-nickname">{{owner.nickname}}</p>
+                <p class="pub-date">{{worksDetail.pub_date}}</p>
+            </div>
         </div>
+        <span class="works-detail-follow" v-on:click="dealFollow" v-bind:class="{'works-detail-follow-deal-border': status=='unfollow'}">
+            {{statusContent}}
+        </span>
     </div>
     <div class="blank"></div>
     <p class="title">
@@ -49,7 +59,7 @@
         <detail-one v-for="worksDetail.detail_list in worksDetail.detail_list" :detail="worksDetail.detail_list[$index]"></detail-one>
     </div>
     <ul class="tags-list">
-        <li v-for="tags in tags">{{tags.tag_name}}</li>
+        <li v-for="tag in tags"><a v-bind:href="'#!/tag-detail/'+tag.tag_id">{{tag.tag_name}}</a></li>
     </ul>
     <div class="like-comment">
         <span class="content-like" v-on:click="dealLike">
@@ -58,7 +68,7 @@
         </span>
         <span class="content-comment">
             <img class="icon" src="http://7xqamv.com2.z0.glb.qiniucdn.com/icon-comments.png">
-            <span class="count">{{worksDetail.comments_count}}</span>
+            <span class="count">{{worksDetail.comments_count==0 ? '评论' : worksDetail.comments_count}}</span>
         </span>
     </div>
     <div class="blank"></div>
@@ -89,6 +99,7 @@
                     avatar_url:'',
                     nickname:'',
                     is_vip:'',
+                    is_followed:'',
                 },
                 comments:{
                     next_page_token:'',
@@ -100,7 +111,9 @@
                 commentContent:'',
                 commentPlaceholder:'我的评论(140字以内)',
                 commentContainerHeight:'',
-                replyToUser:''
+                replyToUser:'',
+                status:'unfollow',
+                statusContent:'+关注',
       		}
       	},
         route:{
@@ -111,6 +124,7 @@
             }
         },
         created: function(){
+            document.title = '详情';
         },
     	ready:function() {
             let url = '';
@@ -137,6 +151,13 @@
                         this.isLiked=0;
                     }
                     this.replyToUser = this.owner;
+                    if(this.owner.is_followed!=null){
+                        if(this.owner.is_followed==1){
+                            this.status = 'followed';
+                            this.statusContent = '已关注';
+                        }  
+                    }
+
                     // console.dir(this.replyToUser);
                     // console.dir(this.worksDetail.owner.avatar_url);
                 }
@@ -146,6 +167,13 @@
             'comments': function (val, oldVal) {
                 console.dir('new: %s, old: %s', val, oldVal);
                 
+            },
+            'status': function(){
+                if(this.status == 'followed'){
+                    this.statusContent = '已关注';
+                }else if(this.status=='unfollow'){
+                    this.statusContent = '+关注';
+                }  
             },
         },
         methods:{
@@ -157,7 +185,7 @@
                 return jstimestamp;
             },
             dealLike: function(){
-                if(this.getCookie('user_info')!=null&&this.getCookie('user_info')!=''&&this.getCookie('user_info')!=undefined) {
+                if(this.getCookie('user_verify')!=null&&this.getCookie('user_verify')!=''&&this.getCookie('user_verify')!=undefined) {
                     if(this.isLiked==1){
                         let unlikeUrl = this.getUnlikeUrl();
                         this.$http({url: unlikeUrl, method: 'POST',data: {type:'pub',id:this.id},xhr:{withCredentials:true},}).then(function (response) {
@@ -178,7 +206,10 @@
                         });
                     }
                 }else{
-                    this.$route.router.go({ name: 'login'});
+                    let nowHref =window.location.href;
+                    let redirectUrl = nowHref.split('!')[1];
+                    // console.dir(redirectUrl);
+                    this.$route.router.go('/login?redirect=' + redirectUrl);
                 }
             },
             getLikeUrl: function(){
@@ -200,7 +231,7 @@
                 return url;
             },
             commentFocus: function(event){
-                console.dir(event);
+                // console.dir(event);
                 // console.dir(this.commentContent);
             },
             commentChange: function(event){
@@ -209,9 +240,9 @@
                 // console.dir(this.commentContent);
             },
             replyComment: function(event){
-                if(this.getCookie('user_info')!=null&&this.getCookie('user_info')!=''&&this.getCookie('user_info')!=undefined) {
+                if(this.getCookie('user_verify')!=null&&this.getCookie('user_verify')!=''&&this.getCookie('user_verify')!=undefined) {
                     let commentUrl = this.getCommentUrl();
-                    this.$http({url: commentUrl, method: 'POST',data: {type:'pub',id:this.id,content:this.commentContent,reply_to:this.replyToUser.user_id},xhr:{withCredentials:true},}).then(function (response) {
+                    this.$http({url: commentUrl, method: 'POST',data: {type:'pub',id:this.id,content:this.commentContent,reply_to:this.replyToUser.comment_id},xhr:{withCredentials:true},}).then(function (response) {
                         if(response.data.code==0){
                             let url = '';
                             if (localStorage.getItem('apphost')=='http://localhost:8080/'){
@@ -233,7 +264,10 @@
                         }
                     });
                 }else{
-                    this.$route.router.go({ name: 'login'});
+                    let nowHref =window.location.href;
+                    let redirectUrl = nowHref.split('!')[1];
+                    // console.dir(redirectUrl);
+                    this.$route.router.go('/login?redirect=' + redirectUrl);
                 }
             },
             getCommentUrl: function(){
@@ -241,7 +275,7 @@
                 if (localStorage.getItem('apphost')=='http://localhost:8080/'){
                     url = localStorage.getItem('apphost') + 'apiv2/like.json';
                 }else{
-                    url = localStorage.getItem('apphost') + 'apiv2/publish_new_comment';
+                    url = localStorage.getItem('apphost') + 'apiv2/comment';
                 }
                 return url;
             },
@@ -255,14 +289,67 @@
                 }
                 return "";
             },
+
+            dealFollow: function(){
+                if(this.getCookie('user_verify')!=null&&this.getCookie('user_verify')!=''&&this.getCookie('user_verify')!=undefined) {
+                    if(this.status == 'unfollow'){
+                        this.postFollow();
+                    }else if(this.status == 'followed'){
+                        this.postUnfollow();
+                    }else if(this.status == 'followtwo'){
+                        this.postUnfollow();
+                    }
+                }else{
+                    let nowHref =window.location.href;
+                    let redirectUrl = nowHref.split('!')[1];
+                    // console.dir(redirectUrl);
+                    this.$route.router.go('/login?redirect=' + redirectUrl);
+                }
+            },
+            getFollowUrl: function(){
+                let url = '';
+                if (localStorage.getItem('apphost')=='http://localhost:8080/'){
+                    url = localStorage.getItem('apphost') + 'apiv2/flower.json';
+                }else{
+                    url = localStorage.getItem('apphost') + 'api/follow_someone';
+                }
+                return url;
+            },
+            postFollow: function(){
+                let url = this.getFollowUrl();
+                let token = JSON.parse(sessionStorage.getItem('userData')).token;
+                this.$http({url: url, method: 'POST',headers:{'User-Token': token},data: {user_id:this.owner.user_id},xhr:{withCredentials:true}}).then(function (response){
+                    if(response.data.code==0){
+                        this.status = 'followed'; 
+                    }
+                });
+            },
+            getUnfollowUrl: function(){
+                let url = '';
+                if (localStorage.getItem('apphost')=='http://localhost:8080/'){
+                    url = localStorage.getItem('apphost') + 'apiv2/flower.json';
+                }else{
+                    url = localStorage.getItem('apphost') + 'api/unfollow_someone';
+                }
+                return url;
+            },
+            postUnfollow: function(){
+                let url = this.getUnfollowUrl();
+                let token = JSON.parse(sessionStorage.getItem('userData')).token;
+                this.$http({url: url, method: 'POST',headers:{'User-Token': token},data: {user_id:this.owner.user_id},xhr:{withCredentials:true}}).then(function (response){
+                    if(response.data.code==0){
+                        this.status = 'unfollow';
+                    }
+                });
+            },
      	},
         events: {
             'comment-click-msg': function (msg) {
                 // 事件回调内的 `this` 自动绑定到注册它的实例上
                 // this.messages.push(msg);
                 this.replyToUser = msg;
-                this.commentPlaceholder = '回复:'+ this.replyToUser.nickname;
-                console.dir(msg)
+                this.commentPlaceholder = '回复:'+ this.replyToUser.owner.nickname;
+                // console.dir(msg)
             }
         },
         components:{

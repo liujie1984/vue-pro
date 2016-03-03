@@ -24,13 +24,21 @@
 	.person-detail ul li span{width: 100%;display: inline-block;text-align: center;}
 	.person-detail-num{font-size: 20px;color: #555555;width: 100%;height: 22px;line-height: 22px;}
 	.person-detail-title{font-size: 14px;color: #9a9a9a;height: 16px;line-height: 16px;}
-	#person-detail-num-4{border: none;}
+    #person-detail-num-4{border: none;}
+	#person-detail-num-5{border-left: 1px solid #9a9a9a;border-right: none;}
+    .person-detail-li-width-4{}
+    .person-detail-li-width-5{width: 18% !important;}
 
     .mine-block{height: 35px;background-color: #f2f1ef;}
     .mine-content{height: 40px;border-bottom: 1px solid #dcdcdc;padding: 0 10px 0 10px;}
     .mine-content span{display: inline-block;}
     .mine-content-title{font-size: 16px;color: #222222;height: 40px;line-height: 40px;width: 80%;}
     .mine-content-click{font-size: 16px;height: 40px;line-height: 40px;text-align: right;width: 20%;}
+
+
+    #app-download{text-decoration: none;font-size: 16px;text-align: center;line-height: 30px;height: 30px;
+        display: block;margin-top: 60px;border-bottom: 1px solid #f2f1ef;border-top: 1px solid #f2f1ef;color: #9a9a9a;}
+    #login-out{font-size: 16px;height: 30px;line-height: 30px;border-bottom: 1px solid #f2f1ef;text-align: center;color: #9a9a9a;}
 </style>
 <template>
     <div class="person-background" v-touch:swipe.stop="onSwipe" v-touch-options:swipe="{threshold: 50}">
@@ -59,26 +67,27 @@
     </div>
     <div class="person-detail"> 
     	<ul>
-    		<li><span class="person-detail-num">{{userData.pub_count}}</span><span class="person-detail-title">作品</span></li>
-    		<li><span class="person-detail-num">{{userData.thread_count}}</span><span class="person-detail-title">帖子</span></li>
-    		<li><span class="person-detail-num">{{userData.followed_count}}</span><span class="person-detail-title">关注</span></li>
-    		<li id="person-detail-num-4"><span class="person-detail-num">{{userData.followers_count}}</span><span class="person-detail-title">粉丝</span></li>
+    		<li v-link="{name:'person-works',params: { id: id }}" v-bind:class="{'person-detail-li-width-5': type=='mine'}"><span class="person-detail-num" >{{userData.pub_count}}</span><span class="person-detail-title">作品</span></li>
+    		<li v-link="{name:'person-community',params: { id: id }}" v-bind:class="{'person-detail-li-width-5': type=='mine'}"><span class="person-detail-num">{{userData.thread_count}}</span><span class="person-detail-title">帖子</span></li>
+    		<li v-link="{name:'person-follow',params: { id: id }}" v-bind:class="{'person-detail-li-width-5': type=='mine'}"><span class="person-detail-num">{{userData.followed_count}}</span><span class="person-detail-title">关注</span></li>
+    		<li v-link="{name:'person-flower',params: { id: id }}" v-bind:class="{'person-detail-li-width-5': type=='mine'}" id="person-detail-num-4"><span class="person-detail-num">{{userData.followers_count}}</span><span class="person-detail-title">粉丝</span></li>
+            <li v-if="type=='mine'" v-link="{name:'tag',params: { id: id }}" id="person-detail-num-5" v-bind:class="{'person-detail-li-width-5': type=='mine'}"><span class="person-detail-num">{{userData.mix_tags_count}}</span><span class="person-detail-title">标签</span></li>
     	</ul>
     </div>
 
-    <div v-if="type=='mine'">
-        <div class="mine-block"></div>
-        <div class="mine-content"><span class="mine-content-title">标签</span><span class="mine-content-click">></span></div>
-        <div class="mine-content"><span class="mine-content-title">个人资料</span><span class="mine-content-click">></span></div>
-    </div>
+    <a id="app-download" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.coolpa.ihp">下载APP,体验更多功能！</a>
+    <p id="login-out" v-on:click="loginOut" v-if="type=='mine'">退出</p>
     <footer-bottom v-if="type=='mine'"></footer-bottom>
+    <div v-if="type=='other'">
+        
+    </div>
 </template>
 <script>
     export default {
     	data:function(){
             return {
                 backgroundPage: 0,
-                id:'',
+                id: 'm',
                 type:'mine',
                 userData:{
                 	nickname:'',
@@ -92,21 +101,24 @@
                 	thread_count:'',
                 	followed_count:'',
                 	followers_count:'',
+                    mix_tags_count:'',
                 },
             }
         },
         route:{
             data (transition){
-                if(transition.to.params.id!=null&&transition.to.params.id!=undefined&&transition.to.params.id!= ''){
+                if(transition.to.params.id!=null&&transition.to.params.id!=undefined&&transition.to.params.id!= ''&&transition.to.params.id!='m'){
                     this.id = decodeURI(transition.to.params.id);
                     this.type = 'other';
-                    console.log('user_id:'+this.id);
+                    // console.log('user_id:'+this.id);
                 }else{
                     this.type = 'mine';
+                    this.id = sessionStorage.getItem("userId");
                 }
             }
         },
         created: function(){
+            document.title = '个人主页';
             // this.dealUser(); 
         },
         ready: function(){
@@ -149,18 +161,28 @@
                     if(userData != null&&userData != ''){
                         this.userData = JSON.parse(userData);
                         this.userData.genderUrl = this.dealGender(this.userData.gender);
+                        // console.dir(this.userData);
                     }
                 }else if(this.type=='other'){
                     let url = this.getUserInfoUrl();
                     this.$http({url: url, method: 'GET',data: {user_id:this.id},xhr:{withCredentials:true}}).then(function (response){
                         if(response.data.code==0){
                             this.userData = response.data.data;
-                            console.dir(this.userData);
+                            // console.dir(this.userData);
                             this.userData.genderUrl = this.dealGender(this.userData.gender);
                         }
                     });
                 }
 
+            },
+            loginOut: function(){
+                sessionStorage.clear();
+                var date=new Date();
+                date.setTime(date.getTime()-10000);
+                document.cookie='user_info'+'=; expire='+date.toGMTString()+'; path=/;domain=.52hangpai.cn';
+                document.cookie='user_verify'+'=; expire='+date.toGMTString()+'; path=/;domain=.52hangpai.cn'; 
+                document.cookie='user_verify'+'=; expire='+date.toGMTString()+'; path=/;domain=session';   
+                this.$route.router.go({ name: 'recommend'});
             },
         },
         events: {
@@ -171,6 +193,7 @@
         },
         components:{
             'footer-bottom':require('../components/footer-bottom.vue'),
+            // 'person-works':require('person-works.vue'),
         }
     }
 </script>
