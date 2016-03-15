@@ -107,12 +107,12 @@ router.map({
     //     component: require('./views/recommend.vue')
     // },
     '/':{				
-        name:'recommend',
+        name:'/',
         component:require('./views/recommend.vue')
     },
     //广场square
     '/square':{              
-        name:'recommend',
+        name:'square',
         component:require('./views/recommend.vue')
     },
     '/square/recommend':{				

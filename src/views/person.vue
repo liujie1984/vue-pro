@@ -27,7 +27,7 @@
     #person-detail-num-4{border: none;}
 	#person-detail-num-5{border-left: 1px solid #9a9a9a;border-right: none;}
     .person-detail-li-width-4{}
-    .person-detail-li-width-5{width: 18% !important;}
+    .person-detail-li-width-5{}
 
     .mine-block{height: 35px;background-color: #f2f1ef;}
     .mine-content{height: 40px;border-bottom: 1px solid #dcdcdc;padding: 0 10px 0 10px;}
@@ -35,10 +35,11 @@
     .mine-content-title{font-size: 16px;color: #222222;height: 40px;line-height: 40px;width: 80%;}
     .mine-content-click{font-size: 16px;height: 40px;line-height: 40px;text-align: right;width: 20%;}
 
-
+    #person-tag{font-size: 16px;height: 30px;line-height: 30px;border-top: 1px solid #f2f1ef;text-align: center;color: #9a9a9a;margin-top: 60px;}
     #app-download{text-decoration: none;font-size: 16px;text-align: center;line-height: 30px;height: 30px;
-        display: block;margin-top: 60px;border-bottom: 1px solid #f2f1ef;border-top: 1px solid #f2f1ef;color: #9a9a9a;}
+        display: block;border-bottom: 1px solid #f2f1ef;border-top: 1px solid #f2f1ef;color: #9a9a9a;}
     #login-out{font-size: 16px;height: 30px;line-height: 30px;border-bottom: 1px solid #f2f1ef;text-align: center;color: #9a9a9a;}
+
 </style>
 <template>
     <div class="person-background" v-touch:swipe.stop="onSwipe" v-touch-options:swipe="{threshold: 50}">
@@ -71,10 +72,9 @@
     		<li v-link="{name:'person-community',params: { id: id }}" v-bind:class="{'person-detail-li-width-5': type=='mine'}"><span class="person-detail-num">{{userData.thread_count}}</span><span class="person-detail-title">帖子</span></li>
     		<li v-link="{name:'person-follow',params: { id: id }}" v-bind:class="{'person-detail-li-width-5': type=='mine'}"><span class="person-detail-num">{{userData.followed_count}}</span><span class="person-detail-title">关注</span></li>
     		<li v-link="{name:'person-flower',params: { id: id }}" v-bind:class="{'person-detail-li-width-5': type=='mine'}" id="person-detail-num-4"><span class="person-detail-num">{{userData.followers_count}}</span><span class="person-detail-title">粉丝</span></li>
-            <li v-if="type=='mine'" v-link="{name:'tag',params: { id: id }}" id="person-detail-num-5" v-bind:class="{'person-detail-li-width-5': type=='mine'}"><span class="person-detail-num">{{userData.mix_tags_count}}</span><span class="person-detail-title">标签</span></li>
     	</ul>
     </div>
-
+    <p id="person-tag" v-if="type=='mine'" v-link="{name:'tag',params: { id: id }}">标签</p>
     <a id="app-download" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.coolpa.ihp">下载APP,体验更多功能！</a>
     <p id="login-out" v-on:click="loginOut" v-if="type=='mine'">退出</p>
     <footer-bottom v-if="type=='mine'"></footer-bottom>
@@ -90,6 +90,7 @@
                 id: 'm',
                 type:'mine',
                 userData:{
+                    user_id:'',
                 	nickname:'',
                 	gender:'',
                 	avatar_url:'',

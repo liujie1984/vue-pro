@@ -2,7 +2,7 @@
 
 </style>
 <template>
-    <nav-top v-if="navShow==1" type="news"></nav-top>
+    <nav-top v-if="navShow==1"></nav-top>
     <div v-touch:swipe ="swipeSquare" v-touch-options:swipe="{direction: 'horizontal',threshold: 100}">
         <mix-one v-for="mix in mix" :mix="mix"></mix-one>
     </div>
@@ -19,6 +19,7 @@
                 footerShow:0,
                 nextPageToken:'',
                 isBackTopShow: false,
+                type:'',
       		}
       	},
         route:{

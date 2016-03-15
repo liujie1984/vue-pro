@@ -24,7 +24,7 @@
 <template>
     <div class="footer-bottom-blank"></div>
     <ul class="footer-bottom">
-        <li v-link="{path: '/square', activeClass: 'square-active'}" class="footer-bottom-square"><span>广场</span></li>
+        <li v-link="{name:'square', activeClass: 'square-active'}" class="footer-bottom-square"><span>广场</span></li>
         <li v-link="{name:'community', activeClass: 'community-active'}" class="footer-bottom-community"><span>社区</span></li>
         <li v-link="{name:'activity-review', activeClass: 'find-active'}" class="footer-bottom-find"><span>活动</span></li>
         <li v-link="{path:'/message', activeClass: 'message-active'}" class="footer-bottom-message"><span>消息</span>

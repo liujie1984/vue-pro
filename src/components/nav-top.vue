@@ -1,9 +1,8 @@
 <style lang="less">
-    .nav-top{height: 40px;width: 100%;margin-bottom: 2px;position: fixed;background-color: #ffffff;z-index: 10;}
-    .nav-top li{display: inline-block;width: 14.2857%;text-align: center;color: #9a9a9a;
+    .nav-top{height: 40px;width: 100%;margin-bottom: 2px;position: fixed;background-color: #ffffff;z-index: 10;overflow: auto;}
+    .nav-top li{width: 14.28%;text-align: center;color: #9a9a9a;float: left;list-style-type:none;position: relative;
         height: 36px;line-height: 36px;font-size: 15px;}
     .nav-top-active{border-bottom: 2px solid #222222;color: #222222 !important;}
-
     .nav-top-blank{height: 40px;}
 </style>
 <template>
@@ -22,9 +21,6 @@
 </template>
 <script>
     export default {
-        props: ['type'],
-        ready: function(){
-            // console.log(this.type);
-        }
+
     };
 </script>

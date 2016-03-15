@@ -41,7 +41,7 @@
     .works-one-like-comment span{display: inline-block;text-align: center;height: 40px;}
     .works-one-content-like{border-right: 1px solid #dcdcdc;width: 49%;}
     .works-one-content-comment{width: 49%;}
-    .works-one-icon{width: 20px;height: 20px;margin: 12px 6px 0 0;vertical-align: top;}
+    .works-one-icon{width: 20px;height: 20px;margin: 10px 6px 0 0;vertical-align: top;}
     .works-one-count{font-size: 12px;color: #9a9a9a;vertical-align: top;display: inline-block;height: 40px;line-height: 40px;margin: 0 0 0 6px}
     .works-one-blank{height: 12px;background-color: #f2f1ef;margin-top: -5px;}
 </style>

@@ -8,7 +8,7 @@
 </style>
 <template>
     <!-- 全局header -->
-    <nav-top type="mix"></nav-top>
+    <nav-top></nav-top>
     <div v-touch:swipe="swipeSquare" v-touch-options:swipe="{direction: 'horizontal',threshold: 100}">
         <div v-for="mix in mix">
             <div class="blank"></div>

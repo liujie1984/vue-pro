@@ -7,7 +7,7 @@
 </style>
 <template>
     <!-- 全局header -->
-    <nav-top type="focus"></nav-top>
+    <nav-top></nav-top>
     	<div class="focus-guess"><span>猜你喜欢</span><span class="focus-guess-right">></span></div>
     	<div>
     		<follow-one v-if="guessType=='recommend_user'" :follow="guess" type="focus"></follow-one>

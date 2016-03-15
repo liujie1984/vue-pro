@@ -7,7 +7,7 @@
     .comments-right-top span{height: 16px;line-height: 16px;vertical-align: top;display: inline-block;}
     .comments-owner-nickname{font-size: 15px;color: #3b4554;}
     .comments-created{font-size: 12px;color: #9a9a9a;float: right;}
-    .comments-content{font-size: 13px;color: #9a9a9a;margin-top: 10px;padding-bottom: 10px;min-height: 13px;}
+    .comments-content{font-size: 13px;color: #9a9a9a;margin-top: 10px;padding-bottom: 10px;min-height: 13px; word-wrap:break-word; word-break:normal;}
     .comments-content span{font-size: 13px;color: #9a9a9a;}
 </style>
 <template>

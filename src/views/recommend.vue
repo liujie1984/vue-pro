@@ -8,7 +8,7 @@
 </style>
 <template>
     <!-- 全局header -->
-    <nav-top type="recommend"></nav-top>
+    <nav-top></nav-top>
     <!-- banner轮播begin -->
     <div id="recommend-banner">
         <a v-bind:href="bannerUrl">
@@ -83,9 +83,9 @@
                     };
                 };
             let self = this;
-            window.onscroll = throttle(function(){
+            window.onscroll = function(){
                 // console.dir('onscroll');
-                if(document.body.clientHeight-document.body.scrollTop<1500){
+                if(document.body.clientHeight-document.body.scrollTop<2000){
                     if(self.nextPageToken!=''){
                         self.getData();
                         self.nextPageToken='';
@@ -97,7 +97,7 @@
                 }else{
                     self.isBackTopShow = false;
                 }
-            },500);
+            };
         },
         methods:{
             getRecommendListUrl: function(){
